@@ -24,7 +24,7 @@ from flask import Flask, jsonify, render_template, request, session
 sys_path_dir = os.path.dirname(os.path.abspath(__file__))
 import sys
 sys.path.insert(0, sys_path_dir)
-from parse_data import load_card_file, process_cards, FILENAME
+from parse_data import load_processed_cards
 from similarity import build_candidate_models, get_candidates
 
 
@@ -289,8 +289,7 @@ def log_vote(ip, session_id, card_a, card_b, chosen, config_name):
 # ── Card data & models (loaded once at startup) ────────────────────────────────
 
 print('Loading card data...')
-_raw      = load_card_file(FILENAME)
-_df       = process_cards(_raw)
+_df = load_processed_cards()
 _post_c16 = _df[_df['released_at'] > pd.Timestamp('2016-11-11')].reset_index(drop=True)
 _card_names      = _post_c16['name'].tolist()
 _name_to_id      = dict(zip(_post_c16['name'], _post_c16['id']))

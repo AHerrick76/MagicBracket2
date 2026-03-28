@@ -2,11 +2,13 @@
 Loads card file into a pandas dataframe
 '''
 
+import os
 import pandas as pd
 import json
 import matplotlib.pyplot as plt
 
-FILENAME = "default-cards-20260323090744.json"
+FILENAME     = "default-cards-20260323090744.json"
+PARQUET_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cards.parquet')
 
 def load_card_file(filename):
 
@@ -112,6 +114,18 @@ def process_cards(df):
         axis=1
     )
     return df
+
+
+def load_processed_cards():
+    '''
+    Load the processed card DataFrame.
+    Uses cards.parquet if available (fast, ~seconds); falls back to the
+    raw Scryfall JSON + process_cards() if not (slow, ~minutes).
+    '''
+    if os.path.exists(PARQUET_PATH):
+        return pd.read_parquet(PARQUET_PATH)
+    print(f'cards.parquet not found — loading from {FILENAME} (this is slow)...')
+    return process_cards(load_card_file(FILENAME))
 
 
 def cards_per_year(df):

@@ -32,7 +32,7 @@ import pandas as pd
 import scipy.sparse as sp
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from parse_data import load_card_file, process_cards, FILENAME
+from parse_data import load_processed_cards
 from similarity import (
     ALPHA_CONFIGS,
     SAME_SET_PENALTY,
@@ -116,8 +116,7 @@ def _build_penalised_knn(combined_matrix, card_sets, n_cards):
 
 def main():
     print('Loading card data...', flush=True)
-    raw      = load_card_file(FILENAME)
-    df       = process_cards(raw)
+    df = load_processed_cards()
     post_c16 = df[df['released_at'] > pd.Timestamp('2016-11-11')].reset_index(drop=True)
     n_cards  = len(post_c16)
     print(f'Post-C16 cards: {n_cards}', flush=True)
