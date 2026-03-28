@@ -1,0 +1,27 @@
+# Scryfall bulk data — too large for git (100 MB+); load separately
+*.json
+
+# Local SQLite database
+votes.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# UMAP map output files (regenerate with mapgen.py)
+map_*.json
+
+# Environment / secrets
+.env

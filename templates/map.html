@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similarity Map — Magic Bracket 2</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: Georgia, serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ── Header bar ───────────────────────────────────────────────────── */
+
+        #map-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.55rem 1.2rem;
+            border-bottom: 1px solid #252540;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        /* ── Site nav (reused from index.html) ───────────────────────────── */
+
+        #site-nav {
+            font-size: 0.75rem;
+            user-select: none;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        #nav-toggle {
+            background: none;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 2px 4px;
+            line-height: 1;
+            transition: color 0.15s;
+        }
+        #nav-toggle:hover { color: #888; }
+
+        #nav-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: #12121f;
+            border: 1px solid #333;
+            border-radius: 6px;
+            overflow: hidden;
+            min-width: 120px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+            z-index: 200;
+        }
+        #nav-dropdown.open { display: block; }
+        #nav-dropdown a {
+            display: block;
+            padding: 0.45rem 0.8rem;
+            color: #999;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.1s, color 0.1s;
+        }
+        #nav-dropdown a:hover, #nav-dropdown a.current {
+            background: #1e1e35;
+            color: #c8a96e;
+        }
+
+        /* ── Header controls ──────────────────────────────────────────────── */
+
+        #map-title {
+            font-size: 0.95rem;
+            color: #c8a96e;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        #model-select {
+            background: #12121f;
+            border: 1px solid #333;
+            color: #ccc;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            font-family: Georgia, serif;
+        }
+        #model-select:focus { outline: 1px solid #555; }
+
+        #reset-btn {
+            background: none;
+            border: 1px solid #333;
+            color: #666;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            transition: color 0.15s, border-color 0.15s;
+            white-space: nowrap;
+        }
+        #reset-btn:hover { color: #999; border-color: #555; }
+
+        /* ── Legend ───────────────────────────────────────────────────────── */
+
+        #legend {
+            display: flex;
+            gap: 0.65rem;
+            flex-wrap: wrap;
+            margin-left: auto;
+        }
+
+        .leg {
+            display: flex;
+            align-items: center;
+            gap: 0.28rem;
+            font-size: 0.68rem;
+            color: #666;
+        }
+        .leg-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ── Canvas wrapper ───────────────────────────────────────────────── */
+
+        #canvas-wrap {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        #map-canvas {
+            display: block;
+            cursor: crosshair;
+            /* CSS display size set via JS to match wrapper */
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ── Loading overlay ──────────────────────────────────────────────── */
+
+        #map-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            background: #1a1a2e;
+            color: #c8a96e;
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+            z-index: 10;
+        }
+        #map-loading.hidden { display: none; }
+        #loading-sub {
+            font-size: 0.72rem;
+            color: #555;
+            letter-spacing: 0.04em;
+            font-style: italic;
+        }
+
+        /* ── Desktop tooltip ──────────────────────────────────────────────── */
+
+        #map-tooltip {
+            position: absolute;
+            background: rgba(12, 12, 28, 0.96);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.78rem;
+            pointer-events: none;
+            display: none;
+            white-space: nowrap;
+            z-index: 20;
+            color: #ddd;
+        }
+        #map-tooltip.visible { display: block; }
+        #tt-hint {
+            font-size: 0.65rem;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        /* ── Mobile bottom panel ──────────────────────────────────────────── */
+
+        #mobile-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #12121f;
+            border-top: 1px solid #2a2a4a;
+            padding: 0.9rem 1.2rem 1.1rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.4rem;
+            z-index: 50;
+        }
+        #mobile-panel.visible { display: flex; }
+        #mp-name { color: #ddd; font-size: 0.9rem; }
+        #mp-link {
+            color: #8aa8c8;
+            font-size: 0.78rem;
+            text-decoration: none;
+        }
+        #mp-link:hover { text-decoration: underline; }
+        #mp-close {
+            position: absolute;
+            top: 0.55rem;
+            right: 0.9rem;
+            color: #555;
+            cursor: pointer;
+            font-size: 1.1rem;
+            background: none;
+            border: none;
+            font-family: Georgia, serif;
+        }
+
+        /* ── Mobile header reflow ─────────────────────────────────────────── */
+
+        @media (max-width: 600px) {
+            #map-header { gap: 0.6rem; padding: 0.5rem 0.8rem; }
+            #legend { margin-left: 0; order: 10; width: 100%; }
+            .leg-label { display: none; }   /* dots-only on small screens */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map-header">
+        <nav id="site-nav">
+            <button id="nav-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+            <div id="nav-dropdown" role="menu">
+                <a href="/"    role="menuitem">Voting</a>
+                <a href="/faq" role="menuitem">FAQ</a>
+                <a href="/map" role="menuitem" class="current">Similarity Map</a>
+            </div>
+        </nav>
+
+        <span id="map-title">Similarity Map</span>
+
+        <select id="model-select" title="Similarity model">
+            <option value="balanced">Balanced</option>
+            <option value="text_heavy">Text-heavy</option>
+            <option value="struct_heavy">Structure-heavy</option>
+        </select>
+
+        <button id="reset-btn" title="Reset zoom and pan">Reset view</button>
+
+        <div id="legend">
+            <div class="leg"><div class="leg-dot" style="background:#f5f0d5"></div><span class="leg-label">White</span></div>
+            <div class="leg"><div class="leg-dot" style="background:#4a80c0"></div><span class="leg-label">Blue</span></div>
+            <div class="leg"><div class="leg-dot" style="background:#8060a0"></div><span class="leg-label">Black</span></div>
+            <div class="leg"><div class="leg-dot" style="background:#c04040"></div><span class="leg-label">Red</span></div>
+            <div class="leg"><div class="leg-dot" style="background:#3a8a4a"></div><span class="leg-label">Green</span></div>
+            <div class="leg"><div class="leg-dot" style="background:#c8a96e"></div><span class="leg-label">Multi</span></div>
+            <div class="leg"><div class="leg-dot" style="background:#888"></div><span class="leg-label">Colorless</span></div>
+        </div>
+    </div>
+
+    <div id="canvas-wrap">
+        <canvas id="map-canvas"></canvas>
+
+        <div id="map-loading">
+            <span id="loading-main">Loading map data…</span>
+            <span id="loading-sub"></span>
+        </div>
+
+        <div id="map-tooltip">
+            <div id="tt-name"></div>
+            <div id="tt-hint">Click to view on Scryfall</div>
+        </div>
+    </div>
+
+    <!-- Mobile: tap a dot to open this panel, then tap the link to navigate -->
+    <div id="mobile-panel">
+        <button id="mp-close" aria-label="Close">✕</button>
+        <div id="mp-name"></div>
+        <a id="mp-link" href="#" target="_blank" rel="noopener">View on Scryfall →</a>
+    </div>
+
+    <script>
+        // ── Constants ────────────────────────────────────────────────────────
+
+        const DOT_COLOR = {
+            W: '#f5f0d5',
+            U: '#4a80c0',
+            B: '#8060a0',
+            R: '#c04040',
+            G: '#3a8a4a',
+            M: '#c8a96e',
+            C: '#888888',
+        };
+        const DOT_R        = 2.5;    // dot radius in CSS pixels
+        const HOVER_R      = 12;     // hover hit-radius in CSS pixels
+        const TAP_R        = 22;     // tap hit-radius in CSS pixels (larger for touch)
+        const PAD          = 50;     // padding around the [0,1]×[0,1] world on reset
+        const GRID_CELLS   = 120;    // spatial index grid size (120×120 = 14,400 cells)
+
+        // ── Element refs ─────────────────────────────────────────────────────
+
+        const canvas       = document.getElementById('map-canvas');
+        const wrap         = document.getElementById('canvas-wrap');
+        const loadingEl    = document.getElementById('map-loading');
+        const loadingMain  = document.getElementById('loading-main');
+        const loadingSub   = document.getElementById('loading-sub');
+        const tooltipEl    = document.getElementById('map-tooltip');
+        const ttNameEl     = document.getElementById('tt-name');
+        const panelEl      = document.getElementById('mobile-panel');
+        const mpNameEl     = document.getElementById('mp-name');
+        const mpLinkEl     = document.getElementById('mp-link');
+        const modelSelect  = document.getElementById('model-select');
+        const resetBtn     = document.getElementById('reset-btn');
+        const navToggle    = document.getElementById('nav-toggle');
+        const navDropdown  = document.getElementById('nav-dropdown');
+
+        const ctx = canvas.getContext('2d');
+
+        // ── Device detection ─────────────────────────────────────────────────
+
+        // Hover-capable devices get mousemove tooltip + click-to-navigate.
+        // Touch-only devices get tap-to-select panel + explicit link tap.
+        const IS_HOVER = window.matchMedia('(hover: hover)').matches;
+
+        // ── Viewport state ────────────────────────────────────────────────────
+        // screen_x = wx * scale + tx
+        // screen_y = wy * scale + ty
+
+        let scale = 1, tx = 0, ty = 0;
+        let dpr   = window.devicePixelRatio || 1;
+
+        // Physical pixel dimensions of the canvas buffer
+        let bufW = 0, bufH = 0;
+        // CSS pixel dimensions of the canvas display area
+        let cssW = 0, cssH = 0;
+
+        function resetView() {
+            const size = Math.min(cssW, cssH) - PAD * 2;
+            scale = size;
+            tx = (cssW - size) / 2;
+            ty = (cssH - size) / 2;
+        }
+
+        function resizeCanvas() {
+            cssW = wrap.clientWidth;
+            cssH = wrap.clientHeight;
+            dpr  = window.devicePixelRatio || 1;
+            bufW = Math.round(cssW * dpr);
+            bufH = Math.round(cssH * dpr);
+            canvas.width  = bufW;
+            canvas.height = bufH;
+            // CSS size is controlled by width:100%;height:100% in CSS
+            resetView();
+            draw();
+        }
+
+        new ResizeObserver(resizeCanvas).observe(wrap);
+
+        // ── Data & spatial index ──────────────────────────────────────────────
+
+        // points: [{name, wx, wy, color}]
+        let currentPoints = [];
+        // grid: flat array of GRID_CELLS² cells, each a list of point indices
+        let grid = [];
+
+        function buildGrid(points) {
+            grid = Array.from({length: GRID_CELLS * GRID_CELLS}, () => []);
+            for (let i = 0; i < points.length; i++) {
+                const pt = points[i];
+                const cx = Math.min(GRID_CELLS - 1, Math.floor(pt.wx * GRID_CELLS));
+                const cy = Math.min(GRID_CELLS - 1, Math.floor(pt.wy * GRID_CELLS));
+                grid[cy * GRID_CELLS + cx].push(i);
+            }
+        }
+
+        // Model data cache
+        const modelCache = new Map();
+
+        // ── Drawing ───────────────────────────────────────────────────────────
+
+        let hoveredPoint  = null;
+        let selectedPoint = null;   // mobile: tapped card
+
+        function draw() {
+            // Scale context to physical pixels
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.clearRect(0, 0, cssW, cssH);
+
+            if (!currentPoints.length) return;
+
+            // Batch rendering: one beginPath per color (7 batches max)
+            const buckets = {};
+            for (const pt of currentPoints) {
+                if (pt === hoveredPoint || pt === selectedPoint) continue;
+                const sx = pt.wx * scale + tx;
+                const sy = pt.wy * scale + ty;
+                if (sx < -DOT_R || sx > cssW + DOT_R ||
+                    sy < -DOT_R || sy > cssH + DOT_R) continue;
+                if (!buckets[pt.color]) buckets[pt.color] = [];
+                buckets[pt.color].push(sx, sy);   // flat: [x0,y0, x1,y1, ...]
+            }
+
+            ctx.globalAlpha = 0.75;
+            for (const [color, coords] of Object.entries(buckets)) {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                for (let i = 0; i < coords.length; i += 2) {
+                    ctx.moveTo(coords[i] + DOT_R, coords[i + 1]);
+                    ctx.arc(coords[i], coords[i + 1], DOT_R, 0, Math.PI * 2);
+                }
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1.0;
+
+            // Highlighted dot (hover or tap selection)
+            const active = hoveredPoint || selectedPoint;
+            if (active) {
+                const sx = active.wx * scale + tx;
+                const sy = active.wy * scale + ty;
+                // Halo ring
+                ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(sx, sy, DOT_R + 5, 0, Math.PI * 2);
+                ctx.stroke();
+                // White dot on top
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(sx, sy, DOT_R + 1.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // ── Spatial nearest-point lookup ──────────────────────────────────────
+
+        function findNearest(sx, sy, maxPx) {
+            if (!currentPoints.length || !grid.length) return null;
+            // Convert screen coords to world coords
+            const wx = (sx - tx) / scale;
+            const wy = (sy - ty) / scale;
+            // Threshold in world units
+            const thresh = maxPx / scale;
+
+            const cxMin = Math.max(0, Math.floor((wx - thresh) * GRID_CELLS));
+            const cxMax = Math.min(GRID_CELLS - 1, Math.ceil((wx + thresh) * GRID_CELLS));
+            const cyMin = Math.max(0, Math.floor((wy - thresh) * GRID_CELLS));
+            const cyMax = Math.min(GRID_CELLS - 1, Math.ceil((wy + thresh) * GRID_CELLS));
+
+            let nearest = null;
+            let minD2   = thresh * thresh;
+
+            for (let gy = cyMin; gy <= cyMax; gy++) {
+                for (let gx = cxMin; gx <= cxMax; gx++) {
+                    for (const idx of grid[gy * GRID_CELLS + gx]) {
+                        const pt = currentPoints[idx];
+                        const d2 = (pt.wx - wx) ** 2 + (pt.wy - wy) ** 2;
+                        if (d2 < minD2) { minD2 = d2; nearest = pt; }
+                    }
+                }
+            }
+            return nearest;
+        }
+
+        // ── Scryfall URL ──────────────────────────────────────────────────────
+
+        function scryfallUrl(name) {
+            // Full encodeURIComponent encodes embedded quotes in card names correctly,
+            // e.g. Henzie "Toolbox" Torre → %22Henzie%20%22Toolbox%22%20Torre%22
+            return 'https://scryfall.com/search?q=!' + encodeURIComponent('"' + name + '"');
+        }
+
+        // ── Mouse / desktop interaction ───────────────────────────────────────
+
+        let dragStart = null, didDrag = false;
+
+        canvas.addEventListener('mousedown', e => {
+            dragStart = {x: e.offsetX, y: e.offsetY, tx, ty};
+            didDrag   = false;
+        });
+
+        canvas.addEventListener('mousemove', e => {
+            if (dragStart) {
+                const dx = e.offsetX - dragStart.x;
+                const dy = e.offsetY - dragStart.y;
+                if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true;
+                tx = dragStart.tx + dx;
+                ty = dragStart.ty + dy;
+                hoveredPoint = null;
+                tooltipEl.classList.remove('visible');
+                draw();
+                return;
+            }
+            if (!IS_HOVER) return;
+            hoveredPoint = findNearest(e.offsetX, e.offsetY, HOVER_R);
+            if (hoveredPoint) {
+                ttNameEl.textContent = hoveredPoint.name;
+                // Position tooltip near cursor, clamped to viewport
+                const margin = 14;
+                const ttW    = tooltipEl.offsetWidth  || 180;
+                const ttH    = tooltipEl.offsetHeight || 44;
+                let lx = e.clientX + margin;
+                let ly = e.clientY - ttH / 2;
+                if (lx + ttW > window.innerWidth  - 8) lx = e.clientX - ttW - margin;
+                if (ly < 8) ly = 8;
+                if (ly + ttH > window.innerHeight - 8) ly = window.innerHeight - ttH - 8;
+                tooltipEl.style.left = lx + 'px';
+                tooltipEl.style.top  = ly + 'px';
+                tooltipEl.classList.add('visible');
+            } else {
+                tooltipEl.classList.remove('visible');
+            }
+            draw();
+        });
+
+        canvas.addEventListener('mouseup', e => {
+            if (!didDrag && IS_HOVER && hoveredPoint) {
+                window.open(scryfallUrl(hoveredPoint.name), '_blank', 'noopener');
+            }
+            dragStart = null;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            dragStart    = null;
+            hoveredPoint = null;
+            tooltipEl.classList.remove('visible');
+            draw();
+        });
+
+        canvas.addEventListener('wheel', e => {
+            e.preventDefault();
+            const factor   = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+            const minScale = (Math.min(cssW, cssH) - PAD * 2) * 0.5;
+            const maxScale = (Math.min(cssW, cssH) - PAD * 2) * 80;
+            const newScale = Math.max(minScale, Math.min(maxScale, scale * factor));
+            const sf       = newScale / scale;
+            tx    = e.offsetX - (e.offsetX - tx) * sf;
+            ty    = e.offsetY - (e.offsetY - ty) * sf;
+            scale = newScale;
+            draw();
+        }, {passive: false});
+
+        // ── Touch / mobile interaction ────────────────────────────────────────
+
+        let touchState = null;
+
+        canvas.addEventListener('touchstart', e => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            if (e.touches.length === 1) {
+                touchState = {
+                    type:  'single',
+                    x0:    e.touches[0].clientX - rect.left,
+                    y0:    e.touches[0].clientY - rect.top,
+                    tx0:   tx, ty0: ty,
+                    moved: false,
+                };
+            } else if (e.touches.length === 2) {
+                const x1 = e.touches[0].clientX - rect.left;
+                const y1 = e.touches[0].clientY - rect.top;
+                const x2 = e.touches[1].clientX - rect.left;
+                const y2 = e.touches[1].clientY - rect.top;
+                touchState = {
+                    type:   'pinch',
+                    dist0:  Math.hypot(x2 - x1, y2 - y1),
+                    cx:     (x1 + x2) / 2,
+                    cy:     (y1 + y2) / 2,
+                    scale0: scale,
+                    tx0:    tx,
+                    ty0:    ty,
+                };
+            }
+        }, {passive: false});
+
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            if (!touchState) return;
+            const rect = canvas.getBoundingClientRect();
+
+            if (e.touches.length === 1 && touchState.type === 'single') {
+                const x  = e.touches[0].clientX - rect.left;
+                const y  = e.touches[0].clientY - rect.top;
+                const dx = x - touchState.x0;
+                const dy = y - touchState.y0;
+                if (Math.abs(dx) > 6 || Math.abs(dy) > 6) touchState.moved = true;
+                tx = touchState.tx0 + dx;
+                ty = touchState.ty0 + dy;
+                draw();
+            } else if (e.touches.length === 2 && touchState.type === 'pinch') {
+                const x1   = e.touches[0].clientX - rect.left;
+                const y1   = e.touches[0].clientY - rect.top;
+                const x2   = e.touches[1].clientX - rect.left;
+                const y2   = e.touches[1].clientY - rect.top;
+                const dist = Math.hypot(x2 - x1, y2 - y1);
+                const minS = (Math.min(cssW, cssH) - PAD * 2) * 0.5;
+                const maxS = (Math.min(cssW, cssH) - PAD * 2) * 80;
+                const sf   = Math.max(minS, Math.min(maxS, touchState.scale0 * dist / touchState.dist0)) / touchState.scale0;
+                tx    = touchState.cx - (touchState.cx - touchState.tx0) * sf;
+                ty    = touchState.cy - (touchState.cy - touchState.ty0) * sf;
+                scale = touchState.scale0 * sf;
+                draw();
+            }
+        }, {passive: false});
+
+        canvas.addEventListener('touchend', e => {
+            if (!touchState) return;
+            if (touchState.type === 'single' && !touchState.moved) {
+                // Tap: find nearest card and show bottom panel
+                const rect = canvas.getBoundingClientRect();
+                const x    = e.changedTouches[0].clientX - rect.left;
+                const y    = e.changedTouches[0].clientY - rect.top;
+                const pt   = findNearest(x, y, TAP_R);
+                if (pt) {
+                    selectedPoint  = pt;
+                    mpNameEl.textContent = pt.name;
+                    mpLinkEl.href        = scryfallUrl(pt.name);
+                    panelEl.classList.add('visible');
+                } else {
+                    selectedPoint = null;
+                    panelEl.classList.remove('visible');
+                }
+                draw();
+            }
+            touchState = null;
+        }, {passive: false});
+
+        document.getElementById('mp-close').addEventListener('click', () => {
+            selectedPoint = null;
+            panelEl.classList.remove('visible');
+            draw();
+        });
+
+        // ── Nav dropdown ──────────────────────────────────────────────────────
+
+        navToggle.addEventListener('click', e => {
+            e.stopPropagation();
+            const open = navDropdown.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', open);
+        });
+        document.addEventListener('click', () => {
+            navDropdown.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', false);
+        });
+
+        // ── Reset view ────────────────────────────────────────────────────────
+
+        resetBtn.addEventListener('click', () => { resetView(); draw(); });
+
+        // ── Data loading ──────────────────────────────────────────────────────
+
+        function showLoading(main, sub = '') {
+            loadingMain.textContent = main;
+            loadingSub.textContent  = sub;
+            loadingEl.classList.remove('hidden');
+        }
+        function hideLoading() {
+            loadingEl.classList.add('hidden');
+        }
+
+        async function loadConfig(configName) {
+            if (modelCache.has(configName)) {
+                currentPoints = modelCache.get(configName);
+                buildGrid(currentPoints);
+                hoveredPoint = selectedPoint = null;
+                tooltipEl.classList.remove('visible');
+                panelEl.classList.remove('visible');
+                draw();
+                return;
+            }
+
+            showLoading('Loading map data…', configName);
+
+            let data;
+            try {
+                const resp = await fetch(`/api/map_data/${configName}`);
+                if (!resp.ok) {
+                    const err = await resp.json().catch(() => ({}));
+                    const msg = err.error || `HTTP ${resp.status}`;
+                    showLoading(
+                        resp.status === 404
+                            ? 'Map not yet generated.'
+                            : 'Failed to load map data.',
+                        msg,
+                    );
+                    return;
+                }
+                data = await resp.json();
+            } catch (e) {
+                showLoading('Network error.', String(e));
+                return;
+            }
+
+            const points = data.points.map(([name, wx, wy, cc]) => ({
+                name,
+                wx,
+                wy,
+                color: DOT_COLOR[cc] || '#888888',
+            }));
+
+            modelCache.set(configName, points);
+            currentPoints = points;
+            buildGrid(currentPoints);
+            hoveredPoint = selectedPoint = null;
+            tooltipEl.classList.remove('visible');
+            panelEl.classList.remove('visible');
+            hideLoading();
+            draw();
+        }
+
+        modelSelect.addEventListener('change', () => loadConfig(modelSelect.value));
+
+        // ── Init ──────────────────────────────────────────────────────────────
+
+        resizeCanvas();
+        loadConfig(modelSelect.value);
+    </script>
+</body>
+</html>

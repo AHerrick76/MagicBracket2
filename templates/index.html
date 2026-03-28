@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Bracket 2</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: Georgia, serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 5vh;
+            gap: 2rem;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            letter-spacing: 0.06em;
+            color: #c8a96e;
+        }
+
+        /* ── Card pair layout ─────────────────────────────────────────────── */
+
+        #matchup {
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .card-slot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Wrapper that holds the image; gives stable layout dimensions */
+        .card-frame {
+            position: relative;
+            /* Default portrait size matches the img width */
+            width: 300px;
+        }
+
+        /* ── Normal (portrait) cards ──────────────────────────────────────── */
+
+        .card-img {
+            width: 300px;
+            display: block;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .card-img:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 36px rgba(200, 169, 110, 0.55);
+        }
+
+        /* ── Sideways (Battle) cards ──────────────────────────────────────── */
+        /*
+         * Battle cards are stored as portrait images (672×936) in Scryfall.
+         * We display them at width=280px (→ natural height ≈ 390px), then
+         * rotate 90°.  After rotation the visual footprint is ~390px wide ×
+         * 280px tall.  The .card-frame is sized to those rotated dimensions so
+         * the surrounding layout doesn't shift.
+         */
+
+        .card-frame.sideways {
+            position: relative;
+            width:  390px;
+            height: 280px;
+        }
+
+        .card-frame.sideways .card-img {
+            position: absolute;
+            width: 280px;
+            /* Anchor to the frame centre, then rotate clockwise */
+            top:  50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+
+        .card-frame.sideways .card-img:hover {
+            transform: translate(-50%, -50%) rotate(90deg) scale(1.04);
+        }
+
+        /* ── Card name label ──────────────────────────────────────────────── */
+
+        .card-name {
+            font-size: 0.9rem;
+            color: #999;
+            text-align: center;
+            max-width: 320px;
+        }
+
+        /* ── Set / year label ─────────────────────────────────────────────── */
+
+        .card-set {
+            font-size: 0.78rem;
+            color: #777;
+            font-style: italic;
+            text-align: center;
+            max-width: 320px;
+        }
+
+        /* ── Elo rating display ────────────────────────────────────────────── */
+
+        .card-elo {
+            font-size: 0.8rem;
+            color: #c8a96e;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .elo-delta.positive { color: #7bc67a; }
+        .elo-delta.negative { color: #c87b7b; }
+
+        /* ── Double-faced hover preview ───────────────────────────────────── */
+
+        #face-preview {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15, 15, 30, 0.95);
+            border: 1px solid rgba(200, 169, 110, 0.3);
+            border-radius: 18px;
+            padding: 20px;
+            gap: 16px;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.8);
+        }
+
+        #face-preview.visible {
+            display: flex;
+        }
+
+        #face-preview img {
+            width: 280px;
+            border-radius: 10px;
+            display: block;
+        }
+
+        /* ── Mode slider (fixed top-right) ───────────────────────────────── */
+
+        #mode-control {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.4rem;
+            width: 210px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            font-size: 0.78rem;
+            color: #888;
+            user-select: none;
+        }
+
+        #mode-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        #mode-header .label-prefix {
+            letter-spacing: 0.04em;
+        }
+
+        #mode-name {
+            color: #c8a96e;
+            font-weight: bold;
+            letter-spacing: 0.04em;
+        }
+
+        #mode-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: #444;
+            outline: none;
+            cursor: pointer;
+        }
+
+        #mode-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #c8a96e;
+            cursor: pointer;
+        }
+
+        #mode-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #c8a96e;
+            border: none;
+            cursor: pointer;
+        }
+
+        #mode-tick-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: #555;
+            padding: 0 2px;
+        }
+
+        #mode-desc {
+            font-size: 0.72rem;
+            color: #777;
+            font-style: italic;
+            line-height: 1.35;
+            min-height: 2em;
+        }
+
+        /* ── Closed-loop control (fixed top-left) ────────────────────────── */
+        /* DEV ONLY — remove before deploying to production */
+
+        #closed-loop-control {
+            position: fixed;
+            top: 1.2rem;
+            left: 1.4rem;
+            width: 170px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            font-size: 0.78rem;
+            color: #888;
+            user-select: none;
+        }
+
+        #closed-loop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #closed-loop-status {
+            color: #888;
+            letter-spacing: 0.04em;
+            transition: color 0.2s;
+        }
+
+        #closed-loop-status.active { color: #c8a96e; }
+
+        /* Toggle switch */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .toggle-wrap input[type=checkbox] { display: none; }
+
+        .toggle-track {
+            width: 36px;
+            height: 20px;
+            border-radius: 10px;
+            background: #444;
+            position: relative;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .toggle-track::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #888;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .toggle-wrap input:checked + .toggle-track {
+            background: #3a3020;
+        }
+
+        .toggle-wrap input:checked + .toggle-track::after {
+            transform: translateX(16px);
+            background: #c8a96e;
+        }
+
+        #closed-loop-desc {
+            font-size: 0.72rem;
+            color: #777;
+            font-style: italic;
+            line-height: 1.35;
+            min-height: 2em;
+        }
+
+        /* ── Session history ──────────────────────────────────────────────── */
+
+        #history-section {
+            width: 640px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        #session-counter {
+            font-size: 0.82rem;
+            color: #888;
+            letter-spacing: 0.04em;
+        }
+
+        #vote-history {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            font-size: 0.82rem;
+            color: #bbb;
+            line-height: 1.5;
+        }
+
+        .history-item strong { color: #ddd; }
+
+        .hist-elo {
+            font-size: 0.75rem;
+            font-style: italic;
+        }
+
+        .hist-elo.positive { color: #7bc67a; }
+        .hist-elo.negative { color: #c87b7b; }
+
+        /* ── Loading overlay ──────────────────────────────────────────────── */
+
+        #loading {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 20, 0.78);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            letter-spacing: 0.12em;
+            color: #c8a96e;
+        }
+
+        #loading.visible { display: flex; }
+
+        /* ── MDFC flip button (mobile tap to preview) ─────────────────────── */
+
+        .flip-btn {
+            display: none;   /* shown only on touch devices via media query below */
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(15, 15, 30, 0.85);
+            border: 1px solid rgba(200, 169, 110, 0.5);
+            color: #c8a96e;
+            font-size: 1.1rem;
+            cursor: pointer;
+            z-index: 10;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── Mobile layout (≤ 600 px) ─────────────────────────────────────── */
+
+        @media (max-width: 600px) {
+            body {
+                justify-content: flex-start;
+                padding: 1rem 1rem 2rem;
+                padding-top: 1rem;
+                gap: 1.2rem;
+            }
+
+            h1 { font-size: 1.3rem; }
+
+            #matchup {
+                order: 2;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            /* Controls sit below the cards on mobile. On desktop both children
+               are position:fixed so this wrapper is zero-height and invisible. */
+            #controls-row {
+                order: 3;
+                display: flex;
+                width: 95vw;
+                gap: 1rem;
+            }
+
+            #mode-control,
+            #closed-loop-control {
+                position: static;
+                width: auto;
+                flex: 1;
+            }
+
+            /* Larger thumb for easier touch targeting */
+            #mode-slider::-webkit-slider-thumb {
+                width: 28px;
+                height: 28px;
+            }
+
+            #mode-slider::-moz-range-thumb {
+                width: 28px;
+                height: 28px;
+            }
+
+            #history-section {
+                order: 4;
+                width: min(640px, 95vw);
+            }
+
+            .history-item { overflow-wrap: break-word; }
+
+            /* Responsive portrait cards */
+            .card-frame { width: min(300px, 85vw); }
+            .card-img   { width: min(300px, 85vw); }
+
+            /* Sideways cards: scale both frame and rotated image proportionally.
+               Original frame is 390 × 280; ratio 280/390 ≈ 0.718. */
+            .card-frame.sideways {
+                width:  min(390px, 85vw);
+                height: calc(min(390px, 85vw) * 0.718);
+            }
+            .card-frame.sideways .card-img {
+                width: calc(min(390px, 85vw) * 0.718);
+            }
+
+            /* Face preview: stack faces vertically so they fit the screen */
+            #face-preview             { flex-direction: column; }
+            #face-preview img         { width: min(280px, 80vw); }
+        }
+
+        /* ── Touch devices: show flip buttons; make preview tappable ─────── */
+
+        @media (hover: none) {
+            .flip-btn.has-back        { display: flex; }
+            #face-preview.visible     { pointer-events: auto; cursor: pointer; }
+        }
+
+        /* ── Site nav (fixed top-left) ───────────────────────────────────── */
+
+        #site-nav {
+            position: fixed;
+            top: 1.2rem;
+            left: 1.4rem;
+            z-index: 50;
+            font-size: 0.75rem;
+            user-select: none;
+        }
+
+        #nav-toggle {
+            background: none;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 2px 4px;
+            line-height: 1;
+            transition: color 0.15s;
+        }
+
+        #nav-toggle:hover { color: #888; }
+
+        #nav-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: #12121f;
+            border: 1px solid #333;
+            border-radius: 6px;
+            overflow: hidden;
+            min-width: 90px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+        }
+
+        #nav-dropdown.open { display: block; }
+
+        #nav-dropdown a {
+            display: block;
+            padding: 0.45rem 0.8rem;
+            color: #999;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.1s, color 0.1s;
+        }
+
+        #nav-dropdown a:hover {
+            background: #1e1e35;
+            color: #c8a96e;
+        }
+
+        @media (max-width: 600px) {
+            #site-nav { position: static; align-self: flex-start; order: 1; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="site-nav">
+        <button id="nav-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+        <div id="nav-dropdown" role="menu">
+            <a href="/faq" role="menuitem">FAQ</a>
+        </div>
+    </nav>
+
+    <header style="display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+    <h1>Magic Bracket 2</h1>
+    <p id="intro-text" style="max-width:560px; text-align:center; font-size:0.85rem; color:#999; line-height:1.6;">
+        Pick your favorite card in each pair! As you vote, our Elo ratings will help find the community's favorite cards of the last decade.
+    </p>
+    </header>
+
+    <div id="matchup">
+        <div class="card-slot" id="slot-a">
+            <div class="card-frame" id="frame-a">
+                <img class="card-img" id="img-a" src="" alt="">
+                <button class="flip-btn" id="flip-btn-a" aria-label="Preview faces">⟳</button>
+            </div>
+            <span class="card-name" id="name-a"></span>
+            <span class="card-set"  id="set-a"></span>
+            <span class="card-elo"  id="elo-a">
+                Elo: <span class="elo-value" id="elo-val-a"></span>
+            </span>
+        </div>
+
+        <div class="card-slot" id="slot-b">
+            <div class="card-frame" id="frame-b">
+                <img class="card-img" id="img-b" src="" alt="">
+                <button class="flip-btn" id="flip-btn-b" aria-label="Preview faces">⟳</button>
+            </div>
+            <span class="card-name" id="name-b"></span>
+            <span class="card-set"  id="set-b"></span>
+            <span class="card-elo"  id="elo-b">
+                Elo: <span class="elo-value" id="elo-val-b"></span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Double-faced hover preview (shown centred on screen) -->
+    <div id="face-preview">
+        <img id="preview-front" src="" alt="Front face">
+        <img id="preview-back"  src="" alt="Back face">
+    </div>
+
+    <!-- #controls-row is zero-height on desktop (children are position:fixed).
+         On mobile it becomes a flex row sitting between the title and matchup. -->
+    <div id="controls-row">
+        <div id="mode-control">
+            <div id="mode-header">
+                <span class="label-prefix">Mode:</span>
+                <span id="mode-name">Diverse</span>
+            </div>
+            <input type="range" id="mode-slider" min="1" max="4" step="1" value="2">
+            <div id="mode-tick-labels">
+                <span>Similar</span>
+                <span>Diverse</span>
+                <span>Broad</span>
+                <span>Wild</span>
+            </div>
+            <div id="mode-desc">Cards with something in common, but drawn from a wider range of options</div>
+        </div>
+
+        <!-- DEV ONLY: closed-loop control — remove before deploying to production -->
+        <div id="closed-loop-control" style="display:none">
+            <div id="closed-loop-header">
+                <span id="closed-loop-status">Full Card List</span>
+                <label class="toggle-wrap">
+                    <input type="checkbox" id="closed-loop-toggle">
+                    <span class="toggle-track"></span>
+                </label>
+            </div>
+            <div id="closed-loop-desc">Use all cards normally</div>
+        </div>
+    </div>
+
+    <div id="history-section">
+        <div id="session-counter">0 pairs evaluated this session</div>
+        <div id="vote-history"></div>
+    </div>
+
+    <div id="loading">Loading…</div>
+
+    <script>
+        let current    = null;
+        let mode       = 2;
+        let closedLoop = false;
+        let isVoting   = false;   // prevents double-clicks during transition
+
+        // Pre-fetch state: next matchup is fetched while user views current pair
+        let prefetchedMatchup = null;
+        let prefetchPromise   = null;
+
+        function prefetchNext() {
+            prefetchedMatchup = null;
+            prefetchPromise = fetch(`/api/matchup?mode=${mode}&closed_loop=${closedLoop ? 1 : 0}`)
+                .then(r => r.json())
+                .then(d => { prefetchedMatchup = d; return d; });
+        }
+
+        const MODE_INFO = {
+            1: { name: 'Similar', desc: 'Cards most likely to share a theme or role with your current card' },
+            2: { name: 'Diverse', desc: 'Cards with something in common, but drawn from a wider range of options' },
+            3: { name: 'Broad',   desc: 'Any card from the closest quarter of the pool — loosely related at most' },
+            4: { name: 'Wild',    desc: 'A completely random card — anything could show up' },
+        };
+
+        const slider          = document.getElementById('mode-slider');
+        const modeName        = document.getElementById('mode-name');
+        const modeDesc        = document.getElementById('mode-desc');
+        const clToggle        = document.getElementById('closed-loop-toggle');
+        const clStatus        = document.getElementById('closed-loop-status');
+        const clDesc          = document.getElementById('closed-loop-desc');
+        const sessionCounter  = document.getElementById('session-counter');
+        const voteHistoryEl   = document.getElementById('vote-history');
+
+        let voteCount = 0;
+
+        function updateModeDisplay() {
+            const info = MODE_INFO[mode];
+            modeName.textContent = info.name;
+            modeDesc.textContent = info.desc;
+        }
+
+        slider.addEventListener('input', () => {
+            mode = parseInt(slider.value);
+            updateModeDisplay();
+            prefetchNext();  // discard stale pre-fetch, start new one with updated mode
+        });
+
+        clToggle.addEventListener('change', () => {
+            closedLoop = clToggle.checked;
+            clStatus.textContent = closedLoop ? 'Closed Loop' : 'Full Card List';
+            clStatus.classList.toggle('active', closedLoop);
+            clDesc.textContent = closedLoop
+                ? `Testing with a fixed pool of 25 cards`
+                : 'Use all cards normally';
+            // Immediately fetch a new matchup with the updated mode
+            setLoading(true);
+            fetch(`/api/matchup?mode=${mode}&closed_loop=${closedLoop ? 1 : 0}`)
+                .then(r => r.json())
+                .then(d => { showMatchup(d); setLoading(false); });
+        });
+
+        const imgA      = document.getElementById('img-a');
+        const imgB      = document.getElementById('img-b');
+        const nameA     = document.getElementById('name-a');
+        const nameB     = document.getElementById('name-b');
+        const frameA    = document.getElementById('frame-a');
+        const frameB    = document.getElementById('frame-b');
+        const setA      = document.getElementById('set-a');
+        const setB      = document.getElementById('set-b');
+        const eloValA   = document.getElementById('elo-val-a');
+        const eloValB   = document.getElementById('elo-val-b');
+        const preview   = document.getElementById('face-preview');
+        const prevFront = document.getElementById('preview-front');
+        const prevBack  = document.getElementById('preview-back');
+        const flipBtnA  = document.getElementById('flip-btn-a');
+        const flipBtnB  = document.getElementById('flip-btn-b');
+        const loading   = document.getElementById('loading');
+
+        // Tap anywhere on the preview overlay to dismiss (touch devices)
+        preview.addEventListener('click', () => preview.classList.remove('visible'));
+
+        function setLoading(on) {
+            loading.classList.toggle('visible', on);
+        }
+
+        function applyCard(imgEl, frameEl, nameEl, flipBtn, data, frontSrc, backSrc, isSideways) {
+            imgEl.src = frontSrc || '';
+            imgEl.style.opacity = frontSrc ? '' : '0.15';
+            nameEl.textContent = data;
+
+            // Sideways class on the frame (not the img) controls layout dimensions
+            frameEl.classList.toggle('sideways', isSideways);
+
+            if (backSrc) {
+                // Desktop: hover shows preview
+                imgEl.onmouseenter = () => {
+                    prevFront.src = frontSrc || '';
+                    prevBack.src  = backSrc  || '';
+                    preview.classList.add('visible');
+                };
+                imgEl.onmouseleave = () => preview.classList.remove('visible');
+
+                // Touch: flip button toggles preview
+                flipBtn.classList.add('has-back');
+                flipBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (preview.classList.contains('visible')) {
+                        preview.classList.remove('visible');
+                    } else {
+                        prevFront.src = frontSrc || '';
+                        prevBack.src  = backSrc  || '';
+                        preview.classList.add('visible');
+                    }
+                };
+            } else {
+                imgEl.onmouseenter = null;
+                imgEl.onmouseleave = null;
+                flipBtn.classList.remove('has-back');
+                flipBtn.onclick = null;
+            }
+        }
+
+        function showMatchup(d) {
+            current = d;
+            preview.classList.remove('visible');  // dismiss any open face preview
+
+            // Set / year labels
+            setA.textContent = d.set_a + (d.year_a ? ` (${d.year_a})` : '');
+            setB.textContent = d.set_b + (d.year_b ? ` (${d.year_b})` : '');
+
+            eloValA.textContent = Math.round(d.elo_a_current);
+            eloValB.textContent = Math.round(d.elo_b_current);
+
+            applyCard(imgA, frameA, nameA, flipBtnA, d.card_a, d.img_a_front, d.img_a_back, d.sideways_a);
+            applyCard(imgB, frameB, nameB, flipBtnB, d.card_b, d.img_b_front, d.img_b_back, d.sideways_b);
+
+            prefetchNext();  // start fetching the next pair while user views this one
+        }
+
+        function addHistoryItem(cardA, cardB, chosen, eloA, deltaA, eloB, deltaB) {
+            voteCount++;
+            sessionCounter.textContent = `${voteCount} pair${voteCount === 1 ? '' : 's'} evaluated this session`;
+
+            const winner = chosen === cardA ? cardA : cardB;
+            const loser  = chosen === cardA ? cardB : cardA;
+            const [eloW, dW] = chosen === cardA ? [eloA, deltaA] : [eloB, deltaB];
+            const [eloL, dL] = chosen === cardA ? [eloB, deltaB] : [eloA, deltaA];
+
+            const signW = dW >= 0 ? '↑' : '↓';
+            const signL = dL >= 0 ? '↑' : '↓';
+
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.innerHTML =
+                `<strong>${winner}</strong> ` +
+                `<span class="hist-elo positive">${Math.round(eloW)} ${signW}</span> ` +
+                `beats ` +
+                `<strong>${loser}</strong> ` +
+                `<span class="hist-elo negative">${Math.round(eloL)} ${signL}</span>`;
+            voteHistoryEl.prepend(item);
+        }
+
+        function vote(chosen) {
+            if (!current || isVoting) return;
+            isVoting = true;
+
+            // Capture current pair before any async state changes
+            const cardA = current.card_a;
+            const cardB = current.card_b;
+            const cfg   = current.config;
+
+            const votePromise = fetch('/api/vote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    card_a:      cardA,
+                    card_b:      cardB,
+                    chosen:      chosen,
+                    config:      cfg,
+                    mode:        mode,
+                    closed_loop: closedLoop,
+                }),
+            }).then(r => r.json());
+
+            // Use pre-fetched matchup if ready; otherwise attach to in-flight promise or fetch fresh
+            const matchupPromise = prefetchedMatchup
+                ? Promise.resolve(prefetchedMatchup)
+                : (prefetchPromise || fetch(`/api/matchup?mode=${mode}&closed_loop=${closedLoop ? 1 : 0}`).then(r => r.json()));
+            prefetchedMatchup = null;
+            prefetchPromise   = null;
+
+            // Show spinner only if things are unusually slow
+            const spinnerTimeout = setTimeout(() => { if (isVoting) setLoading(true); }, 400);
+
+            // Transition as soon as both vote result and next matchup are available
+            Promise.all([votePromise, matchupPromise]).then(([voteData, nextMatchup]) => {
+                clearTimeout(spinnerTimeout);
+                addHistoryItem(cardA, cardB, chosen, voteData.elo_a, voteData.delta_a, voteData.elo_b, voteData.delta_b);
+                showMatchup(nextMatchup);
+                setLoading(false);
+                isVoting = false;
+            });
+        }
+
+        imgA.addEventListener('click', () => vote(current && current.card_a));
+        imgB.addEventListener('click', () => vote(current && current.card_b));
+
+        // Initial matchup
+        setLoading(true);
+        fetch(`/api/matchup?mode=${mode}&closed_loop=0`)
+            .then(r => r.json())
+            .then(d => { showMatchup(d); setLoading(false); });
+
+        // ── Nav dropdown ──────────────────────────────────────────────────
+        const navToggle   = document.getElementById('nav-toggle');
+        const navDropdown = document.getElementById('nav-dropdown');
+
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = navDropdown.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', open);
+        });
+
+        document.addEventListener('click', () => {
+            navDropdown.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', false);
+        });
+    </script>
+</body>
+</html>

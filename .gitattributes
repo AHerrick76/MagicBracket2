@@ -1,0 +1,8 @@
+# Normalize all text files to LF in the repository.
+# On Windows checkout, files stay LF (not converted to CRLF).
+* text=auto eol=lf
+
+# Treat these explicitly as binary (no line-ending conversion, no diff mangling)
+*.json binary
+*.db   binary
+*.parquet binary

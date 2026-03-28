@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — Magic Bracket 2</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: Georgia, serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5vh 1.5rem 4rem;
+            gap: 2rem;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            letter-spacing: 0.06em;
+            color: #c8a96e;
+        }
+
+        .subtitle {
+            font-size: 0.82rem;
+            color: #666;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── FAQ list ─────────────────────────────────────────────────────── */
+
+        #faq-list {
+            width: min(640px, 95vw);
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+        }
+
+        .faq-item {}
+
+        .faq-q {
+            font-size: 0.95rem;
+            color: #c8a96e;
+            margin-bottom: 0.4rem;
+        }
+
+        .faq-a {
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.65;
+        }
+
+        .faq-a p + p {
+            margin-top: 0.6rem;
+        }
+
+        .faq-a ul {
+            margin: 0.5rem 0 0 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .faq-a a {
+            color: #8aa8c8;
+            text-decoration: none;
+        }
+
+        .faq-a a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Site nav (fixed top-left) ───────────────────────────────────── */
+
+        #site-nav {
+            position: fixed;
+            top: 1.2rem;
+            left: 1.4rem;
+            z-index: 50;
+            font-size: 0.75rem;
+            user-select: none;
+        }
+
+        #nav-toggle {
+            background: none;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 2px 4px;
+            line-height: 1;
+            transition: color 0.15s;
+        }
+        #nav-toggle:hover { color: #888; }
+
+        #nav-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: #12121f;
+            border: 1px solid #333;
+            border-radius: 6px;
+            overflow: hidden;
+            min-width: 120px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+        }
+        #nav-dropdown.open { display: block; }
+        #nav-dropdown a {
+            display: block;
+            padding: 0.45rem 0.8rem;
+            color: #999;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.1s, color 0.1s;
+        }
+        #nav-dropdown a:hover, #nav-dropdown a.current {
+            background: #1e1e35;
+            color: #c8a96e;
+        }
+
+        @media (max-width: 600px) {
+            #site-nav { position: static; align-self: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="site-nav">
+        <button id="nav-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+        <div id="nav-dropdown" role="menu">
+            <a href="/"    role="menuitem">Voting</a>
+            <a href="/faq" role="menuitem" class="current">FAQ</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Magic Bracket 2</h1>
+        <span class="subtitle">Frequently Asked Questions</span>
+    </header>
+
+    <div id="faq-list">
+
+        <div class="faq-item">
+            <p class="faq-q">What is the inspiration for this project?</p>
+            <div class="faq-a">
+                <p>In 2016, Reddit user <a href="https://old.reddit.com/user/SaviaWanderer">u/SaviaWanderer</a> noticed that there were nearly exactly 2<sup>14</sup> unique Magic cards, and decided to run a <a href="https://old.reddit.com/r/mtgbracket/">Single Elimination bracket</a> for all cards printed up to that point — <a href="https://mtgbracket.tumblr.com/post/179618514236/the-winner-of-the-magic-bracket">eventually won by Lightning Bolt</a>. 9 years later, we've very nearly doubled that number of cards, and I'd like to see if the second half of Magic cards has produced cards as iconic as the first half.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">What cards are being ranked? Why not rank all the cards?</p>
+            <div class="faq-a">
+                <p>This time around, I'm only including cards that <strong>weren't</strong> included in the original bracket. In practice, this means every non-reprint card from Aether Revolt onwards. This is for two reasons:</p>
+                <ul>
+                    <li>First, half the cards means we get results twice as fast. While I'm hoping my new ranking system will dramatically speed up the process, the original Magic Bracket took an entire year for the first round.</li>
+                    <li>Second, it's very easy for the nostalgia of early Magic cards to carry the day again. 6 out of 8 cards in the original top 8 were from Alpha, and the newest card was from 2010 (<em>Jace, the Mind Sculptor</em>). It would be anticlimactic to run an entire new bracket and end up with the same winners.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">Why not use a single elimination bracket?</p>
+            <div class="faq-a">
+                <p>As mentioned above, a bracket is very slow. Additionally, the original rating system was very rigid — in order to participate, you had one chance to vote per day, and you had to vote for a static number of cards. If you lost interest before finishing the day's poll, or finished the poll and wanted to rate more cards, you were out of luck.</p>
+                <p>The hope is that a more flexible system will allow Magic players to vote as often or as rarely as they like.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">How does the new system work?</p>
+            <div class="faq-a">
+                <p>The new system is based on the <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo rating system</a> used in Chess. After each vote, the winner will gain rating (and the loser will lose rating), with the degree of movement being based on the original Elo gap — winning against a card that people vote for a lot is worth more than winning against draft chaff nobody cares about. Over time, this will sort cards based on popularity.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">How are pairings created?</p>
+            <div class="faq-a">
+                <p>The first card in each pair is drawn completely at random, with a slight bias for drawing higher Elo cards. The second card is drawn based on a two-stage process.</p>
+                <p>In the first stage, we look at Elo. Each matchup has a chance of applying one of several Elo restrictions, where we select a second card that is close-ish in rating.</p>
+                <p>In the second stage, we look at card similarity. Rather than pairing any two cards together, I'm specifically drawing a card that is mechanically similar. This should hopefully reduce the number of "Black Lotus vs vanilla Grizzly Bear" matchups that are boring and one sided. That said, you can use a slider to determine how much you care about this.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">How is card similarity calculated?</p>
+            <div class="faq-a">
+                <p>I measure two axes of similarity — the first tracks card characteristics (color, mana value, type, etc), and the second tracks card text (with special weighting for keyword abilities and keyword actions). The relative weighting of these two axes is based on a weighting parameter, and each pairing randomly chooses one of three different models (each with different weights) to draw cards from.</p>
+                <p>There's a couple of smaller adjustments too — cards from the same set are slightly penalized to discourage them from appearing together, and Planeswalkers are slightly more likely to be paired together than their typeline / text would otherwise imply.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">What cards are included?</p>
+            <div class="faq-a">
+                <p>Basically everything. I include standard sets, supplemental sets, Universes Beyond sets, Secret Lair exclusives, Mystery Booster / Convention playtest cards, Un-Sets, and Holiday cards.</p>
+                <p>I do exclude some supplemental card types — e.g, Planes, Conspiracies, Contraptions, Schemes.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">What's the next step?</p>
+            <div class="faq-a">
+                <p>Provided I get enough votes to meaningfully rank the cards, my hope is to use these initial Elo ranks to whittle down the card pool. Subsequent rounds could retain the top 1/4th of cards, and after a few rounds we could cut to a final, smaller bracket with 512 or 256 cards.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const navToggle   = document.getElementById('nav-toggle');
+        const navDropdown = document.getElementById('nav-dropdown');
+        navToggle.addEventListener('click', e => {
+            e.stopPropagation();
+            const open = navDropdown.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', open);
+        });
+        document.addEventListener('click', () => {
+            navDropdown.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', false);
+        });
+    </script>
+</body>
+</html>
