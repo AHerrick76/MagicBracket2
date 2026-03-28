@@ -114,6 +114,12 @@ SIDEWAYS_LAYOUT_KEYWORD_EXCLUSIONS = {'Aftermath'}
 def _init_pool():
     '''Create (or replace) the connection pool. Called at startup and after fork.'''
     global _pool
+    if not DATABASE_URL:
+        raise RuntimeError(
+            'DATABASE_URL environment variable is not set. '
+            'In Railway: go to your web service → Variables and add '
+            'DATABASE_URL = ${{ Postgres.DATABASE_URL }}'
+        )
     _pool = ThreadedConnectionPool(minconn=1, maxconn=10, dsn=DATABASE_URL)
 
 
