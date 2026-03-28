@@ -817,8 +817,15 @@
         // Initial matchup
         setLoading(true);
         fetch(`/api/matchup?mode=${mode}&closed_loop=0`)
-            .then(r => r.json())
-            .then(d => { showMatchup(d); setLoading(false); });
+            .then(r => {
+                if (!r.ok) return r.text().then(t => { throw new Error(`HTTP ${r.status}: ${t}`); });
+                return r.json();
+            })
+            .then(d => { showMatchup(d); setLoading(false); })
+            .catch(err => {
+                const el = document.getElementById('loading');
+                if (el) el.textContent = 'Failed to load: ' + err.message;
+            });
 
         // ── Nav dropdown ──────────────────────────────────────────────────
         const navToggle   = document.getElementById('nav-toggle');
