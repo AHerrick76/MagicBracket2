@@ -309,8 +309,8 @@ _name_to_type     = dict(zip(_post_c16['name'], _post_c16['type_line'].fillna(''
 _name_to_keywords = dict(zip(_post_c16['name'], _post_c16['keywords']))
 _name_to_set      = dict(zip(_post_c16['name'], _post_c16['set_name'].fillna('')))
 _name_to_year     = dict(zip(_post_c16['name'], pd.to_datetime(_post_c16['released_at']).dt.year))
-_name_to_img_front = dict(zip(_post_c16['name'], _post_c16['img_front']))
-_name_to_img_back  = dict(zip(_post_c16['name'], _post_c16['img_back']))
+_name_to_img_front = dict(zip(_post_c16['name'], _post_c16['img_front'].where(_post_c16['img_front'].notna(), None)))
+_name_to_img_back  = dict(zip(_post_c16['name'], _post_c16['img_back'].where(_post_c16['img_back'].notna(),  None)))
 print(f'Post-C16 cards: {len(_card_names)}')
 _mode3_n_neighbors = max(1, int(len(_card_names) * MODE3_FRACTION))
 
@@ -360,8 +360,10 @@ def get_card_info(card_name):
         or any(t in type_line for t in SIDEWAYS_TYPES)
     )
 
-    img_front = _name_to_img_front.get(card_name) or None
-    img_back  = _name_to_img_back.get(card_name)  or None
+    img_front = _name_to_img_front.get(card_name)
+    img_back  = _name_to_img_back.get(card_name)
+    if pd.isna(img_front): img_front = None
+    if pd.isna(img_back):  img_back  = None
 
     info = {'img_front': img_front, 'img_back': img_back, 'is_sideways': is_sideways}
     _card_info_cache[card_name] = info
