@@ -111,9 +111,14 @@ SIDEWAYS_LAYOUT_KEYWORD_EXCLUSIONS = {'Aftermath'}
 
 # ── Database ───────────────────────────────────────────────────────────────────
 
-def init_db():
+def _init_pool():
+    '''Create (or replace) the connection pool. Called at startup and after fork.'''
     global _pool
     _pool = ThreadedConnectionPool(minconn=1, maxconn=10, dsn=DATABASE_URL)
+
+
+def init_db():
+    _init_pool()
     with _get_db() as conn:
         cur = conn.cursor()
         cur.execute('''
