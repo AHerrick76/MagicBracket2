@@ -19,9 +19,12 @@ import sys
 
 import psycopg2
 from psycopg2.extras import execute_values
+from dotenv import load_dotenv
+load_dotenv()
 
 SQLITE_PATH  = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'votes.db')
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
+DATABASE_URL = 'postgresql://postgres:fAjGtguifUugXovxeMZREGrfrWQYNLyB@crossover.proxy.rlwy.net:41626/railway'
 
 
 def main():
@@ -113,7 +116,11 @@ def main():
         execute_values(
             cur,
             '''INSERT INTO elo_ratings (card_name, rating, wins, losses, last_updated)
-               VALUES %s ON CONFLICT (card_name) DO NOTHING''',
+               VALUES %s ON CONFLICT (card_name) DO UPDATE SET
+                   rating       = EXCLUDED.rating,
+                   wins         = EXCLUDED.wins,
+                   losses       = EXCLUDED.losses,
+                   last_updated = EXCLUDED.last_updated''',
             rows,
         )
         inserted_ratings = cur.rowcount
