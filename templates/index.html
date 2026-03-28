@@ -715,6 +715,9 @@
         const flipBtnB  = document.getElementById('flip-btn-b');
         const loading   = document.getElementById('loading');
 
+        // True on touch-primary devices (phones/tablets): hover events aren't reliable
+        const isTouchDevice = window.matchMedia('(hover: none)').matches;
+
         // Tap anywhere on the preview overlay to dismiss (touch devices)
         preview.addEventListener('click', () => preview.classList.remove('visible'));
 
@@ -731,13 +734,19 @@
             frameEl.classList.toggle('sideways', isSideways);
 
             if (backSrc) {
-                // Desktop: hover shows preview
-                imgEl.onmouseenter = () => {
-                    prevFront.src = frontSrc || '';
-                    prevBack.src  = backSrc  || '';
-                    preview.classList.add('visible');
-                };
-                imgEl.onmouseleave = () => preview.classList.remove('visible');
+                // Desktop only: hover shows preview (skipped on touch to prevent
+                // scroll-triggered flicker from synthetic mouseenter/mouseleave)
+                if (!isTouchDevice) {
+                    imgEl.onmouseenter = () => {
+                        prevFront.src = frontSrc || '';
+                        prevBack.src  = backSrc  || '';
+                        preview.classList.add('visible');
+                    };
+                    imgEl.onmouseleave = () => preview.classList.remove('visible');
+                } else {
+                    imgEl.onmouseenter = null;
+                    imgEl.onmouseleave = null;
+                }
 
                 // Touch: flip button toggles preview
                 flipBtn.classList.add('has-back');
