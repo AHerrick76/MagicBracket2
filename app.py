@@ -72,11 +72,11 @@ MODE2_N_NEIGHBORS = 15
 # Computed at startup once _card_names is available.
 MODE3_FRACTION = 0.25
 
-# Per-session seen-card tracking (server-side, resets with server restart).
-# Maps session_id -> set of card names the session has already been shown.
-_session_seen: dict = {}
-# Probability of re-rolling card_a when it has already been seen this session.
-SEEN_REROLL_PROB = 0.90
+# Per-session state (server-side, resets with server restart).
+# card_a queue: session_id → shuffled list of card names; popped one per matchup.
+# seen pairs:  session_id → set of frozensets({card_a, card_b}) shown this session.
+_session_card_a_queue: dict = {}
+_session_seen_pairs:   dict = {}
 
 # Elo-bracket pairing: card_b is chosen from within a percentile window around
 # card_a's Elo rank before applying the similarity index.  One entry is chosen
@@ -250,7 +250,7 @@ def _init_elo_cache():
 
 
 # Sorted card names by Elo — kept up-to-date by update_elo() and reset_elo() so
-# _get_elo_bracket_pool doesn't need to re-sort on every matchup request.
+# _compute_elo_bracket_pool doesn't need to re-sort on every matchup request.
 _elo_sorted_names: list = []
 
 
@@ -366,39 +366,56 @@ def get_card_info(card_name):
 
 # ── Matchup logic ──────────────────────────────────────────────────────────────
 
-def _pick_card_weighted(pool):
-    '''Pick a card from pool with probability proportional to Elo rating.'''
-    weights = [_elo_cache.get(name, INITIAL_ELO) for name in pool]
-    return random.choices(pool, weights=weights, k=1)[0]
-
-
-def _get_elo_bracket_pool(card_a_name):
+def _next_card_a(session_id, pool):
     '''
-    Choose an Elo bracket half-width uniformly at random from ELO_BRACKET_HALF_WIDTHS,
-    then return the subset of _card_names whose Elo rank falls within that window
-    around card_a.
-
-    Returns (pool_or_None, label):
-      pool_or_None — list of eligible card names, or None if no filter applies
-      label        — string tag logged to votes.db (e.g. 'elo_5pct', 'elo_any')
+    Return the next card_a from the per-session shuffled queue.
+    When the queue empties, refill it with a fresh shuffle of pool,
+    so every card gets a turn before any card repeats.
     '''
-    half_width = random.choice(ELO_BRACKET_HALF_WIDTHS)
+    queue = _session_card_a_queue.get(session_id)
+    if not queue:
+        new_queue = list(pool)
+        random.shuffle(new_queue)
+        _session_card_a_queue[session_id] = new_queue
+    return _session_card_a_queue[session_id].pop()
+
+
+def _compute_elo_bracket_pool(card_a_name, half_width):
+    '''
+    Return the subset of _card_names whose Elo rank falls within half_width
+    of card_a's current rank.  Returns None when half_width is None (no filter).
+    '''
     if half_width is None:
-        return None, 'elo_any'
+        return None
 
     sorted_names = _elo_sorted_names
-    n = len(sorted_names)
-    rank_map = {nm: i for i, nm in enumerate(sorted_names)}
-
-    a_rank = rank_map.get(card_a_name, n // 2)
+    n            = len(sorted_names)
+    try:
+        a_rank = sorted_names.index(card_a_name)
+    except ValueError:
+        a_rank = n // 2
     a_pct  = a_rank / n
-
     lo_idx = int(max(0.0, a_pct - half_width) * n)
     hi_idx = int(min(1.0, a_pct + half_width) * n)
-    hi_idx = max(lo_idx + 1, hi_idx)  # ensure at least one card
+    hi_idx = max(lo_idx + 1, hi_idx)
+    pool   = sorted_names[lo_idx:hi_idx]
+    return pool if pool else None
 
-    pool = sorted_names[lo_idx:hi_idx]
-    return (pool or None), f'elo_{int(half_width * 100)}pct'
+
+def _bracket_fallback_sequence(initial_half_width):
+    '''
+    Return ELO_BRACKET_HALF_WIDTHS starting from initial_half_width, ordered
+    narrow → wide.  Used to expand the bracket when all candidates at the
+    current width have already been seen this session.
+    e.g. initial=0.05 → [0.05, 0.20, 0.40, None]
+         initial=0.40 → [0.40, None]
+         initial=None → [None]
+    '''
+    try:
+        idx = ELO_BRACKET_HALF_WIDTHS.index(initial_half_width)
+    except ValueError:
+        idx = len(ELO_BRACKET_HALF_WIDTHS) - 1
+    return ELO_BRACKET_HALF_WIDTHS[idx:]
 
 
 def pick_matchup(unusual=False, mode=1, session_id=None, closed_loop_pool=None):
@@ -406,13 +423,15 @@ def pick_matchup(unusual=False, mode=1, session_id=None, closed_loop_pool=None):
     Pick a card pair and return display info for both.
 
     closed_loop_pool: if provided, both cards are drawn from this list and all
-                      mode/unusual/seen-reroll logic is bypassed.
+                      other logic is bypassed.
     mode=1 (similar):  5 candidates per config, weighted selection.
     mode=2 (diverse):  15 candidates per config, uniform selection.
     mode=3 (broad):    uniform pick from closest 25% of all cards (balanced model).
     mode=4 (wild):     card_b drawn uniformly from all cards.
     unusual=True: forces card_a to be a Battle or double-faced card (for testing).
-    session_id: if provided, avoids repeating recently seen cards (90% re-roll).
+    session_id: if provided, iterates card_a through a per-session shuffled queue
+                (every card appears once per cycle) and avoids repeating seen pairs
+                for card_b, expanding the Elo bracket as a fallback if needed.
     '''
     if closed_loop_pool is not None:
         card_a      = random.choice(closed_loop_pool)
@@ -420,52 +439,75 @@ def pick_matchup(unusual=False, mode=1, session_id=None, closed_loop_pool=None):
         config_name = 'closed_loop'
     else:
         pool = _unusual_names if (unusual and _unusual_names) else _card_names
-        seen = _session_seen.get(session_id, set()) if session_id else set()
 
-        # card_a: weighted by Elo so higher-rated cards appear more often
-        card_a = _pick_card_weighted(pool)
-        if card_a in seen and random.random() < SEEN_REROLL_PROB:
-            card_a = _pick_card_weighted(pool)
-
-        # Elo bracket: restrict card_b candidates to cards near card_a's Elo rank
-        elo_pool, elo_label = _get_elo_bracket_pool(card_a)
-        # allowed_names=None means no filter (elo_any); similarity.py handles this correctly
-        fallback_pool = elo_pool if elo_pool is not None else _card_names
-
-        if mode == 4:
-            card_b      = random.choice(fallback_pool)
-            config_name = f'random+{elo_label}'
-        elif mode == 3:
-            n3          = min(_mode3_n_neighbors, max(1, len(fallback_pool)))
-            candidates  = get_candidates(card_a, _models, n_neighbors=n3,
-                                         allowed_names=elo_pool)
-            card_list   = candidates['balanced'] or fallback_pool
-            card_b      = random.choice(card_list)
-            config_name = f'broad_balanced+{elo_label}'
-        elif mode == 2:
-            candidates    = get_candidates(card_a, _models, n_neighbors=MODE2_N_NEIGHBORS,
-                                           allowed_names=elo_pool)
-            chosen_config = random.choice(list(candidates.keys()))
-            card_list     = candidates[chosen_config] or fallback_pool
-            card_b        = random.choice(card_list)
-            config_name   = f'{chosen_config}+{elo_label}'
+        # card_a: next from the shuffled per-session queue so every card gets a
+        # turn before repeating.  Unusual mode bypasses the queue (separate pool).
+        if unusual or session_id is None:
+            card_a = random.choice(pool)
         else:
-            candidates  = get_candidates(card_a, _models, allowed_names=elo_pool)
-            chosen_config = random.choice(list(candidates.keys()))
-            card_list   = candidates[chosen_config] or fallback_pool
-            card_b      = random.choices(card_list, weights=CANDIDATE_WEIGHTS[:len(card_list)], k=1)[0]
-            config_name = f'{chosen_config}+{elo_label}'
+            card_a = _next_card_a(session_id, pool)
 
-        # Guard: ensure card_b differs from card_a
-        if card_b == card_a:
-            others = [c for c in fallback_pool if c != card_a]
-            if others:
-                card_b = random.choice(others)
+        seen_pairs = _session_seen_pairs.get(session_id, set()) if session_id else set()
+
+        # Try Elo brackets from the randomly chosen width up to 'no filter',
+        # stopping at the first width that yields at least one unseen candidate.
+        initial_half_width = random.choice(ELO_BRACKET_HALF_WIDTHS)
+        card_b, config_name = None, None
+
+        for half_width in _bracket_fallback_sequence(initial_half_width):
+            elo_pool      = _compute_elo_bracket_pool(card_a, half_width)
+            elo_label     = f'elo_{int(half_width * 100)}pct' if half_width is not None else 'elo_any'
+            fallback_pool = elo_pool if elo_pool is not None else _card_names
+
+            if mode == 4:
+                card_list    = [c for c in fallback_pool if c != card_a]
+                chosen_label = 'random'
+            elif mode == 3:
+                n3           = min(_mode3_n_neighbors, max(1, len(fallback_pool)))
+                raw          = get_candidates(card_a, _models, n_neighbors=n3,
+                                              allowed_names=elo_pool)
+                card_list    = raw['balanced'] or fallback_pool
+                chosen_label = 'broad_balanced'
+            elif mode == 2:
+                raw           = get_candidates(card_a, _models, n_neighbors=MODE2_N_NEIGHBORS,
+                                               allowed_names=elo_pool)
+                chosen_config = random.choice(list(raw.keys()))
+                card_list     = raw[chosen_config] or fallback_pool
+                chosen_label  = chosen_config
+            else:  # mode 1
+                raw           = get_candidates(card_a, _models, allowed_names=elo_pool)
+                chosen_config = random.choice(list(raw.keys()))
+                card_list     = raw[chosen_config] or fallback_pool
+                chosen_label  = chosen_config
+
+            # Filter to unseen pairs.  Mode 1 retains positional weights for
+            # the remaining candidates; other modes use uniform selection.
+            if mode == 1:
+                weighted = list(zip(card_list, CANDIDATE_WEIGHTS[:len(card_list)]))
+                unseen   = [(c, w) for c, w in weighted
+                            if frozenset({card_a, c}) not in seen_pairs and c != card_a]
+                if unseen:
+                    cards, weights = zip(*unseen)
+                    card_b      = random.choices(cards, weights=list(weights), k=1)[0]
+                    config_name = f'{chosen_label}+{elo_label}'
+                    break
+            else:
+                unseen = [c for c in card_list
+                          if frozenset({card_a, c}) not in seen_pairs and c != card_a]
+                if unseen:
+                    card_b      = random.choice(unseen)
+                    config_name = f'{chosen_label}+{elo_label}'
+                    break
+
+        # Absolute fallback: any card in the pool not yet paired with card_a.
+        if card_b is None:
+            others = [c for c in pool if frozenset({card_a, c}) not in seen_pairs and c != card_a]
+            card_b      = random.choice(others) if others else random.choice(
+                              [c for c in pool if c != card_a])
+            config_name = 'fallback+elo_any'
 
         if session_id:
-            seen.add(card_a)
-            seen.add(card_b)
-            _session_seen[session_id] = seen
+            _session_seen_pairs.setdefault(session_id, set()).add(frozenset({card_a, card_b}))
 
     info_a = get_card_info(card_a)
     info_b = get_card_info(card_b)
