@@ -27,11 +27,11 @@ print(f'Votes:       {len(votes)} rows')
 print(f'Elo ratings: {len(elo)} rows')
 print()
 
-if len(votes):
-    print('=== Most recent votes ===')
-    print(votes.tail(10).to_string(index=False))
-    print()
+# if len(votes):
+#     print('=== Most recent votes ===')
+#     print(votes.tail(10).to_string(index=False))
+#     print()
 
-if len(elo):
-    print('=== Top 20 cards by Elo ===')
-    print(elo.head(20)[['card_name', 'rating', 'wins', 'losses']].to_string(index=False))
+# if len(elo):
+#     print('=== Top 20 cards by Elo ===')
+#     print(elo.head(20)[['card_name', 'rating', 'wins', 'losses']].to_string(index=False))

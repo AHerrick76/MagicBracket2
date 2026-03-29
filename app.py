@@ -311,6 +311,9 @@ _name_to_set      = dict(zip(_post_c16['name'], _post_c16['set_name'].fillna('')
 _name_to_year     = dict(zip(_post_c16['name'], pd.to_datetime(_post_c16['released_at']).dt.year))
 _name_to_img_front = dict(zip(_post_c16['name'], _post_c16['img_front'].where(_post_c16['img_front'].notna(), None)))
 _name_to_img_back  = dict(zip(_post_c16['name'], _post_c16['img_back'].where(_post_c16['img_back'].notna(),  None)))
+# Vintage legality: used to exclude non-tournament split cards (e.g. Mystery Booster
+# playtest cards) from sideways rotation — they use layout='split' but are portrait.
+_name_to_vintage_legal = dict(zip(_post_c16['name'], _post_c16.get('legal_vintage', pd.Series('not_legal', index=_post_c16.index))))
 print(f'Post-C16 cards: {len(_card_names)}')
 _mode3_n_neighbors = max(1, int(len(_card_names) * MODE3_FRACTION))
 
@@ -354,8 +357,10 @@ def get_card_info(card_name):
     layout    = _name_to_layout.get(card_name, '')
     type_line = _name_to_type.get(card_name, '')
     keywords  = _name_to_keywords.get(card_name, [])
+    vintage_legal = _name_to_vintage_legal.get(card_name, 'not_legal') in {'legal', 'restricted'}
     is_sideways = (
         (layout in SIDEWAYS_LAYOUTS
+         and vintage_legal
          and not any(k in keywords for k in SIDEWAYS_LAYOUT_KEYWORD_EXCLUSIONS))
         or any(t in type_line for t in SIDEWAYS_TYPES)
     )

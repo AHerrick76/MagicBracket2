@@ -607,16 +607,16 @@
         <div id="mode-control">
             <div id="mode-header">
                 <span class="label-prefix">Mode:</span>
-                <span id="mode-name">Diverse</span>
+                <span id="mode-name">Broad</span>
             </div>
-            <input type="range" id="mode-slider" min="1" max="4" step="1" value="2">
+            <input type="range" id="mode-slider" min="1" max="4" step="1" value="3">
             <div id="mode-tick-labels">
                 <span>Similar</span>
                 <span>Diverse</span>
                 <span>Broad</span>
                 <span>Wild</span>
             </div>
-            <div id="mode-desc">Cards with something in common, but drawn from a wider range of options</div>
+            <div id="mode-desc">Any card from the closest quarter of the pool — loosely related at most</div>
         </div>
 
         <!-- DEV ONLY: closed-loop control — remove before deploying to production -->
@@ -641,7 +641,7 @@
 
     <script>
         let current    = null;
-        let mode       = 2;
+        let mode       = 3;
         let closedLoop = false;
         let isVoting   = false;   // prevents double-clicks during transition
 

@@ -77,12 +77,15 @@ def process_cards(df):
         return int(isinstance(fe, list) and bool(set(fe) & ALT_FRAME_EFFECTS))
 
     df['released_at']   = pd.to_datetime(df['released_at'])
-    df['_is_promo']     = (df['set_type'] == 'promo').astype(int)
+    # Use Scryfall's 'promo' boolean (covers all promo types, not just set_type=='promo').
+    # Sort promo status BEFORE release date so that a non-promo always beats a promo even
+    # when the promo was released first (e.g. Japanese alternate-art WAR planeswalkers).
+    df['_is_promo']     = df['promo'].astype(int)
     df['_is_alt_frame'] = (
         df['frame_effects'].apply(_is_alt_frame) if 'frame_effects' in df.columns
         else 0
     )
-    df = df.sort_values(['released_at', '_is_promo', '_is_alt_frame', 'id']) \
+    df = df.sort_values(['_is_promo', 'released_at', '_is_alt_frame', 'id']) \
            .drop_duplicates(subset='name', keep='first')
     df = df.drop(columns=['_is_promo', '_is_alt_frame'])
 
