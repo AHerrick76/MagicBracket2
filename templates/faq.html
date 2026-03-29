@@ -101,69 +101,9 @@
             border-color: #c8a96e;
         }
 
-        /* ── Site nav (fixed top-left) ───────────────────────────────────── */
-
-        #site-nav {
-            position: fixed;
-            top: 1.2rem;
-            left: 1.4rem;
-            z-index: 50;
-            font-size: 0.75rem;
-            user-select: none;
-        }
-
-        #nav-toggle {
-            background: none;
-            border: none;
-            color: #555;
-            cursor: pointer;
-            font-size: 1.1rem;
-            padding: 2px 4px;
-            line-height: 1;
-            transition: color 0.15s;
-        }
-        #nav-toggle:hover { color: #888; }
-
-        #nav-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            background: #12121f;
-            border: 1px solid #333;
-            border-radius: 6px;
-            overflow: hidden;
-            min-width: 120px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-        }
-        #nav-dropdown.open { display: block; }
-        #nav-dropdown a {
-            display: block;
-            padding: 0.45rem 0.8rem;
-            color: #999;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: background 0.1s, color 0.1s;
-        }
-        #nav-dropdown a:hover, #nav-dropdown a.current {
-            background: #1e1e35;
-            color: #c8a96e;
-        }
-
-        @media (max-width: 600px) {
-            #site-nav { position: static; align-self: flex-start; }
-        }
     </style>
 </head>
 <body>
-    <nav id="site-nav">
-        <button id="nav-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
-        <div id="nav-dropdown" role="menu">
-            <a href="/"    role="menuitem">Voting</a>
-            <a href="/faq" role="menuitem" class="current">FAQ</a>
-        </div>
-    </nav>
-
     <header>
         <h1>Magic Bracket 2</h1>
         <span class="subtitle">Frequently Asked Questions</span>
@@ -240,18 +180,5 @@
 
     <a href="/" class="back-btn">← Back to Voting</a>
 
-    <script>
-        const navToggle   = document.getElementById('nav-toggle');
-        const navDropdown = document.getElementById('nav-dropdown');
-        navToggle.addEventListener('click', e => {
-            e.stopPropagation();
-            const open = navDropdown.classList.toggle('open');
-            navToggle.setAttribute('aria-expanded', open);
-        });
-        document.addEventListener('click', () => {
-            navDropdown.classList.remove('open');
-            navToggle.setAttribute('aria-expanded', false);
-        });
-    </script>
 </body>
 </html>
