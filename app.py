@@ -58,7 +58,8 @@ def _get_db():
         _pool.putconn(conn)
 
 INITIAL_ELO   = 1500.0
-ELO_K         = 32
+ELO_K         = 32    # maximum K (applies to a card with 0 prior votes)
+ELO_K_DECAY   = 30    # games played at which effective K halves
 
 # ── DEV ONLY ── remove (or gate behind auth) before deploying to production ──
 CLOSED_LOOP_SIZE = 25   # number of cards in a closed-loop test session
@@ -174,28 +175,38 @@ def init_elo_ratings(card_names):
 
 
 def _get_elo(cur, card_name):
-    '''Return rating for a card; defaults to INITIAL_ELO.'''
+    '''Return (rating, total_games) for a card; defaults to (INITIAL_ELO, 0).'''
     cur.execute(
-        'SELECT rating FROM elo_ratings WHERE card_name = %s', (card_name,)
+        'SELECT rating, wins + losses FROM elo_ratings WHERE card_name = %s', (card_name,)
     )
     row = cur.fetchone()
-    return row[0] if row else INITIAL_ELO
+    return (row[0], row[1]) if row else (INITIAL_ELO, 0)
+
+
+def _effective_k(total_games):
+    '''K decays as a card accumulates votes; halves at ELO_K_DECAY games.'''
+    return ELO_K * ELO_K_DECAY / (ELO_K_DECAY + total_games)
 
 
 def update_elo(winner_name, loser_name):
     '''
     Compute and store updated Elo ratings after a vote.
+    Each card uses its own effective K based on how many games it has played,
+    so ratings stabilise as a card accumulates more votes.
     Returns (winner_new_elo, loser_new_elo, winner_delta, loser_delta).
     '''
     with _get_db() as conn:
         cur = conn.cursor()
-        r_w = _get_elo(cur, winner_name)
-        r_l = _get_elo(cur, loser_name)
+        r_w, games_w = _get_elo(cur, winner_name)
+        r_l, games_l = _get_elo(cur, loser_name)
+
+        k_w = _effective_k(games_w)
+        k_l = _effective_k(games_l)
 
         e_w = 1.0 / (1.0 + 10.0 ** ((r_l - r_w) / 400.0))
 
-        new_r_w = r_w + ELO_K * (1.0 - e_w)
-        new_r_l = r_l + ELO_K * (0.0 - (1.0 - e_w))
+        new_r_w = r_w + k_w * (1.0 - e_w)
+        new_r_l = r_l + k_l * (0.0 - (1.0 - e_w))
         delta_w = new_r_w - r_w
         delta_l = new_r_l - r_l
 

@@ -23,6 +23,7 @@ from psycopg2.extras import execute_values
 
 INITIAL_ELO = 1500.0
 ELO_K       = 32
+ELO_K_DECAY = 30
 
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
 
@@ -56,6 +57,12 @@ losses  = {}   # card_name → int
 def get_rating(name):
     return ratings.get(name, INITIAL_ELO)
 
+def get_games(name):
+    return wins.get(name, 0) + losses.get(name, 0)
+
+def effective_k(name):
+    return ELO_K * ELO_K_DECAY / (ELO_K_DECAY + get_games(name))
+
 for vote_id, card_a, card_b, chosen in votes:
     winner = chosen
     loser  = card_b if chosen == card_a else card_a
@@ -64,8 +71,8 @@ for vote_id, card_a, card_b, chosen in votes:
     r_l = get_rating(loser)
     e_w = 1.0 / (1.0 + 10.0 ** ((r_l - r_w) / 400.0))
 
-    ratings[winner] = r_w + ELO_K * (1.0 - e_w)
-    ratings[loser]  = r_l + ELO_K * (0.0 - (1.0 - e_w))
+    ratings[winner] = r_w + effective_k(winner) * (1.0 - e_w)
+    ratings[loser]  = r_l + effective_k(loser)  * (0.0 - (1.0 - e_w))
     wins[winner]    = wins.get(winner, 0) + 1
     losses[loser]   = losses.get(loser, 0) + 1
 

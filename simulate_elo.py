@@ -42,6 +42,7 @@ TRUE_ELO_STD  = 200.0      # std of ~200 gives ~10:1 odds at the 2-sigma extreme
 # Elo update parameters — must match app.py
 INITIAL_ELO = 1500.0
 ELO_K       = 32
+ELO_K_DECAY = 30
 
 # Mode 3 / Elo bracket parameters — must match app.py
 MODE3_FRACTION          = 0.25
@@ -162,9 +163,11 @@ def simulate_vote(card_a: str, card_b: str) -> str:
 def update_elo(winner: str, loser: str) -> None:
     r_w = sim_elos[winner]
     r_l = sim_elos[loser]
+    k_w = ELO_K * ELO_K_DECAY / (ELO_K_DECAY + sim_games[winner])
+    k_l = ELO_K * ELO_K_DECAY / (ELO_K_DECAY + sim_games[loser])
     e_w = 1.0 / (1.0 + 10.0 ** ((r_l - r_w) / 400.0))
-    sim_elos[winner] = r_w + ELO_K * (1.0 - e_w)
-    sim_elos[loser]  = r_l + ELO_K * (0.0 - (1.0 - e_w))
+    sim_elos[winner] = r_w + k_w * (1.0 - e_w)
+    sim_elos[loser]  = r_l + k_l * (0.0 - (1.0 - e_w))
     sim_games[winner] += 1
     sim_games[loser]  += 1
 
@@ -206,7 +209,7 @@ for vote_idx in range(N_VOTES):
         fracs = compute_convergence()
         snapshots.append((vote_idx + 1, fracs))
 
-        if (vote_idx + 1) % 2_500 == 0:
+        if (vote_idx + 1) % 1_250 == 0:
             print(f'  {vote_idx + 1:>6,} votes — '
                   f'within 10%: {fracs[0]:.1%}  '
                   f'within  5%: {fracs[1]:.1%}  '
@@ -250,7 +253,7 @@ ax.set_ylabel('Fraction of cards converged', fontsize=12)
 ax.set_title(
     f'Elo convergence: {N_CARDS} cards, Mode 3 (Broad) matchups\n'
     f'True Elo ~ N({TRUE_ELO_MEAN:.0f}, {TRUE_ELO_STD:.0f}²) · '
-    f'K={ELO_K} (flat) · '
+    f'K={ELO_K}, K½ at {ELO_K_DECAY} games · '
     f'snapshot every {SNAPSHOT_INTERVAL} votes',
     fontsize=12
 )
