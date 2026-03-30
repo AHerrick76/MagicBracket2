@@ -25,3 +25,6 @@ map_*.json
 
 # Environment / secrets
 .env
+
+# exception for queues
+!queues.json
