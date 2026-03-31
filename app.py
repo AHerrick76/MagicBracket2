@@ -26,7 +26,7 @@ sys_path_dir = os.path.dirname(os.path.abspath(__file__))
 import sys
 sys.path.insert(0, sys_path_dir)
 from parse_data import load_processed_cards
-from similarity import build_candidate_models, get_candidates
+from similarity import build_candidate_models, build_queue_models, get_candidates
 
 
 # ── App setup ──────────────────────────────────────────────────────────────────
@@ -284,6 +284,10 @@ _active_pool:       list = []
 _active_pool_set:   set  = set()
 _active_elo_sorted: list = []   # _active_pool cards sorted by Elo
 
+# KNN models restricted to the active queue's cards.
+# None when queue_id=0 (full card set); rebuilt whenever the queue changes.
+_queue_models: dict | None = None
+
 
 def _rebuild_elo_sorted():
     global _elo_sorted_names, _active_elo_sorted
@@ -315,7 +319,7 @@ def _load_active_queue(queue_id):
     queue_id=0 means no active queue — falls back to all post-C16 cards.
     '''
     global _active_queue_id, _active_pool, _active_pool_set, _active_elo_sorted
-    global _mode3_n_neighbors, _unusual_names
+    global _mode3_n_neighbors, _unusual_names, _queue_models
 
     if queue_id == 0 or not _queues:
         _active_pool = _card_names
@@ -336,6 +340,15 @@ def _load_active_queue(queue_id):
         or any(t in _name_to_type.get(n, '') for t in SIDEWAYS_TYPES)
     ]
     _active_elo_sorted = [nm for nm in _elo_sorted_names if nm in _active_pool_set]
+
+    # Build KNN models restricted to the active pool so similarity search is
+    # intra-queue only.  Re-uses precomputed feature matrices — only the small
+    # KNN index is re-fit, which takes a few seconds for ~500 cards.
+    if queue_id != 0 and _active_pool is not _card_names:
+        print(f'Building queue-scoped candidate models ({len(_active_pool)} cards)...')
+        _queue_models = build_queue_models(_models, _active_pool)
+    else:
+        _queue_models = None
 
     # Clear per-session state so queues rebuild against the new pool
     _session_card_a_queue.clear()
@@ -529,38 +542,47 @@ def pick_matchup(unusual=False, mode=1, session_id=None, closed_loop_pool=None):
 
         seen_pairs = _session_seen_pairs.get(session_id, set()) if session_id else set()
 
+        # Use queue-scoped KNN models when a queue is active so that similarity
+        # search is intra-queue only.  Fall back to the full model otherwise.
+        models_to_use = _queue_models if _queue_models is not None else _models
+
         # Try Elo brackets from the randomly chosen width up to 'no filter',
         # stopping at the first width that yields at least one unseen candidate.
         initial_half_width = random.choice(ELO_BRACKET_HALF_WIDTHS)
         card_b, config_name = None, None
 
         for half_width in _bracket_fallback_sequence(initial_half_width):
-            elo_pool      = _compute_elo_bracket_pool(card_a, half_width)
-            elo_label     = f'elo_{int(half_width * 100)}pct' if half_width is not None else 'elo_any'
-            # When the Elo bracket is unrestricted, still confine candidates to
-            # the active pool so cards from other queues can't appear.
-            effective_allowed = elo_pool if elo_pool is not None else (
-                _active_pool if _active_queue_id else None
-            )
-            fallback_pool = effective_allowed if effective_allowed is not None else _active_pool
+            elo_pool  = _compute_elo_bracket_pool(card_a, half_width)
+            elo_label = f'elo_{int(half_width * 100)}pct' if half_width is not None else 'elo_any'
+
+            # When using queue-scoped models the pool is already restricted;
+            # only pass the Elo bracket (may be None) as an additional filter.
+            # When using the full model, also restrict to the active pool.
+            if _queue_models is not None:
+                effective_allowed = elo_pool
+            else:
+                effective_allowed = elo_pool if elo_pool is not None else (
+                    _active_pool if _active_queue_id else None
+                )
+            fallback_pool = elo_pool if elo_pool is not None else _active_pool
 
             if mode == 4:
                 card_list    = [c for c in fallback_pool if c != card_a]
                 chosen_label = 'random'
             elif mode == 3:
                 n3           = min(_mode3_n_neighbors, max(1, len(fallback_pool)))
-                raw          = get_candidates(card_a, _models, n_neighbors=n3,
+                raw          = get_candidates(card_a, models_to_use, n_neighbors=n3,
                                               allowed_names=effective_allowed)
                 card_list    = raw['balanced'] or fallback_pool
                 chosen_label = 'broad_balanced'
             elif mode == 2:
-                raw           = get_candidates(card_a, _models, n_neighbors=MODE2_N_NEIGHBORS,
+                raw           = get_candidates(card_a, models_to_use, n_neighbors=MODE2_N_NEIGHBORS,
                                                allowed_names=effective_allowed)
                 chosen_config = random.choice(list(raw.keys()))
                 card_list     = raw[chosen_config] or fallback_pool
                 chosen_label  = chosen_config
             else:  # mode 1
-                raw           = get_candidates(card_a, _models, allowed_names=effective_allowed)
+                raw           = get_candidates(card_a, models_to_use, allowed_names=effective_allowed)
                 chosen_config = random.choice(list(raw.keys()))
                 card_list     = raw[chosen_config] or fallback_pool
                 chosen_label  = chosen_config
@@ -596,8 +618,7 @@ def pick_matchup(unusual=False, mode=1, session_id=None, closed_loop_pool=None):
 
     info_a = get_card_info(card_a)
     info_b = get_card_info(card_b)
-    elos = {card_a: round(_elo_cache.get(card_a, INITIAL_ELO), 1),
-            card_b: round(_elo_cache.get(card_b, INITIAL_ELO), 1)}
+    elos = get_current_elos(card_a, card_b)
 
     return {
         'card_a':        card_a,

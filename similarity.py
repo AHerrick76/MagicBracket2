@@ -332,6 +332,60 @@ def get_candidates(card_name, models, n_neighbors=None, allowed_names=None):
     return result
 
 
+# ── Queue-scoped candidate models ────────────────────────────────────────────
+
+def build_queue_models(base_models, card_names):
+    '''
+    Build a models dict restricted to card_names by slicing the precomputed
+    feature matrices from base_models and re-fitting the KNN indices.
+    Feature computation is not repeated — only the small KNN re-fit runs,
+    which takes a few seconds for ~500 cards.
+
+    Parameters
+    ----------
+    base_models : dict — output of build_candidate_models() over the full card set
+    card_names  : list of card name strings (must all be present in base_models)
+
+    Returns
+    -------
+    A models dict with the same structure as build_candidate_models(), but
+    with KNN indices fit on the restricted card set only.
+    '''
+    full_name_to_idx = base_models['_name_to_idx']
+
+    valid       = [(n, full_name_to_idx[n]) for n in card_names if n in full_name_to_idx]
+    names_arr   = np.array([n for n, _ in valid])
+    row_indices = [i for _, i in valid]
+    name_to_idx = {name: i for i, name in enumerate(names_arr)}
+
+    n_neighbors = base_models['_n_neighbors']
+    n_cards     = len(names_arr)
+
+    alpha_models = {}
+    for alpha, model in base_models['_alpha_models'].items():
+        sub_matrix = model['matrix'][row_indices]
+        nn = NearestNeighbors(
+            n_neighbors=min(n_neighbors + 1, n_cards),
+            metric='cosine',
+            algorithm='brute',
+            n_jobs=-1,
+        )
+        nn.fit(sub_matrix)
+        alpha_models[alpha] = {'nn': nn, 'matrix': sub_matrix}
+
+    return {
+        '_names':             names_arr,
+        '_name_to_idx':       name_to_idx,
+        '_name_to_type':      base_models['_name_to_type'],
+        '_name_to_set':       base_models['_name_to_set'],
+        '_keyword_abilities': base_models['_keyword_abilities'],
+        '_n_neighbors':       n_neighbors,
+        '_alpha_configs':     base_models['_alpha_configs'],
+        '_type_overrides':    base_models['_type_overrides'],
+        '_alpha_models':      alpha_models,
+    }
+
+
 # ── Display helpers ───────────────────────────────────────────────────────────
 
 def show_matches(matches, card_name, n=5):
