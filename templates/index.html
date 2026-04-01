@@ -672,7 +672,17 @@
         const sessionCounter  = document.getElementById('session-counter');
         const voteHistoryEl   = document.getElementById('vote-history');
 
-        let voteCount = 0;
+        const HISTORY_KEY = 'voteHistory';
+        const storedHistory = JSON.parse(sessionStorage.getItem(HISTORY_KEY) || '[]');
+        let voteCount = storedHistory.length;
+        if (voteCount > 0) {
+            sessionCounter.textContent = `${voteCount} pair${voteCount === 1 ? '' : 's'} evaluated this session`;
+            // oldest first in storage → append in reverse so newest ends up on top
+            for (let i = storedHistory.length - 1; i >= 0; i--) {
+                const h = storedHistory[i];
+                voteHistoryEl.append(_renderHistoryItem(h.cardA, h.cardB, h.chosen, h.eloA, h.deltaA, h.eloB, h.deltaB));
+            }
+        }
 
         function updateModeDisplay() {
             const info = MODE_INFO[mode];
@@ -787,10 +797,7 @@
             prefetchNext();  // start fetching the next pair while user views this one
         }
 
-        function addHistoryItem(cardA, cardB, chosen, eloA, deltaA, eloB, deltaB) {
-            voteCount++;
-            sessionCounter.textContent = `${voteCount} pair${voteCount === 1 ? '' : 's'} evaluated this session`;
-
+        function _renderHistoryItem(cardA, cardB, chosen, eloA, deltaA, eloB, deltaB) {
             const winner = chosen === cardA ? cardA : cardB;
             const loser  = chosen === cardA ? cardB : cardA;
             const [eloW, dW] = chosen === cardA ? [eloA, deltaA] : [eloB, deltaB];
@@ -807,7 +814,18 @@
                 `beats ` +
                 `<strong>${loser}</strong> ` +
                 `<span class="hist-elo negative">${Math.round(eloL)} ${signL}</span>`;
-            voteHistoryEl.prepend(item);
+            return item;
+        }
+
+        function addHistoryItem(cardA, cardB, chosen, eloA, deltaA, eloB, deltaB) {
+            voteCount++;
+            sessionCounter.textContent = `${voteCount} pair${voteCount === 1 ? '' : 's'} evaluated this session`;
+
+            const stored = JSON.parse(sessionStorage.getItem(HISTORY_KEY) || '[]');
+            stored.push({ cardA, cardB, chosen, eloA, deltaA, eloB, deltaB });
+            sessionStorage.setItem(HISTORY_KEY, JSON.stringify(stored));
+
+            voteHistoryEl.prepend(_renderHistoryItem(cardA, cardB, chosen, eloA, deltaA, eloB, deltaB));
         }
 
         function vote(chosen) {
