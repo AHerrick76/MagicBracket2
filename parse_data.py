@@ -44,6 +44,10 @@ def _extract_img_back(row):
 
 def process_cards(df):
     """Filter and reshape raw Scryfall data into analysis-ready form."""
+    # Exclude non-English cards (e.g. Japanese alternate-art WAR planeswalkers,
+    # which appear in the default bulk data as separate non-reprint rows)
+    df = df[df['lang'] == 'en'].copy()
+
     # Exclude digital-only cards (includes all Alchemy rebalanced 'A-' cards)
     df = df[~df['digital']].copy()
 
