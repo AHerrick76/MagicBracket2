@@ -25,6 +25,7 @@ env/
 *.ipynb
 *.md
 *.csv
+*.sql
 
 # UMAP map output files (regenerate with mapgen.py)
 map_*.json

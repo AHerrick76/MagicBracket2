@@ -132,17 +132,13 @@
         #face-preview {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(15, 15, 30, 0.95);
-            border: 1px solid rgba(200, 169, 110, 0.3);
-            border-radius: 18px;
-            padding: 20px;
+            inset: 0;
+            background: rgba(10, 10, 20, 0.88);
+            justify-content: center;
+            align-items: center;
             gap: 16px;
             z-index: 100;
             pointer-events: none;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.8);
         }
 
         #face-preview.visible {
@@ -445,6 +441,9 @@
 
             .history-item { overflow-wrap: break-word; }
 
+            /* Reorder slot-a: info labels above image */
+            #slot-a .card-frame { order: 2; }
+
             /* Responsive portrait cards */
             .card-frame { width: min(300px, 85vw); }
             .card-img   { width: min(300px, 85vw); }
@@ -459,6 +458,17 @@
                 width: calc(min(390px, 85vw) * 0.718);
             }
 
+            /* Compact image size (toggled via body.img-small) */
+            body.img-small .card-frame { width: min(300px, 60vw); }
+            body.img-small .card-img   { width: min(300px, 60vw); }
+            body.img-small .card-frame.sideways {
+                width:  min(390px, 60vw);
+                height: calc(min(390px, 60vw) * 0.718);
+            }
+            body.img-small .card-frame.sideways .card-img {
+                width: calc(min(390px, 60vw) * 0.718);
+            }
+
             /* Face preview: stack faces vertically so they fit the screen */
             #face-preview             { flex-direction: column; }
             #face-preview img         { width: min(280px, 80vw); }
@@ -467,8 +477,8 @@
         /* ── Touch devices: show flip buttons; make preview tappable ─────── */
 
         @media (hover: none) {
-            .flip-btn.has-back        { display: flex; }
-            #face-preview.visible     { pointer-events: auto; cursor: pointer; }
+            .flip-btn.has-back    { display: flex; }
+            #face-preview.visible { pointer-events: auto; cursor: pointer; }
         }
 
         /* ── Site nav (fixed top-left) ───────────────────────────────────── */
@@ -485,15 +495,15 @@
         #nav-toggle {
             background: none;
             border: none;
-            color: #555;
+            color: #aaa;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.4rem;
             padding: 2px 4px;
             line-height: 1;
             transition: color 0.15s;
         }
 
-        #nav-toggle:hover { color: #888; }
+        #nav-toggle:hover { color: #c8a96e; }
 
         #nav-dropdown {
             display: none;
@@ -524,10 +534,25 @@
             color: #c8a96e;
         }
 
-        /* Mobile FAQ link — visible below the cards; hidden on desktop */
-        #mobile-faq-link {
+        /* Mobile FAQ link and image scale button — hidden on desktop */
+        #mobile-faq-link,
+        #img-scale-btn {
             display: none;
         }
+
+        #img-scale-btn {
+            background: none;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #888;
+            font-size: 0.82rem;
+            letter-spacing: 0.03em;
+            padding: 0.45rem 1.1rem;
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        #img-scale-btn:hover { color: #aaa; border-color: #666; }
 
         @media (max-width: 600px) {
             /* Hide hamburger on mobile — replaced by #mobile-faq-link below cards */
@@ -547,7 +572,13 @@
                 transition: color 0.15s, border-color 0.15s;
             }
 
-            #controls-row   { order: 4; }
+            #img-scale-btn {
+                display: inline-block;
+                order: 3;
+                align-self: center;
+            }
+
+            #controls-row    { order: 4; }
             #history-section { order: 5; }
         }
     </style>
@@ -600,6 +631,7 @@
     </div>
 
     <a id="mobile-faq-link" href="/faq">FAQ →</a>
+    <button id="img-scale-btn">Img: Large</button>
 
     <!-- #controls-row is zero-height on desktop (children are position:fixed).
          On mobile it becomes a flex row sitting between the title and matchup. -->
@@ -885,6 +917,22 @@
                 const el = document.getElementById('loading');
                 if (el) el.textContent = 'Failed to load: ' + err.message;
             });
+
+        // ── Image scale toggle (mobile) ───────────────────────────────────
+        const imgScaleBtn = document.getElementById('img-scale-btn');
+        let imgSmall = localStorage.getItem('imgSmall') === '1';
+
+        function applyImgScale() {
+            document.body.classList.toggle('img-small', imgSmall);
+            imgScaleBtn.textContent = imgSmall ? 'Img: Small' : 'Img: Large';
+        }
+
+        applyImgScale();
+        imgScaleBtn.addEventListener('click', () => {
+            imgSmall = !imgSmall;
+            localStorage.setItem('imgSmall', imgSmall ? '1' : '0');
+            applyImgScale();
+        });
 
         // ── Nav dropdown ──────────────────────────────────────────────────
         const navToggle   = document.getElementById('nav-toggle');
