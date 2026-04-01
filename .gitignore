@@ -20,6 +20,10 @@ env/
 # Jupyter checkpoints
 .ipynb_checkpoints/
 
+# local analysis
+*.png
+*.ipynb
+
 # UMAP map output files (regenerate with mapgen.py)
 map_*.json
 
