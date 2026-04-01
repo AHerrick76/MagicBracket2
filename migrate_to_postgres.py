@@ -24,8 +24,6 @@ load_dotenv()
 
 SQLITE_PATH  = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'votes.db')
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
-DATABASE_URL = 'postgresql://postgres:fAjGtguifUugXovxeMZREGrfrWQYNLyB@crossover.proxy.rlwy.net:41626/railway'
-
 
 def main():
     if not DATABASE_URL:
