@@ -15,6 +15,7 @@ import uuid
 from contextlib import contextmanager
 from datetime import datetime, timezone
 
+import numpy as np
 import psycopg2
 from psycopg2.extras import execute_values
 from psycopg2.pool import ThreadedConnectionPool
@@ -26,7 +27,7 @@ sys_path_dir = os.path.dirname(os.path.abspath(__file__))
 import sys
 sys.path.insert(0, sys_path_dir)
 from parse_data import load_processed_cards
-from similarity import build_candidate_models, build_queue_models, get_candidates
+from similarity import build_candidate_models, build_queue_models, compute_queue_indegrees, get_candidates
 
 
 # ── App setup ──────────────────────────────────────────────────────────────────
@@ -67,6 +68,17 @@ ELO_K_DECAY   = 30    # games played at which effective K halves
 CLOSED_LOOP_SIZE = 25   # number of cards in a closed-loop test session
 
 CANDIDATE_WEIGHTS = [0.45, 0.30, 0.15, 0.07, 0.03]
+
+# Indegree reweighting caps: (min_multiplier, max_multiplier) per mode.
+# Applied to card_b candidates to counteract hub bias without fully suppressing
+# the similarity signal.  Mode 1 uses narrow caps — hub bias is partly intentional
+# there (genuinely similar cards should appear more often).  Mode 4 is excluded
+# (uniform by construction).
+INDEGREE_CAPS = {
+    1: (0.7, 1.2),
+    2: (0.5, 2.0),
+    3: (0.3, 2.5),
+}
 
 # Mode 2: wider candidate pool, uniform selection
 MODE2_N_NEIGHBORS = 15
@@ -288,6 +300,17 @@ _active_elo_sorted: list = []   # _active_pool cards sorted by Elo
 # None when queue_id=0 (full card set); rebuilt whenever the queue changes.
 _queue_models: dict | None = None
 
+# Per-mode indegree dicts for reweighting card_b selection.
+# Keyed by mode number; populated at queue activation, empty when no queue is active.
+_indegrees_by_mode:     dict = {}  # mode -> {card_name: float}
+_indegree_mean_by_mode: dict = {}  # mode -> float
+
+# Cards in the bottom 10th percentile of mode-3 indegree — given a small boost
+# (CARD_A_BOOST_WEIGHT) in the card_a shuffle so they appear earlier in the queue.
+CARD_A_BOOST_PERCENTILE = 0.10
+CARD_A_BOOST_WEIGHT     = 1.1   # vs 1.0 for all other cards
+_card_a_boost_set: set = set()
+
 
 def _rebuild_elo_sorted():
     global _elo_sorted_names, _active_elo_sorted
@@ -344,9 +367,31 @@ def _load_active_queue(queue_id):
     # Build KNN models restricted to the active pool so similarity search is
     # intra-queue only.  Re-uses precomputed feature matrices — only the small
     # KNN index is re-fit, which takes a few seconds for ~500 cards.
+    _indegrees_by_mode.clear()
+    _indegree_mean_by_mode.clear()
+    _card_a_boost_set.clear()
     if queue_id != 0 and _active_pool is not _card_names:
         print(f'Building queue-scoped candidate models ({len(_active_pool)} cards)...')
         _queue_models = build_queue_models(_models, _active_pool)
+        mode_n_map = {
+            1: _queue_models['_n_neighbors'],
+            2: MODE2_N_NEIGHBORS,
+            3: _mode3_n_neighbors,
+        }
+        for mode, n in mode_n_map.items():
+            print(f'  Computing indegrees for mode {mode} (n={n})...')
+            ideg = compute_queue_indegrees(_queue_models, n)
+            _indegrees_by_mode[mode] = ideg
+            vals = list(ideg.values())
+            _indegree_mean_by_mode[mode] = sum(vals) / len(vals) if vals else 1.0
+
+        # Bottom-10th-percentile of mode-3 indegree get a small card_a boost.
+        mode3_ideg = _indegrees_by_mode.get(3, {})
+        if mode3_ideg:
+            threshold = np.percentile(list(mode3_ideg.values()), CARD_A_BOOST_PERCENTILE * 100)
+            _card_a_boost_set.update(c for c, d in mode3_ideg.items() if d <= threshold)
+            print(f'  card_a boost set: {len(_card_a_boost_set)} cards '
+                  f'(indegree ≤ {threshold:.1f})')
     else:
         _queue_models = None
 
@@ -459,17 +504,35 @@ def get_card_info(card_name):
 
 # ── Matchup logic ──────────────────────────────────────────────────────────────
 
+def _weighted_shuffle(cards):
+    '''
+    Return a copy of cards in a weighted-random order using the
+    Efraimidis-Spirakis algorithm.  Cards in _card_a_boost_set get weight
+    CARD_A_BOOST_WEIGHT (1.1); all others get 1.0.  Cards with higher weight
+    are more likely to appear earlier in the sequence.
+    '''
+    if not _card_a_boost_set:
+        result = list(cards)
+        random.shuffle(result)
+        return result
+    keyed = []
+    for c in cards:
+        w = CARD_A_BOOST_WEIGHT if c in _card_a_boost_set else 1.0
+        keyed.append((random.random() ** (1.0 / w), c))
+    keyed.sort(reverse=True)
+    return [c for _, c in keyed]
+
+
 def _next_card_a(session_id, pool):
     '''
     Return the next card_a from the per-session shuffled queue.
-    When the queue empties, refill it with a fresh shuffle of pool,
-    so every card gets a turn before any card repeats.
+    When the queue empties, refill it with a fresh weighted shuffle of pool,
+    so every card gets a turn before any card repeats.  Cards in the bottom
+    10th percentile of mode-3 indegree are gently biased toward earlier slots.
     '''
     queue = _session_card_a_queue.get(session_id)
     if not queue:
-        new_queue = list(pool)
-        random.shuffle(new_queue)
-        _session_card_a_queue[session_id] = new_queue
+        _session_card_a_queue[session_id] = _weighted_shuffle(pool)
     return _session_card_a_queue[session_id].pop()
 
 
@@ -509,6 +572,28 @@ def _bracket_fallback_sequence(initial_half_width):
     except ValueError:
         idx = len(ELO_BRACKET_HALF_WIDTHS) - 1
     return ELO_BRACKET_HALF_WIDTHS[idx:]
+
+
+def _indegree_weights(card_list, mode, base_weights=None):
+    '''
+    Return a weights list for random.choices, adjusted for indegree bias.
+    base_weights: positional weights (mode 1); if None, uniform baseline is used.
+    Each card's multiplier is mean_indegree / card_indegree, clipped to INDEGREE_CAPS[mode].
+    Returns base_weights unchanged if no indegree data is available for this mode.
+    '''
+    ideg = _indegrees_by_mode.get(mode)
+    if not ideg:
+        return base_weights if base_weights is not None else [1.0] * len(card_list)
+    mean_d = _indegree_mean_by_mode.get(mode, 1.0)
+    lo, hi = INDEGREE_CAPS[mode]
+    if base_weights is None:
+        base_weights = [1.0] * len(card_list)
+    result = []
+    for c, bw in zip(card_list, base_weights):
+        d          = ideg.get(c, mean_d)
+        multiplier = (mean_d / d) if d > 0 else hi
+        result.append(bw * max(lo, min(hi, multiplier)))
+    return result
 
 
 def pick_matchup(unusual=False, mode=1, session_id=None, closed_loop_pool=None):
@@ -588,21 +673,27 @@ def pick_matchup(unusual=False, mode=1, session_id=None, closed_loop_pool=None):
                 chosen_label  = chosen_config
 
             # Filter to unseen pairs.  Mode 1 retains positional weights for
-            # the remaining candidates; other modes use uniform selection.
+            # the remaining candidates; other modes use uniform baseline.
+            # Indegree reweighting is applied on top for modes 1–3.
             if mode == 1:
                 weighted = list(zip(card_list, CANDIDATE_WEIGHTS[:len(card_list)]))
                 unseen   = [(c, w) for c, w in weighted
                             if frozenset({card_a, c}) not in seen_pairs and c != card_a]
                 if unseen:
-                    cards, weights = zip(*unseen)
-                    card_b      = random.choices(cards, weights=list(weights), k=1)[0]
+                    cards, pos_w = zip(*unseen)
+                    final_w     = _indegree_weights(list(cards), mode=1, base_weights=list(pos_w))
+                    card_b      = random.choices(cards, weights=final_w, k=1)[0]
                     config_name = f'{chosen_label}+{elo_label}'
                     break
             else:
                 unseen = [c for c in card_list
                           if frozenset({card_a, c}) not in seen_pairs and c != card_a]
                 if unseen:
-                    card_b      = random.choice(unseen)
+                    if mode in INDEGREE_CAPS:
+                        final_w = _indegree_weights(unseen, mode=mode)
+                        card_b  = random.choices(unseen, weights=final_w, k=1)[0]
+                    else:
+                        card_b  = random.choice(unseen)
                     config_name = f'{chosen_label}+{elo_label}'
                     break
 

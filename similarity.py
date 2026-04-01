@@ -334,6 +334,55 @@ def get_candidates(card_name, models, n_neighbors=None, allowed_names=None):
 
 # ── Queue-scoped candidate models ────────────────────────────────────────────
 
+def compute_queue_indegrees(queue_models, n):
+    '''
+    For each card in the queue, count how many other cards list it among their
+    top-n intra-queue candidates (in-degree), averaged across alpha configs.
+    Same-set penalty is applied consistently with get_candidates.
+
+    Uses the KNN models already stored in queue_models — no re-fitting needed.
+
+    Parameters
+    ----------
+    queue_models : dict — output of build_queue_models()
+    n            : int  — neighbor count (use 5 for mode 1, 15 for mode 2,
+                          _mode3_n_neighbors for mode 3)
+
+    Returns
+    -------
+    dict: card_name -> mean_indegree (float, averaged across alpha configs)
+    '''
+    names         = queue_models['_names']
+    name_to_set   = queue_models.get('_name_to_set', {})
+    alpha_configs = queue_models['_alpha_configs']
+    alpha_models  = queue_models['_alpha_models']
+    n_cards       = len(names)
+    fetch_n       = min(n_cards, n + SAME_SET_FETCH_BUFFER + 1)
+
+    config_counts = []
+    for alpha in alpha_configs.values():
+        model              = alpha_models[alpha]
+        dists_all, idx_all = model['nn'].kneighbors(model['matrix'], n_neighbors=fetch_n)
+
+        counts = np.zeros(n_cards, dtype=int)
+        for local_i, (dists, neighbors) in enumerate(zip(dists_all, idx_all)):
+            card_set_i = name_to_set.get(names[local_i], '')
+            candidates = []
+            for d, local_j in zip(dists, neighbors):
+                if local_j == local_i:
+                    continue
+                if card_set_i and name_to_set.get(names[local_j]) == card_set_i:
+                    d *= SAME_SET_PENALTY
+                candidates.append((d, local_j))
+            candidates.sort(key=lambda x: x[0])
+            for _, local_j in candidates[:n]:
+                counts[local_j] += 1
+        config_counts.append(counts)
+
+    mean_counts = np.mean(config_counts, axis=0)
+    return {name: float(mean_counts[i]) for i, name in enumerate(names)}
+
+
 def build_queue_models(base_models, card_names):
     '''
     Build a models dict restricted to card_names by slicing the precomputed
