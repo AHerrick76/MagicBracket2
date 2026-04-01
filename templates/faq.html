@@ -145,11 +145,19 @@
         </div>
 
         <div class="faq-item">
+            <p class="faq-q">What cards are available to vote on?</p>
+            <div class="faq-a">
+                <p>At any time, there will be an "active queue" with ~500 cards in it, and it is from this pool of cards that pairings are drawn. Cycling through these queues ensures that repeat visitors will have new cards to vote on and rank, and allow even late arrivers to participate in the initial ranking of cards. (It also makes it more likely you'll see the same cards as your friends).</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
             <p class="faq-q">How are pairings created?</p>
             <div class="faq-a">
                 <p>The first card in each pair is drawn completely at random, with a slight bias for drawing higher Elo cards. The second card is drawn based on a two-stage process.</p>
                 <p>In the first stage, we look at Elo. Each matchup has a chance of applying one of several Elo restrictions, where we select a second card that is close-ish in rating.</p>
                 <p>In the second stage, we look at card similarity. Rather than pairing any two cards together, I'm specifically drawing a card that is mechanically similar. This should hopefully reduce the number of "Black Lotus vs vanilla Grizzly Bear" matchups that are boring and one sided. That said, you can use a slider to determine how much you care about this.</p>
+                <p><em>(There's a fair amount of asterisks &amp; minor statistical corrections under the hood as well to minimize bias, but they shouldn't be noticeable to the user)</em></p>
             </div>
         </div>
 
