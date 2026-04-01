@@ -23,6 +23,7 @@ env/
 # local analysis
 *.png
 *.ipynb
+*.md
 
 # UMAP map output files (regenerate with mapgen.py)
 map_*.json
