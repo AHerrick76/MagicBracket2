@@ -813,6 +813,18 @@
         }
 
         function showMatchup(d) {
+            // Randomly swap display order to eliminate left-side positional bias.
+            // card_a / card_b identities in `current` are preserved for vote submission.
+            if (Math.random() < 0.5) {
+                d = Object.assign({}, d, {
+                    card_a: d.card_b, img_a_front: d.img_b_front, img_a_back: d.img_b_back,
+                    sideways_a: d.sideways_b, set_a: d.set_b, year_a: d.year_b,
+                    elo_a_current: d.elo_b_current,
+                    card_b: d.card_a, img_b_front: d.img_a_front, img_b_back: d.img_a_back,
+                    sideways_b: d.sideways_a, set_b: d.set_a, year_b: d.year_a,
+                    elo_b_current: d.elo_a_current,
+                });
+            }
             current = d;
             preview.classList.remove('visible');  // dismiss any open face preview
 
