@@ -513,12 +513,13 @@ def _weighted_shuffle(cards):
     1. Elo-percentile weight: cards are ranked by current Elo within the pool;
        the weight is interpolated from their percentile rank so that higher-Elo
        cards are more likely to appear early in the queue:
-         percentile ≤ 0.10 → ×0.60   (40% less likely)
-         percentile   0.30 → ×0.80
+         percentile ≤ 0.10 → ×0.45   (55% less likely)
+         percentile   0.20 → ×0.65
+         percentile   0.30 → ×0.75
          percentile   0.50 → ×1.00   (neutral)
          percentile   0.70 → ×1.10
-         percentile   0.90 → ×1.20
-         percentile ≥ 0.99 → ×1.30   (30% more likely)
+         percentile   0.90 → ×1.25
+         percentile ≥ 0.99 → ×1.35   (35% more likely)
 
     2. Indegree-boost weight: cards in _card_a_boost_set (bottom-10th-percentile
        mode-3 indegree) get CARD_A_BOOST_WEIGHT (1.1); all others get 1.0.
@@ -538,8 +539,8 @@ def _weighted_shuffle(cards):
     pct[order] = np.arange(n) / max(n - 1, 1)
 
     # Interpolate weight from percentile
-    _ELO_PCT_XP = [0.00, 0.10, 0.30, 0.50, 0.70, 0.90, 0.99, 1.00]
-    _ELO_PCT_FP = [0.60, 0.60, 0.80, 1.00, 1.10, 1.20, 1.30, 1.30]
+    _ELO_PCT_XP = [0.00, 0.10, 0.20, 0.30, 0.50, 0.70, 0.90, 0.99, 1.00]
+    _ELO_PCT_FP = [0.45, 0.45, 0.65, 0.75, 1.00, 1.10, 1.25, 1.35, 1.35]
     elo_weights = np.interp(pct, _ELO_PCT_XP, _ELO_PCT_FP)
 
     keyed = []
