@@ -109,10 +109,11 @@ def process_cards(df):
         'oracle_text', 'colors', 'color_identity', 'keywords', 'produced_mana',
         'reprint', 'set_name', 'set', 'set_type', 'rarity', 'artist', 'frame',
         'power', 'toughness', 'flavor_text', 'loyalty', 'printed_name',
-        'layout',     # ADDED: card layout type (normal, transform, split, modal_dfc, etc.)
-        'reserved',   # ADDED: whether the card is on the Reserved List
-        'img_front',  # ADDED: large image URL for front face (extracted from bulk data)
-        'img_back',   # ADDED: large image URL for back face (double-faced cards only)
+        'layout',          # ADDED: card layout type (normal, transform, split, modal_dfc, etc.)
+        'reserved',        # ADDED: whether the card is on the Reserved List
+        'security_stamp',  # ADDED: 'triangle' identifies Universes Beyond cards pre-June 2025
+        'img_front',       # ADDED: large image URL for front face (extracted from bulk data)
+        'img_back',        # ADDED: large image URL for back face (double-faced cards only)
     ]
     existing_cols = [col for col in desired_cols if col in df.columns]
 
