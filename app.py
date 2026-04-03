@@ -507,17 +507,44 @@ def get_card_info(card_name):
 def _weighted_shuffle(cards):
     '''
     Return a copy of cards in a weighted-random order using the
-    Efraimidis-Spirakis algorithm.  Cards in _card_a_boost_set get weight
-    CARD_A_BOOST_WEIGHT (1.1); all others get 1.0.  Cards with higher weight
-    are more likely to appear earlier in the sequence.
+    Efraimidis-Spirakis algorithm.  Each card's weight is the product of two
+    independent multipliers:
+
+    1. Elo-percentile weight: cards are ranked by current Elo within the pool;
+       the weight is interpolated from their percentile rank so that higher-Elo
+       cards are more likely to appear early in the queue:
+         percentile ≤ 0.10 → ×0.60   (40% less likely)
+         percentile   0.30 → ×0.80
+         percentile   0.50 → ×1.00   (neutral)
+         percentile   0.70 → ×1.10
+         percentile   0.90 → ×1.20
+         percentile ≥ 0.99 → ×1.30   (30% more likely)
+
+    2. Indegree-boost weight: cards in _card_a_boost_set (bottom-10th-percentile
+       mode-3 indegree) get CARD_A_BOOST_WEIGHT (1.1); all others get 1.0.
+
+    The two multipliers are combined multiplicatively.
     '''
-    if not _card_a_boost_set:
-        result = list(cards)
-        random.shuffle(result)
-        return result
+    cards = list(cards)
+    n = len(cards)
+    if n == 0:
+        return cards
+
+    # Compute Elo percentile rank for each card within this pool
+    elos = np.array([_elo_cache.get(c, INITIAL_ELO) for c in cards], dtype=float)
+    # scipy-style percentile rank: fraction of pool strictly below this card
+    order = np.argsort(elos)
+    pct = np.empty(n, dtype=float)
+    pct[order] = np.arange(n) / max(n - 1, 1)
+
+    # Interpolate weight from percentile
+    _ELO_PCT_XP = [0.00, 0.10, 0.30, 0.50, 0.70, 0.90, 0.99, 1.00]
+    _ELO_PCT_FP = [0.60, 0.60, 0.80, 1.00, 1.10, 1.20, 1.30, 1.30]
+    elo_weights = np.interp(pct, _ELO_PCT_XP, _ELO_PCT_FP)
+
     keyed = []
-    for c in cards:
-        w = CARD_A_BOOST_WEIGHT if c in _card_a_boost_set else 1.0
+    for i, c in enumerate(cards):
+        w = elo_weights[i] * (CARD_A_BOOST_WEIGHT if c in _card_a_boost_set else 1.0)
         keyed.append((random.random() ** (1.0 / w), c))
     keyed.sort(reverse=True)
     return [c for _, c in keyed]
