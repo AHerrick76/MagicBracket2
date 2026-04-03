@@ -547,7 +547,7 @@ def _weighted_shuffle(cards):
     for i, c in enumerate(cards):
         w = elo_weights[i] * (CARD_A_BOOST_WEIGHT if c in _card_a_boost_set else 1.0)
         keyed.append((random.random() ** (1.0 / w), c))
-    keyed.sort(reverse=True)
+    keyed.sort()  # ascending — lowest weight at end of consumed queue, highest popped first
     return [c for _, c in keyed]
 
 

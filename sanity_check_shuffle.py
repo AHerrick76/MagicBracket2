@@ -81,8 +81,11 @@ for p in [0.01, 0.10, 0.25, 0.50, 0.75, 0.90, 0.99]:
 # ── Run simulations ───────────────────────────────────────────────────────────
 
 def weighted_shuffle(card_indices, w):
+    # Ascending sort — lowest-weight cards at index 0, highest at end.
+    # Matches app.py: _next_card_a uses .pop() which takes from the end,
+    # so the highest-weight (highest-Elo) cards are consumed first.
     keys = [random.random() ** (1.0 / w[i]) for i in card_indices]
-    return [card_indices[j] for j in np.argsort(keys)[::-1]]
+    return [card_indices[j] for j in np.argsort(keys)]
 
 prefix = args.prefix
 mean_elos_weighted = []
@@ -92,7 +95,8 @@ for _ in range(args.n_sim):
     idx = list(range(n))
 
     shuffled_w = weighted_shuffle(idx, weights)
-    mean_elos_weighted.append(elos[shuffled_w[:prefix]].mean())
+    # Simulate pop(): take the last `prefix` cards (highest-weight end)
+    mean_elos_weighted.append(elos[shuffled_w[-prefix:]].mean())
 
     random.shuffle(idx)
     mean_elos_uniform.append(elos[idx[:prefix]].mean())
