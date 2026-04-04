@@ -6,7 +6,7 @@ Usage:
 """
 
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 import zoneinfo
 
 import matplotlib.dates as mdates
@@ -22,9 +22,7 @@ if not DATABASE_URL:
     raise RuntimeError('DATABASE_URL environment variable is not set.')
 
 ET    = zoneinfo.ZoneInfo('America/New_York')
-today = datetime.now(ET).date()
-yesterday = today - timedelta(days=1)
-start = datetime(yesterday.year, yesterday.month, yesterday.day, 17, 0, tzinfo=ET)
+start = datetime(2025, 4, 1, 18, 0, tzinfo=ET)
 
 conn = psycopg2.connect(DATABASE_URL)
 votes = pd.read_sql(
@@ -47,22 +45,23 @@ if votes.empty:
 votes['timestamp'] = pd.to_datetime(votes['timestamp'], utc=True).dt.tz_convert('America/New_York')
 
 votes = votes.set_index('timestamp').sort_index()
-counts = votes.resample('10min').size().rename('votes')
+counts = votes.resample('1h').size().rename('votes')
 
 fig, ax = plt.subplots(figsize=(14, 5))
-ax.bar(counts.index, counts.values, width=pd.Timedelta(minutes=9), align='edge',
+ax.bar(counts.index, counts.values, width=pd.Timedelta(minutes=55), align='edge',
        color='steelblue', alpha=0.8)
 
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%#I%p', tz='America/New_York'))
-ax.xaxis.set_major_locator(mdates.HourLocator(interval=1, tz='America/New_York'))
+ax.xaxis.set_major_locator(mdates.HourLocator(interval=6, tz='America/New_York'))
+ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(
+    mdates.HourLocator(interval=6, tz='America/New_York'), tz='America/New_York'))
 fig.autofmt_xdate(rotation=45)
 
 ax.set_xlabel('Time (ET)')
-ax.set_ylabel('Votes per 10-minute window')
+ax.set_ylabel('Votes per hour')
 ax.set_title(
     f'Vote tempo — {start.strftime("%Y-%m-%d %#I:%M %p")} ET to now\n'
-    f'Total: {len(votes):,} votes  ·  Peak: {counts.max()} votes/window  ·  '
-    f'Mean: {counts[counts > 0].mean():.1f} votes/window (active windows only)'
+    f'Total: {len(votes):,} votes  ·  Peak: {counts.max()} votes/hour  ·  '
+    f'Mean: {counts[counts > 0].mean():.1f} votes/hour (active hours only)'
 )
 
 fig.tight_layout()
@@ -71,7 +70,7 @@ plt.show()
 # ── Cumulative unique IPs over all time ──────────────────────────────────────
 
 all_votes['timestamp'] = pd.to_datetime(all_votes['timestamp'], utc=True).dt.tz_convert('America/New_York')
-all_votes = all_votes.dropna(subset=['ip_address']).sort_values('timestamp')
+all_votes = all_votes[all_votes['timestamp'] >= start].dropna(subset=['ip_address']).sort_values('timestamp')
 
 # First appearance of each IP
 first_seen = all_votes.groupby('ip_address')['timestamp'].min().sort_values()
