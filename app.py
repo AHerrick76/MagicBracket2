@@ -154,9 +154,12 @@ def init_db():
                 queue_id    INTEGER
             )
         ''')
-        # queue_id column may not exist on databases created before this feature
+        # queue_id / mode columns may not exist on databases created before this feature
         cur.execute('''
             ALTER TABLE votes ADD COLUMN IF NOT EXISTS queue_id INTEGER
+        ''')
+        cur.execute('''
+            ALTER TABLE votes ADD COLUMN IF NOT EXISTS mode INTEGER
         ''')
         cur.execute('''
             CREATE TABLE IF NOT EXISTS elo_ratings (
@@ -410,15 +413,15 @@ def _load_queue_from_db():
     _load_active_queue(row[0] if row else 0)
 
 
-def log_vote(ip, session_id, card_a, card_b, chosen, config_name, queue_id=None):
+def log_vote(ip, session_id, card_a, card_b, chosen, config_name, queue_id=None, mode=None):
     ts = datetime.now(timezone.utc).isoformat()
     with _get_db() as conn:
         cur = conn.cursor()
         cur.execute(
             'INSERT INTO votes '
-            '(timestamp, ip_address, session_id, card_a, card_b, chosen, config_name, queue_id) '
-            'VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
-            (ts, ip, session_id, card_a, card_b, chosen, config_name, queue_id),
+            '(timestamp, ip_address, session_id, card_a, card_b, chosen, config_name, queue_id, mode) '
+            'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+            (ts, ip, session_id, card_a, card_b, chosen, config_name, queue_id, mode),
         )
 
 
@@ -812,6 +815,7 @@ def vote():
         chosen      = chosen,
         config_name = data.get('config', ''),
         queue_id    = _active_queue_id or None,
+        mode        = data.get('mode'),
     )
 
     winner_elo, loser_elo, delta_w, delta_l = update_elo(chosen, loser)
