@@ -808,7 +808,7 @@ def vote():
     loser  = card_b if chosen == card_a else card_a
 
     log_vote(
-        ip          = request.remote_addr,
+        ip          = (request.headers.get('X-Forwarded-For', request.remote_addr) or '').split(',')[0].strip(),
         session_id  = session['session_id'],
         card_a      = card_a,
         card_b      = card_b,
