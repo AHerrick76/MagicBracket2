@@ -103,7 +103,11 @@ def process_cards(df):
     legalities_df.index = df.index
     legalities_df = legalities_df.add_prefix('legal_')
 
-    # Columns requested, plus two extras flagged below
+    # Tag playtest cards by set code (Mystery Booster playtest cards and similar)
+    PLAYTEST_SETS = {'unk', 'cmb1', 'cmb2', 'mb2', 'pf25', 'pf24', 'punk'}
+    df['is_playtest'] = df['set'].isin(PLAYTEST_SETS)
+
+    # Columns requested, plus extras flagged below
     desired_cols = [
         'id', 'name', 'released_at', 'mana_cost', 'cmc', 'type_line',
         'oracle_text', 'colors', 'color_identity', 'keywords', 'produced_mana',
@@ -112,6 +116,7 @@ def process_cards(df):
         'layout',          # ADDED: card layout type (normal, transform, split, modal_dfc, etc.)
         'reserved',        # ADDED: whether the card is on the Reserved List
         'security_stamp',  # ADDED: 'triangle' identifies Universes Beyond cards pre-June 2025
+        'is_playtest',     # ADDED: Mystery Booster playtest cards and similar (unk/cmb1/cmb2/mb2/pf25/pf24/punk)
         'img_front',       # ADDED: large image URL for front face (extracted from bulk data)
         'img_back',        # ADDED: large image URL for back face (double-faced cards only)
     ]
