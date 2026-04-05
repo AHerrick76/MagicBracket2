@@ -81,6 +81,53 @@
             text-decoration: underline;
         }
 
+        /* ── Section header ───────────────────────────────────────────────── */
+
+        .faq-section-header {
+            font-size: 1.15rem;
+            color: #c8a96e;
+            letter-spacing: 0.04em;
+            margin-top: 0.8rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid #333;
+        }
+
+        /* ── Stat tables ──────────────────────────────────────────────────── */
+
+        .faq-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            margin-top: 0.6rem;
+            color: #aaa;
+        }
+
+        .faq-table th {
+            text-align: left;
+            color: #c8a96e;
+            border-bottom: 1px solid #444;
+            padding: 0.35rem 0.6rem;
+            font-weight: normal;
+            letter-spacing: 0.03em;
+        }
+
+        .faq-table td {
+            padding: 0.3rem 0.6rem;
+            border-bottom: 1px solid #2a2a3e;
+            vertical-align: top;
+        }
+
+        .faq-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        @media (max-width: 480px) {
+            .faq-table th,
+            .faq-table td {
+                padding: 0.25rem 0.4rem;
+            }
+        }
+
         /* ── Back to voting button ────────────────────────────────────────── */
 
         .back-btn {
@@ -147,7 +194,7 @@
         <div class="faq-item">
             <p class="faq-q">What cards are available to vote on?</p>
             <div class="faq-a">
-                <p>At any time, there will be an "active queue" with ~500 cards in it, and it is from this pool of cards that pairings are drawn. Cycling through these queues ensures that repeat visitors will have new cards to vote on and rank, and allow even late arrivers to participate in the initial ranking of cards. (It also makes it more likely you'll see the same cards as your friends).</p>
+                <p>At any time, there will be an “active queue” with at least 750 cards in it, and it is from this pool of cards that pairings are drawn. Cycling through these queues ensures that repeat visitors will have new cards to vote on and rank, and allow even late arrivers to participate in the initial ranking of cards. (It also makes it more likely you’ll see the same cards as your friends). </p>
             </div>
         </div>
 
@@ -157,7 +204,7 @@
                 <p>The first card in each pair is drawn completely at random, with a slight bias for drawing higher Elo cards. The second card is drawn based on a two-stage process.</p>
                 <p>In the first stage, we look at Elo. Each matchup has a chance of applying one of several Elo restrictions, where we select a second card that is close-ish in rating.</p>
                 <p>In the second stage, we look at card similarity. Rather than pairing any two cards together, I'm specifically drawing a card that is mechanically similar. This should hopefully reduce the number of "Black Lotus vs vanilla Grizzly Bear" matchups that are boring and one sided. That said, you can use a slider to determine how much you care about this.</p>
-                <p><em>(There's a fair amount of asterisks &amp; minor statistical corrections under the hood as well to minimize bias, but they shouldn't be noticeable to the user)</em></p>
+                <p>(There's a fair amount of asterisks &amp; minor statistical corrections under the hood as well to minimize bias - these are explained at the end of the FAQ)</p>
             </div>
         </div>
 
@@ -172,15 +219,100 @@
         <div class="faq-item">
             <p class="faq-q">What cards are included?</p>
             <div class="faq-a">
-                <p>Basically everything. I include standard sets, supplemental sets, Universes Beyond sets, Secret Lair exclusives, Mystery Booster / Convention playtest cards, Un-Sets, and Holiday cards.</p>
-                <p>I do exclude some supplemental card types — e.g, Planes, Conspiracies, Contraptions, Schemes.</p>
+                <p>Basically everything. I include standard sets, supplemental sets, Universes Beyond sets, Secret Lair exclusives, Un-Sets, and Holiday cards.</p>
+                <p>I do exclude some supplemental card types - e.g, Planes, Conspiracies, Contraptions, Schemes. I also exclude the Playtest cards - there's a huge number of these, and early feedback / votes suggested players didn't like seeing these.</p>
             </div>
         </div>
 
         <div class="faq-item">
             <p class="faq-q">What's the next step?</p>
             <div class="faq-a">
-                <p>Provided I get enough votes to meaningfully rank the cards, my hope is to use these initial Elo ranks to whittle down the card pool. Subsequent rounds could retain the top 1/4th of cards, and after a few rounds we could cut to a final, smaller bracket with 512 or 256 cards.</p>
+                <p>Once we have enough votes to rank all the individual queues, we’ll cut to the top ~10% of cards for a final elo competition among our top cards. This queue will remain open for a longer period of time, and the top performers will enter a final bracket with 64 or 128 cards to find the true “best” card of the second half of Magic.</p>
+            </div>
+        </div>
+
+        <p class="faq-section-header">Pairing Creation &ndash; More Statistical Detail</p>
+
+        <div class="faq-item">
+            <div class="faq-a">
+                <p>Under the hood, there's a lot of small adjustments to try to correct for bias while making the bracket more interesting. Let's talk about them.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">Card A Selection</p>
+            <div class="faq-a">
+                <p>When a user first loads the page, we shuffle the full list of cards in the queue and create a "Card A" list that contains all 750 cards (or however large the queue size is) exactly once. Each time you vote, we draw the next card in that list, and choose another card to pair against it based on Elo, card similarity, and our various adjustments (described later).</p>
+                <p>The cards on this list aren't shuffled uniformly though - cards are placed within the list via a weighted draw, with a significant weighting for Elo and a minor weighting for in-degree bias.</p>
+                <p>First, cards with higher Elos make for more interesting pairings, and it's more important to find out the exact ranking of the top 100 cards than the bottom 100 cards. When we "draw" cards to place onto the Card A list, their chances to appear are weighted by the probabilities below. Note that every card must appear exactly once, so if you run the full queue to exhaustion (i.e, vote 750 times in a row), you'll start to see a lot of bad cards toward the end. On the other hand, these weightings aren't so extreme that low performing cards won't show up toward the beginning of your voting - they're just less likely to.</p>
+                <p>Also note that the Card A list is finalized when you first open your session. If you start voting as soon as the queue rotates, the "better" cards won't have had time to sort toward the top.</p>
+                <table class="faq-table">
+                    <thead>
+                        <tr>
+                            <th>Elo percentile within pool</th>
+                            <th>Multiplier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>≤ 0.10</td><td>×0.45</td></tr>
+                        <tr><td>0.20</td><td>×0.65</td></tr>
+                        <tr><td>0.30</td><td>×0.75</td></tr>
+                        <tr><td>0.50</td><td>×1.00</td></tr>
+                        <tr><td>0.70</td><td>×1.10</td></tr>
+                        <tr><td>0.90</td><td>×1.25</td></tr>
+                        <tr><td>≥ 0.99</td><td>×1.35</td></tr>
+                    </tbody>
+                </table>
+                <p>The second corrective factor gives a 10% higher chance for cards in the bottom 10% of in-degree similarity. This will be discussed later.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">Card B Elo Restriction</p>
+            <div class="faq-a">
+                <p>Each time we select Card A, we apply one of several Elo restrictions – these limit how far away Card B can be in Elo from the initial card. The reason we do this is to reduce the number of matchups between our most popular cards and chaff. Not only are these matchups less interesting, they don't change the Elos very much. The one exception is that skewed matchups make "spite voting" much easier. If you hate Quantum Riddler, and it's paired against a 1350 elo card, voting for the "worse" card can drag down the higher Elo card's rank much further than a single positive vote would help it.</p>
+                <p>The exact set of restrictions is below:</p>
+                <table class="faq-table">
+                    <thead>
+                        <tr>
+                            <th>Percent Chance of Restriction</th>
+                            <th>Window Size</th>
+                            <th>Fraction of Pool</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>25%</td><td>+/- 5% Elo</td><td>10% of pool</td></tr>
+                        <tr><td>25%</td><td>+/- 20% Elo</td><td>40% of pool</td></tr>
+                        <tr><td>25%</td><td>+/- 40% Elo</td><td>80% of pool</td></tr>
+                        <tr><td>25%</td><td>No filter</td><td>Entire pool</td></tr>
+                    </tbody>
+                </table>
+                <p>Note that these restrictions are applied before card similarity among nearby cards in the pool is calculated.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">In-Degree Similarity</p>
+            <div class="faq-a">
+                <p>The default of the bracket (and the one nearly everyone uses) retrieves cards within 25% similarity of Card A. However, not every card is equally likely to be within 25% of other cards.</p>
+                <p>As an example, <a href="https://scryfall.com/card/afr/3/blink-dog">Blink Dog</a> is very unusual. Structurally, it's a 3 mana 1/1 at uncommon. From it's text, it references Double Strike and Phasing, which are both rare abilities. Consequently, it shows up in the closest 25% of cards only ~5% of the time. In contrast, <a href="https://scryfall.com/card/eld/57/moonlit-scavengers">Moonlit Scavengers</a> has very common creature types and stats, and its text box involves bouncing creatures while also referencing artifacts and enchantments. It's "sort of close" to a TON of cards – two thirds of its queue include it in the "closest 25%".</p>
+                <p>All else equal, this would result in a bracket which paired Moonlit Scavenger as Card B far more often and Blink Dog far less often. To correct for this, when drawing card B, we use a weighted draw which skews slightly toward cards with lower "in-degree" (i.e, cards that appear as related cards less often than we'd expect by chance). For the Broad setting, these weights cap at a 2.5x multiplier for cards with very low in-degree, and a 0.3x multiplier for cards with a very high in-degree. As mentioned above, the bottom 10% of cards by in-degree also have a marginally higher chance of appearing earlier as Card A.</p>
+                <p>Note that on the "Wild" setting, card B pairings are completely random (subject to the Elo restriction above), so none of this applies.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">Ballot Order Effect</p>
+            <div class="faq-a">
+                <p>The <a href="https://en.wikipedia.org/wiki/Ballot_order_effect">Ballot Order effect</a> refers to the phenomenon wherein voters are more likely to choose whichever option is listed first. In order to combat this, the order that "Card A" and "Card B" are displayed to the user is shuffled for every vote.</p>
+                <p>Empirically, in this tournament, the card that appears on the left wins about 53.6% of the time. I haven't investigated yet, but I suspect this effect is stronger for lower rated cards that voters don't have a strong opinion on.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">Intra-Queue Elo</p>
+            <div class="faq-a">
+                <p>Because each queue has a slightly different number of votes, and a random standard of competition, Elos from one queue to the next represent distinct tournament environments and aren't directly comparable. While this effect is minor, it would have slightly impact on which cards made the "top 10%" cut for the final queue. To correct for this, the top 10% cut will be done on a per-queue basis rather than an overall basis, so that every queue contributes the same number of cards to the final tournament.</p>
             </div>
         </div>
 
