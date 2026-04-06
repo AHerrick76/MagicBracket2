@@ -18,14 +18,21 @@ All queues (--all-queues):
     Iterates over every queue, builds an intra-queue KNN index for each,
     then aggregates in-degree results across the full ~15,800-card set.
 
+Card detail (--card):
+    For a specific card, lists every queue card that includes it in their
+    top-N neighbors, with per-config rank positions and the indegree-based
+    weight multiplier the card receives. N defaults to 750//4 = 187 (Mode 3).
+
 Usage
 -----
-    python diagnose_card_b.py                   # active queue from DB
-    python diagnose_card_b.py --queue 2         # specific queue
-    python diagnose_card_b.py --all-queues      # full analysis across all queues
-    python diagnose_card_b.py --n 5             # neighbors per card per config (default 5)
-    python diagnose_card_b.py --n 125           # approximate Mode 3 (25% of 500)
-    python diagnose_card_b.py --top 15          # cards shown at each extreme (default 15)
+    python diagnose_card_b.py                          # active queue from DB
+    python diagnose_card_b.py --queue 2                # specific queue
+    python diagnose_card_b.py --all-queues             # full analysis across all queues
+    python diagnose_card_b.py --n 5                    # neighbors per card per config (default 5)
+    python diagnose_card_b.py --n 125                  # approximate Mode 3 (25% of 500)
+    python diagnose_card_b.py --top 15                 # cards shown at each extreme (default 15)
+    python diagnose_card_b.py --card "Blink Dog"       # detail view for one card
+    python diagnose_card_b.py --card "Blink Dog" --queue 2  # specify queue for card detail
 """
 
 import argparse
@@ -52,9 +59,14 @@ DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgr
 parser = argparse.ArgumentParser()
 parser.add_argument('--queue',      type=int,             help='Queue ID to analyse (default: latest active from DB)')
 parser.add_argument('--all-queues', action='store_true',  help='Analyse every queue and aggregate across the full card set')
-parser.add_argument('--n',          type=int, default=5,  help='Neighbors per card per config (default 5; use 125 to approximate Mode 3)')
+parser.add_argument('--card',       type=str, default=None, help='Show in-degree detail for a specific card name')
+parser.add_argument('--n',          type=int, default=None, help='Neighbors per card per config (default 5 normally; 750//4=187 for --card mode)')
 parser.add_argument('--top',        type=int, default=15, help='Cards to show at each extreme (default 15)')
 args = parser.parse_args()
+
+# Default N depends on mode
+if args.n is None:
+    args.n = 750 // 4 if args.card else 5
 
 # ── Load queues.json ──────────────────────────────────────────────────────────
 
@@ -146,6 +158,128 @@ def queue_indegrees(queue_cards, N):
             indegrees[name][c] for c in ALPHA_CONFIGS
         ]))
     return indegrees
+
+
+# Indegree weight caps — must match app.py INDEGREE_CAPS
+_INDEGREE_CAPS = {1: (0.7, 1.2), 2: (0.5, 2.0), 3: (0.3, 2.5)}
+
+
+def card_indegree_detail(card_name, queue_cards, N=None):
+    """
+    For a specific card, return:
+      - neighbor_df : DataFrame of every queue card that lists `card_name` in
+                      its top-N neighbors (per config), with rank positions.
+                      Columns: card_name, text_heavy_rank, balanced_rank,
+                               struct_heavy_rank, mean_rank.
+                      Sorted by mean_rank ascending (closest neighbours first).
+      - weight_df   : DataFrame with one row per config showing `card_name`'s
+                      indegree, the queue mean indegree, % of queue cards that
+                      include it, and the clipped weight multiplier it receives
+                      under Mode 3 caps.
+
+    N defaults to 750 // 4 = 187, representing the "closest 25% of a 750-card
+    queue" used by Mode 3 (Broad).
+    """
+    if N is None:
+        N = 750 // 4
+
+    if card_name not in name_to_idx:
+        print(f'ERROR: "{card_name}" not found in card data.', file=sys.stderr)
+        return None, None
+
+    indices = [name_to_idx[c] for c in queue_cards if c in name_to_idx]
+    if len(indices) < 2:
+        print('ERROR: queue too small.', file=sys.stderr)
+        return None, None
+
+    q_names = np.array([all_names[i] for i in indices])
+
+    if card_name not in set(q_names):
+        print(f'ERROR: "{card_name}" is not in the specified queue.', file=sys.stderr)
+        return None, None
+
+    target_local = int(np.where(q_names == card_name)[0][0])
+    fetch_n      = min(len(indices), N + SAME_SET_FETCH_BUFFER + 1)
+
+    # Per-source-card rank of target (None = not in top-N)
+    # {source_name: {config: rank_or_None}}
+    rank_by_source = {name: {} for name in q_names if name != card_name}
+    # Full indegree counts across all cards, per config (for mean calculation)
+    counts_by_config = {}
+
+    for config_name, alpha in ALPHA_CONFIGS.items():
+        sub_mat = combined_by_alpha[alpha][indices]
+        nn = NearestNeighbors(n_neighbors=fetch_n, metric='cosine',
+                              algorithm='brute', n_jobs=-1)
+        nn.fit(sub_mat)
+        dists_all, idx_all = nn.kneighbors(sub_mat)
+
+        counts = np.zeros(len(q_names), dtype=int)
+
+        for local_i, (dists, local_neighbors) in enumerate(zip(dists_all, idx_all)):
+            if local_i == target_local:
+                continue
+            card_set_i = name_to_set.get(q_names[local_i], '')
+            candidates = []
+            for d, local_j in zip(dists, local_neighbors):
+                if local_j == local_i:
+                    continue
+                if card_set_i and name_to_set.get(q_names[local_j]) == card_set_i:
+                    d *= SAME_SET_PENALTY
+                candidates.append((d, local_j))
+            candidates.sort(key=lambda x: x[0])
+            top_n = candidates[:N]
+
+            for _, local_j in top_n:
+                counts[local_j] += 1
+
+            top_n_local = [local_j for _, local_j in top_n]
+            source_name = q_names[local_i]
+            if target_local in top_n_local:
+                rank_by_source[source_name][config_name] = top_n_local.index(target_local) + 1
+            else:
+                rank_by_source[source_name][config_name] = None
+
+        counts_by_config[config_name] = counts
+
+    # ── Build neighbor DataFrame ───────────────────────────────────────────────
+    rows = []
+    for source_name, cfg in rank_by_source.items():
+        if any(v is not None for v in cfg.values()):
+            rows.append({
+                'card_name':        source_name,
+                'text_heavy_rank':  cfg.get('text_heavy'),
+                'balanced_rank':    cfg.get('balanced'),
+                'struct_heavy_rank': cfg.get('struct_heavy'),
+            })
+    neighbor_df = pd.DataFrame(rows, columns=[
+        'card_name', 'text_heavy_rank', 'balanced_rank', 'struct_heavy_rank',
+    ])
+    if not neighbor_df.empty:
+        rank_cols = ['text_heavy_rank', 'balanced_rank', 'struct_heavy_rank']
+        neighbor_df['mean_rank'] = neighbor_df[rank_cols].mean(axis=1)
+        neighbor_df = neighbor_df.sort_values('mean_rank').reset_index(drop=True)
+
+    # ── Build weight DataFrame ─────────────────────────────────────────────────
+    lo, hi = _INDEGREE_CAPS[3]  # Mode 3 caps (Broad — matches this N)
+    weight_rows = []
+    for config_name in ALPHA_CONFIGS:
+        counts      = counts_by_config[config_name]
+        target_ideg = int(counts[target_local])
+        mean_ideg   = float(counts.mean())
+        raw_mult    = (mean_ideg / target_ideg) if target_ideg > 0 else hi
+        clipped     = float(np.clip(raw_mult, lo, hi))
+        weight_rows.append({
+            'config':             config_name,
+            'indegree':           target_ideg,
+            'queue_mean_indegree': round(mean_ideg, 1),
+            'pct_of_queue':       round(target_ideg / max(len(q_names) - 1, 1) * 100, 1),
+            'raw_multiplier':     round(raw_mult, 3),
+            'clipped_multiplier': round(clipped, 3),
+        })
+    weight_df = pd.DataFrame(weight_rows)
+
+    return neighbor_df, weight_df
 
 
 # ── Reporting helpers ─────────────────────────────────────────────────────────
@@ -243,6 +377,28 @@ else:
         sys.exit(1)
 
     queue_cards = queue_index[queue_id]['cards']
+
+    # ── Card detail mode ──────────────────────────────────────────────────────
+    if args.card:
+        print(f'\nCard detail: "{args.card}"  |  Queue {queue_id} ({len(queue_cards)} cards)  |  N={args.n}')
+        neighbor_df, weight_df = card_indegree_detail(args.card, queue_cards, N=args.n)
+        if neighbor_df is None:
+            sys.exit(1)
+
+        print(f'\n── Weight adjustment (Mode 3 / Broad caps) ──────────────────────────────')
+        print(weight_df.to_string(index=False))
+
+        print(f'\n── Cards that include "{args.card}" in their top-{args.n} neighbors ─────')
+        print(f'   {len(neighbor_df)} of {len(queue_cards) - 1} queue cards')
+        if neighbor_df.empty:
+            print('   (none)')
+        else:
+            pd.set_option('display.max_rows', None)
+            pd.set_option('display.max_colwidth', 50)
+            print(neighbor_df.to_string(index=False))
+        sys.exit(0)
+
+    # ── Standard queue report ─────────────────────────────────────────────────
     print(f'\nQueue {queue_id}: {len(queue_cards)} cards. Computing in-degrees (N={args.n})...')
     indegrees = queue_indegrees(queue_cards, args.n)
     print_report(indegrees, args.top, label=f'queue {queue_id}')
