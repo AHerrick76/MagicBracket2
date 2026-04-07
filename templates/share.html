@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share — Magic Ranking v2</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: Georgia, serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 1.5rem;
+            gap: 2rem;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            letter-spacing: 0.06em;
+            color: #c8a96e;
+        }
+
+        .subtitle {
+            font-size: 0.82rem;
+            color: #666;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── QR card ──────────────────────────────────────────────────────── */
+
+        #share-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.4rem;
+            background: #12121f;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 2.4rem 3rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #tagline {
+            font-size: 1.1rem;
+            color: #c8a96e;
+            line-height: 1.5;
+            letter-spacing: 0.02em;
+        }
+
+        #qrcode {
+            /* qrcodejs renders a table or canvas inside this div */
+            line-height: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            padding: 10px;
+        }
+
+        #qrcode img,
+        #qrcode canvas {
+            display: block;
+        }
+
+        #site-url {
+            font-size: 0.78rem;
+            color: #666;
+            letter-spacing: 0.04em;
+            word-break: break-all;
+        }
+
+        .divider {
+            width: 100%;
+            border: none;
+            border-top: 1px solid #2a2a40;
+        }
+
+        #share-hint {
+            font-size: 0.8rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ── Back link ────────────────────────────────────────────────────── */
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.82rem;
+            letter-spacing: 0.03em;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .back-btn:hover {
+            color: #c8a96e;
+            border-color: #c8a96e;
+        }
+
+        /* ── Print styles ─────────────────────────────────────────────────── */
+
+        @media print {
+            body {
+                background: #fff;
+                color: #111;
+            }
+            h1, #tagline { color: #333; }
+            #share-card {
+                background: #fff;
+                border: 1px solid #ccc;
+            }
+            #site-url { color: #555; }
+            .back-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Magic Ranking v2</h1>
+        <p class="subtitle">Community voting for the best cards of the past decade</p>
+    </header>
+
+    <div id="share-card">
+        <p id="tagline">Join in and vote for<br>the best Magic card of the past decade</p>
+        <div id="qrcode"></div>
+        <p id="site-url"></p>
+        <hr class="divider">
+        <p id="share-hint">Scan the QR code or visit the URL above to start voting.</p>
+    </div>
+
+    <a href="/" class="back-btn">← Back to Voting</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        const url = window.location.origin;
+        document.getElementById('site-url').textContent = url;
+
+        new QRCode(document.getElementById('qrcode'), {
+            text: url,
+            width: 240,
+            height: 240,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M,
+        });
+    </script>
+</body>
+</html>

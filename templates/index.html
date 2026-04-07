@@ -534,10 +534,22 @@
             color: #c8a96e;
         }
 
-        /* Mobile FAQ link and image scale button — hidden on desktop */
-        #mobile-faq-link,
+        /* Mobile nav row (FAQ + Share) and image scale button — hidden on desktop */
+        #mobile-nav-links,
         #img-scale-btn {
             display: none;
+        }
+
+        #mobile-faq-link,
+        #mobile-share-link {
+            padding: 0.45rem 1.1rem;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.82rem;
+            letter-spacing: 0.03em;
+            transition: color 0.15s, border-color 0.15s;
         }
 
         #img-scale-btn {
@@ -555,22 +567,19 @@
         #img-scale-btn:hover { color: #aaa; border-color: #666; }
 
         @media (max-width: 600px) {
-            /* Hide hamburger on mobile — replaced by #mobile-faq-link below cards */
+            /* Hide hamburger on mobile — replaced by #mobile-nav-links below cards */
             #site-nav { display: none; }
 
-            #mobile-faq-link {
-                display: inline-block;
+            #mobile-nav-links {
+                display: flex;
+                flex-direction: row;
+                gap: 0.5rem;
                 order: 3;
                 align-self: center;
-                padding: 0.45rem 1.1rem;
-                border: 1px solid #444;
-                border-radius: 6px;
-                color: #888;
-                text-decoration: none;
-                font-size: 0.82rem;
-                letter-spacing: 0.03em;
-                transition: color 0.15s, border-color 0.15s;
             }
+
+            #mobile-faq-link:hover,
+            #mobile-share-link:hover { color: #aaa; border-color: #666; }
 
             #img-scale-btn {
                 display: inline-block;
@@ -588,6 +597,7 @@
         <button id="nav-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
         <div id="nav-dropdown" role="menu">
             <a href="/faq" role="menuitem">FAQ</a>
+            <a href="/share" role="menuitem">Share</a>
         </div>
     </nav>
 
@@ -630,7 +640,10 @@
         <img id="preview-back"  src="" alt="Back face">
     </div>
 
-    <a id="mobile-faq-link" href="/faq">FAQ →</a>
+    <div id="mobile-nav-links">
+        <a id="mobile-faq-link" href="/faq">FAQ →</a>
+        <a id="mobile-share-link" href="/share">Share →</a>
+    </div>
     <button id="img-scale-btn">Img: Large</button>
 
     <!-- #controls-row is zero-height on desktop (children are position:fixed).

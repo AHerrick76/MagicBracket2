@@ -21,7 +21,10 @@ from psycopg2.extras import execute_values
 from psycopg2.pool import ThreadedConnectionPool
 
 import pandas as pd
+from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request, session
+
+load_dotenv()
 
 sys_path_dir = os.path.dirname(os.path.abspath(__file__))
 import sys
@@ -777,6 +780,11 @@ def index():
 @app.route('/faq')
 def faq():
     return render_template('faq.html')
+
+
+@app.route('/share')
+def share():
+    return render_template('share.html')
 
 
 
