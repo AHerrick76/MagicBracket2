@@ -826,14 +826,16 @@ def stats(token):
     queue_table = ''
     for qid, total_votes in queue_rows:
         q = _queues.get(qid)
-        qsize = len(q['cards']) if q else '?'
-        avg   = round(total_votes * 2 / qsize, 2) if isinstance(qsize, int) and qsize else '?'
+        qsize  = len(q['cards']) if q else None
+        avg    = round(total_votes * 2 / qsize, 2) if qsize else '?'
         active = ' ★' if qid == _active_queue_id else ''
+        qsize_str = f'{qsize:,}' if qsize is not None else '?'
+        avg_str   = f'{avg:,}' if isinstance(avg, float) else avg
         queue_table += (
             f'<tr><td>Q{qid}{active}</td>'
-            f'<td style="text-align:right">{qsize:,}</td>'
+            f'<td style="text-align:right">{qsize_str}</td>'
             f'<td style="text-align:right">{total_votes:,}</td>'
-            f'<td style="text-align:right">{avg}</td></tr>\n'
+            f'<td style="text-align:right">{avg_str}</td></tr>\n'
         )
 
     # Build hourly table rows
