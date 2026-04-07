@@ -46,6 +46,7 @@ app.secret_key = os.urandom(24)
 # Replace 'postgres://' prefix (legacy Heroku/Railway format) with 'postgresql://'.
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
 QUEUES_PATH  = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'queues.json')
+STATS_TOKEN  = os.environ.get('STATS_TOKEN', 'bracketstats')
 
 _pool = None   # ThreadedConnectionPool; initialised in init_db()
 
@@ -786,6 +787,94 @@ def faq():
 def share():
     return render_template('share.html')
 
+
+@app.route('/stats/<token>')
+def stats(token):
+    if token != STATS_TOKEN:
+        return 'Not found', 404
+
+    with _get_db() as conn:
+        cur = conn.cursor()
+
+        # Votes per queue
+        cur.execute('''
+            SELECT queue_id, COUNT(*) AS total_votes
+            FROM votes
+            WHERE queue_id IS NOT NULL
+            GROUP BY queue_id
+            ORDER BY queue_id
+        ''')
+        queue_rows = cur.fetchall()
+
+        # Hourly votes for the past 24 hours (server time)
+        cur.execute('''
+            SELECT
+                date_trunc('hour', timestamp::timestamptz AT TIME ZONE 'America/New_York') AS hour,
+                COUNT(*) AS cnt
+            FROM votes
+            WHERE timestamp::timestamptz >= NOW() - INTERVAL '24 hours'
+            GROUP BY 1
+            ORDER BY 1
+        ''')
+        hourly_rows = cur.fetchall()
+
+        # Grand total
+        cur.execute('SELECT COUNT(*) FROM votes')
+        grand_total = cur.fetchone()[0]
+
+    # Build votes-per-queue table rows
+    queue_table = ''
+    for qid, total_votes in queue_rows:
+        q = _queues.get(qid)
+        qsize = len(q['cards']) if q else '?'
+        avg   = round(total_votes * 2 / qsize, 2) if isinstance(qsize, int) and qsize else '?'
+        active = ' ★' if qid == _active_queue_id else ''
+        queue_table += (
+            f'<tr><td>Q{qid}{active}</td>'
+            f'<td style="text-align:right">{qsize:,}</td>'
+            f'<td style="text-align:right">{total_votes:,}</td>'
+            f'<td style="text-align:right">{avg}</td></tr>\n'
+        )
+
+    # Build hourly table rows
+    hourly_table = ''
+    for hour, cnt in hourly_rows:
+        hourly_table += (
+            f'<tr><td>{str(hour)[:16]}</td>'
+            f'<td style="text-align:right">{cnt:,}</td></tr>\n'
+        )
+
+    html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stats</title>
+<style>
+body {{ background:#1a1a1a; color:#ddd; font-family:sans-serif; padding:20px; max-width:520px; margin:0 auto; }}
+h2 {{ color:#c9a84c; margin:24px 0 8px; }}
+table {{ width:100%; border-collapse:collapse; font-size:0.9rem; }}
+th {{ text-align:left; color:#888; border-bottom:1px solid #444; padding:4px 8px; }}
+td {{ padding:4px 8px; border-bottom:1px solid #2a2a2a; }}
+.total {{ color:#c9a84c; font-weight:bold; margin:6px 0 20px; }}
+</style>
+</head>
+<body>
+<h2>Vote totals by queue</h2>
+<table>
+<tr><th>Queue</th><th style="text-align:right">Size</th><th style="text-align:right">Votes</th><th style="text-align:right">Avg/card</th></tr>
+{queue_table}
+</table>
+<p class="total">Grand total: {grand_total:,} votes</p>
+
+<h2>Last 24 hours (hourly, ET)</h2>
+<table>
+<tr><th>Hour</th><th style="text-align:right">Votes</th></tr>
+{hourly_table}
+</table>
+</body>
+</html>'''
+    return html
 
 
 @app.route('/api/matchup')
