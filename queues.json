@@ -2,7 +2,7 @@
   "generated_at": "2026-04-04T12:03:01.345882",
   "seed": null,
   "queue_size": "variable",
-  "total_queues": 18,
+  "total_queues": 15,
   "total_cards": 14942,
   "queues": [
     {
@@ -10906,12 +10906,7 @@
         "Patient Naturalist",
         "Doom Weaver",
         "Angel of Vitality",
-        "Bulwark Ox"
-      ]
-    },
-    {
-      "id": 16,
-      "cards": [
+        "Bulwark Ox",
         "Athreos, Shroud-Veiled",
         "Manglehorn",
         "Glowspore Shaman",
@@ -11938,12 +11933,7 @@
         "Red XIII, Proud Warrior",
         "Take the Bait",
         "Beyond the Quiet",
-        "Aeromunculus"
-      ]
-    },
-    {
-      "id": 17,
-      "cards": [
+        "Aeromunculus",
         "Mysterio, Master of Illusion",
         "Greater Tanuki",
         "The Sound of Drums",
@@ -12456,7 +12446,12 @@
         "Haldan, Avid Arcanist",
         "Burning-Fist Minotaur",
         "Lay Bare the Heart",
-        "Meteoric Mace",
+        "Meteoric Mace"
+      ]
+    },
+    {
+      "id": 16,
+      "cards": [
         "Ingenious Mastery",
         "Arcbound Mouser",
         "Flare of Denial",
@@ -12970,12 +12965,7 @@
         "Rotating Fireplace",
         "Arcades, the Strategist",
         "Fire Nation Salvagers",
-        "Slight Malfunction"
-      ]
-    },
-    {
-      "id": 18,
-      "cards": [
+        "Slight Malfunction",
         "Dryad's Revival",
         "Blessed Sanctuary",
         "Start from Scratch",
@@ -14002,12 +13992,7 @@
         "Cunning Nightbonder",
         "Choco-Comet",
         "Broadcast Takeover",
-        "Cybership"
-      ]
-    },
-    {
-      "id": 19,
-      "cards": [
+        "Cybership",
         "Diamond Knight",
         "Robe of the Archmagi",
         "Guardian Scalelord",
