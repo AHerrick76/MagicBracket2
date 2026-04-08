@@ -32,6 +32,13 @@ elo        = pd.read_sql('SELECT * FROM elo_ratings ORDER BY rating DESC', conn)
 
 conn.close()
 
+# Merge queue_label onto votes (e.g. "Q2", "Q3") so rows can be filtered by queue
+QUEUES_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'queues.json')
+with open(QUEUES_PATH, encoding='utf-8') as _f:
+    _queues_data = json.load(_f)
+_queue_label_map = {q['id']: f'Q{q["id"]}' for q in _queues_data['queues']}
+votes['queue_label'] = votes['queue_id'].map(_queue_label_map)
+
 # Merge card metadata (is_ub, is_playtest, is_funny, set_type, rarity, etc.) onto elo
 _cards = load_processed_cards()
 
@@ -114,7 +121,7 @@ def distribution_in_queue(elo, queue_number, votes=None, queues_path='queues.jso
     '''
     queue_ids = [queue_number] if isinstance(queue_number, int) else list(queue_number)
 
-    with open(queues_path) as f:
+    with open(queues_path, encoding='utf-8') as f:
         queues_data = json.load(f)
 
     queue_cards = set()
@@ -275,7 +282,7 @@ def votes_per_card_per_queue(votes, queues_path='queues.json'):
         Columns: queue_id, queue_size, total_votes, avg_votes_per_card.
         Sorted by queue_id ascending.
     '''
-    with open(queues_path) as f:
+    with open(queues_path, encoding='utf-8') as f:
         queues_data = json.load(f)
 
     rows = []
