@@ -774,6 +774,7 @@
 
         // True on touch-primary devices (phones/tablets): hover events aren't reliable
         const isTouchDevice = window.matchMedia('(hover: none)').matches;
+        const deviceLabel   = isTouchDevice ? 'mobile' : 'desktop';
 
         // Tap anywhere on the preview overlay to dismiss (touch devices)
         preview.addEventListener('click', () => preview.classList.remove('visible'));
@@ -904,6 +905,7 @@
                     config:      cfg,
                     mode:        mode,
                     closed_loop: closedLoop,
+                    device:      deviceLabel,
                 }),
             }).then(r => r.json());
 
@@ -945,7 +947,8 @@
 
         // ── Image scale toggle (mobile) ───────────────────────────────────
         const imgScaleBtn = document.getElementById('img-scale-btn');
-        let imgSmall = localStorage.getItem('imgSmall') === '1';
+        const storedImgPref = localStorage.getItem('imgSmall');
+        let imgSmall = storedImgPref !== null ? storedImgPref === '1' : isTouchDevice;
 
         function applyImgScale() {
             document.body.classList.toggle('img-small', imgSmall);

@@ -166,6 +166,9 @@ def init_db():
             ALTER TABLE votes ADD COLUMN IF NOT EXISTS mode INTEGER
         ''')
         cur.execute('''
+            ALTER TABLE votes ADD COLUMN IF NOT EXISTS device TEXT
+        ''')
+        cur.execute('''
             CREATE TABLE IF NOT EXISTS elo_ratings (
                 card_name    TEXT    PRIMARY KEY,
                 rating       REAL    NOT NULL DEFAULT 1500.0,
@@ -417,15 +420,15 @@ def _load_queue_from_db():
     _load_active_queue(row[0] if row else 0)
 
 
-def log_vote(ip, session_id, card_a, card_b, chosen, config_name, queue_id=None, mode=None):
+def log_vote(ip, session_id, card_a, card_b, chosen, config_name, queue_id=None, mode=None, device=None):
     ts = datetime.now(timezone.utc).isoformat()
     with _get_db() as conn:
         cur = conn.cursor()
         cur.execute(
             'INSERT INTO votes '
-            '(timestamp, ip_address, session_id, card_a, card_b, chosen, config_name, queue_id, mode) '
-            'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
-            (ts, ip, session_id, card_a, card_b, chosen, config_name, queue_id, mode),
+            '(timestamp, ip_address, session_id, card_a, card_b, chosen, config_name, queue_id, mode, device) '
+            'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+            (ts, ip, session_id, card_a, card_b, chosen, config_name, queue_id, mode, device),
         )
 
 
@@ -918,6 +921,7 @@ def vote():
         config_name = data.get('config', ''),
         queue_id    = _active_queue_id or None,
         mode        = data.get('mode'),
+        device      = data.get('device'),
     )
 
     winner_elo, loser_elo, delta_w, delta_l = update_elo(chosen, loser)
