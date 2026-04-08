@@ -822,10 +822,13 @@ def stats(token):
         cur.execute('SELECT COUNT(*) FROM votes')
         grand_total = cur.fetchone()[0]
 
-    # Build votes-per-queue table rows
+    # Build votes-per-queue table rows — iterate all known queues so zero-vote queues appear
+    vote_count_map = {qid: total for qid, total in queue_rows}
+    all_qids = sorted(set(list(_queues.keys()) + [qid for qid, _ in queue_rows]))
     queue_table = ''
-    for qid, total_votes in queue_rows:
+    for qid in all_qids:
         q = _queues.get(qid)
+        total_votes = vote_count_map.get(qid, 0)
         qsize  = len(q['cards']) if q else None
         avg    = round(total_votes * 2 / qsize, 2) if qsize else '?'
         active = ' ★' if qid == _active_queue_id else ''
