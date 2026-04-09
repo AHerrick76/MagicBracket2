@@ -77,8 +77,10 @@ if args.status:
 # Determine target
 next_id = args.id if args.id is not None else current_id + 1
 
-if next_id < 1 or next_id > total_queues:
-    print(f'ERROR: queue {next_id} out of range (1–{total_queues}).', file=sys.stderr)
+if next_id not in queue_index:
+    min_id = min(queue_index)
+    max_id = max(queue_index)
+    print(f'ERROR: queue {next_id} out of range ({min_id}–{max_id}).', file=sys.stderr)
     cur.close()
     conn.close()
     sys.exit(1)
