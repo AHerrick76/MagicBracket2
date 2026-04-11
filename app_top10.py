@@ -33,7 +33,7 @@ from psycopg2.pool import ThreadedConnectionPool
 
 import pandas as pd
 from dotenv import load_dotenv
-from flask import Flask, jsonify, render_template, request, send_file, session
+from flask import Flask, jsonify, render_template, request, session
 
 load_dotenv()
 
@@ -279,7 +279,7 @@ def _meta_get(name, col, default=''):
 
 _name_to_layout       = {n: str(_meta_get(n, 'layout'))    for n in _card_names}
 _name_to_type         = {n: str(_meta_get(n, 'type_line')) for n in _card_names}
-_name_to_keywords     = {n: _meta_get(n, 'keywords') or [] for n in _card_names}
+_name_to_keywords     = {n: (list(kw) if (kw := _meta_get(n, 'keywords', None)) is not None and not isinstance(kw, float) else []) for n in _card_names}
 _name_to_set          = {n: str(_meta_get(n, 'set_name'))  for n in _card_names}
 _name_to_year         = {n: pd.to_datetime(_meta_get(n, 'released_at', pd.NaT)).year
                           if pd.notna(_meta_get(n, 'released_at', pd.NaT)) else ''
@@ -468,9 +468,7 @@ def share():
 
 @app.route('/universe')
 def universe():
-    universe_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                 'templates', 'universe.html')
-    return send_file(universe_path)
+    return render_template('universe.html')
 
 
 @app.route('/stats/<token>')
