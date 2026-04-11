@@ -467,13 +467,23 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
 }
 #load-more:hover { border-color: #c9a84c; color: #c9a84c; }
 
+/* ── Back-to-vote link ── */
+.back-link {
+  font-size: 0.68rem; padding: 2px 8px;
+  background: #333; border: 1px solid #555; border-radius: 4px;
+  color: #999; cursor: pointer; white-space: nowrap; text-decoration: none;
+}
+.back-link:hover { border-color: #c9a84c; color: #c9a84c; }
+.back-link-desktop { display: none; }
+
 /* ── Desktop: fixed-width cards, always-visible filter bar ── */
 @media (min-width: 769px) {
-  #filter-bar { max-height: none !important; overflow: visible; }
+  #filter-bar { max-height: none !important; overflow: visible; position: relative; }
   #filter-bar-handle { display: none; }
   #filter-bar-inner { padding-top: 8px; }
   .cols-control, .cols-label { display: none; }
   #grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+  .back-link-desktop { display: inline-block; position: absolute; top: 8px; right: 14px; }
 }
 
 /* ── Mobile: collapsible bar, variable columns ── */
@@ -497,8 +507,10 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
     <span class="handle-left">
       Showing <em id="stats-shown">&hellip;</em> of __TOTAL__
     </span>
+    <a class="back-link" href="/">← Vote</a>
     <button id="filter-toggle-btn">Filters ▲</button>
   </div>
+  <a class="back-link back-link-desktop" href="/">← Vote</a>
 
   <!-- Collapsible filter content -->
   <div id="filter-bar-inner">
