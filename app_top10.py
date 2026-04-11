@@ -476,52 +476,104 @@ def stats(token):
     if token != STATS_TOKEN:
         return 'Not found', 404
 
+    # Load queue sizes from queues.json
+    queues_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'queues.json')
+    with open(queues_path, encoding='utf-8') as _f:
+        _queues_data = json.load(_f)
+    _queue_sizes = {q['id']: len(q['cards']) for q in _queues_data['queues']}
+
     with _get_db() as conn:
         cur = conn.cursor()
 
+        # Top-10% phase total
         cur.execute('SELECT COUNT(*) FROM votes_top10')
-        grand_total = cur.fetchone()[0]
+        top10_total = cur.fetchone()[0]
 
+        # Full-phase votes per queue
+        cur.execute('''
+            SELECT queue_id, COUNT(*) AS total_votes
+            FROM votes
+            WHERE queue_id IS NOT NULL
+            GROUP BY queue_id
+            ORDER BY queue_id
+        ''')
+        queue_rows = cur.fetchall()
+
+        # Full-phase grand total
+        cur.execute('SELECT COUNT(*) FROM votes')
+        full_total = cur.fetchone()[0]
+
+        # Last 24h hourly from top-10% table
         cur.execute('''
             SELECT
-                date_trunc(\'hour\', timestamp::timestamptz AT TIME ZONE \'America/New_York\') AS hour,
+                date_trunc('hour', timestamp::timestamptz AT TIME ZONE 'America/New_York') AS hour,
                 COUNT(*) AS cnt
             FROM votes_top10
-            WHERE timestamp::timestamptz >= NOW() - INTERVAL \'24 hours\'
+            WHERE timestamp::timestamptz >= NOW() - INTERVAL '24 hours'
             GROUP BY 1
             ORDER BY 1
         ''')
         hourly_rows = cur.fetchall()
 
-        cur.execute('''
-            SELECT card_name, rating, wins, losses
-            FROM elo_ratings_top10
-            ORDER BY rating DESC
-            LIMIT 20
-        ''')
-        top_cards = cur.fetchall()
+    # Per-queue table
+    vote_count_map = {qid: total for qid, total in queue_rows}
+    all_qids = sorted(set(list(_queue_sizes.keys()) + [qid for qid, _ in queue_rows]))
+    queue_table = ''
+    for qid in all_qids:
+        total_votes = vote_count_map.get(qid, 0)
+        qsize = _queue_sizes.get(qid)
+        avg = round(total_votes * 2 / qsize, 2) if qsize else '?'
+        qsize_str = f'{qsize:,}' if qsize is not None else '?'
+        avg_str   = f'{avg:,}' if isinstance(avg, float) else avg
+        queue_table += (
+            f'<tr><td>Q{qid}</td>'
+            f'<td style="text-align:right">{qsize_str}</td>'
+            f'<td style="text-align:right">{total_votes:,}</td>'
+            f'<td style="text-align:right">{avg_str}</td></tr>\n'
+        )
 
-    hourly_html = ''.join(
-        f'<tr><td>{h}</td><td>{c}</td></tr>' for h, c in hourly_rows
-    )
-    top_cards_html = ''.join(
-        f'<tr><td>{name}</td><td>{rating:.1f}</td><td>{wins}</td><td>{losses}</td></tr>'
-        for name, rating, wins, losses in top_cards
-    )
+    # Hourly table
+    hourly_table = ''
+    for hour, cnt in hourly_rows:
+        hourly_table += (
+            f'<tr><td>{str(hour)[:16]}</td>'
+            f'<td style="text-align:right">{cnt:,}</td></tr>\n'
+        )
 
-    return f'''
-    <html><body style="font-family:monospace;background:#111;color:#ddd;padding:2rem">
-    <h2>Top-10% bracket stats</h2>
-    <p>Grand total: <strong>{grand_total:,}</strong> votes</p>
-    <h3>Last 24h (hourly)</h3>
-    <table border=1 cellpadding=4>{hourly_html}</table>
-    <h3>Current top 20 by Elo</h3>
-    <table border=1 cellpadding=4>
-      <tr><th>Card</th><th>Elo</th><th>W</th><th>L</th></tr>
-      {top_cards_html}
-    </table>
-    </body></html>
-    '''
+    html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stats</title>
+<style>
+body {{ background:#1a1a1a; color:#ddd; font-family:sans-serif; padding:20px; max-width:520px; margin:0 auto; }}
+h2 {{ color:#c9a84c; margin:24px 0 8px; }}
+table {{ width:100%; border-collapse:collapse; font-size:0.9rem; }}
+th {{ text-align:left; color:#888; border-bottom:1px solid #444; padding:4px 8px; }}
+td {{ padding:4px 8px; border-bottom:1px solid #2a2a2a; }}
+.total {{ color:#c9a84c; font-weight:bold; margin:6px 0 20px; }}
+</style>
+</head>
+<body>
+<h2>Top-10% bracket</h2>
+<p class="total">{top10_total:,} votes</p>
+
+<h2>Vote totals by queue (full phase)</h2>
+<table>
+<tr><th>Queue</th><th style="text-align:right">Size</th><th style="text-align:right">Votes</th><th style="text-align:right">Avg/card</th></tr>
+{queue_table}
+</table>
+<p class="total">Full-phase total: {full_total:,} votes</p>
+
+<h2>Last 24 hours (hourly, ET)</h2>
+<table>
+<tr><th>Hour</th><th style="text-align:right">Votes</th></tr>
+{hourly_table}
+</table>
+</body>
+</html>'''
+    return html
 
 
 @app.route('/api/matchup')
