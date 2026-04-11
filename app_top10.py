@@ -264,6 +264,13 @@ def log_vote(ip, session_id, card_a, card_b, chosen, config_name, device=None):
         )
 
 
+def _client_ip() -> str:
+    xff = request.headers.get('X-Forwarded-For', '')
+    if xff:
+        return xff.split(',')[0].strip()
+    return request.remote_addr
+
+
 def _detect_device(user_agent: str) -> str:
     ua = (user_agent or '').lower()
     if any(t in ua for t in ('mobile', 'android', 'iphone', 'ipad', 'ipod')):
@@ -275,7 +282,7 @@ def log_page_view(page: str):
     '''Record a page view. Called from route handlers; silently swallows errors.'''
     try:
         ts  = datetime.now(timezone.utc).isoformat()
-        ip  = request.headers.get('X-Forwarded-For', request.remote_addr)
+        ip  = _client_ip()
         sid = session.get('session_id')
         dev = _detect_device(request.headers.get('User-Agent', ''))
         with _get_db() as conn:
@@ -673,7 +680,7 @@ def api_vote():
 
     _ensure_session()
     sid = session.get('session_id')
-    ip  = request.headers.get('X-Forwarded-For', request.remote_addr)
+    ip  = _client_ip()
 
     log_vote(ip, sid, card_a, card_b, chosen, cfg, device=device)
 
