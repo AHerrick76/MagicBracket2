@@ -30,7 +30,7 @@ _args = _parser.parse_args()
 if _args.phase == 'top10':
     INITIAL_ELO = 1500.0   # note: top10 uses normalised starting Elos seeded in the DB
     ELO_K       = 32
-    ELO_K_DECAY = 100
+    ELO_K_DECAY = 250
     VOTES_TABLE = 'votes_top10'
     ELO_TABLE   = 'elo_ratings_top10'
 else:

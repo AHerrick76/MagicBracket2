@@ -13,7 +13,7 @@ Differences from app.py (full-queue phase):
   - card_b: inverse-linear soft draw by Elo distance (scale=250)
   - Seen-pair reroll retained at 90%
   - Elo formula clamps implied difference at ±241 (≈ 80/20 max odds)
-  - K=32, K_DECAY=100 (halves at 100 games; all cards start with 0 games played)
+  - K=32, K_DECAY=250 (halves at 250 games; all cards start with 0 games played)
   - Votes written to votes_top10 table; Elos in elo_ratings_top10 table
   - No mode slider (no similarity modes)
   - Elo not shown to user before voting (visible in session log post-vote)
@@ -72,7 +72,7 @@ def _get_db():
 
 INITIAL_ELO         = 1500.0
 ELO_K               = 32
-ELO_K_DECAY         = 100    # K halves after 100 games (vs 30 in full-queue phase)
+ELO_K_DECAY         = 250    # K halves after 250 games (vs 30 in full-queue phase)
 ELO_DIFF_CAP        = 241.0  # clamp implied Elo diff at ±241 (≈ 80/20 max odds)
 
 # card_a weighted shuffle — Elo-percentile multipliers (1.5:1 ratio, symmetric)
