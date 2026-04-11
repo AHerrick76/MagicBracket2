@@ -3,8 +3,10 @@ vote_tempo.py — Plot vote frequency in 10-minute windows over the last 25 hour
 
 Usage:
     DATABASE_URL=postgresql://... python vote_tempo.py
+    DATABASE_URL=postgresql://... python vote_tempo.py --phase top10
 """
 
+import argparse
 import os
 from datetime import datetime, timezone
 import zoneinfo
@@ -17,6 +19,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+_parser = argparse.ArgumentParser()
+_parser.add_argument('--phase', choices=['full', 'top10'], default='full',
+                     help='Which phase to analyse: full (default) or top10')
+_args = _parser.parse_args()
+
+VOTES_TABLE = 'votes_top10' if _args.phase == 'top10' else 'votes'
+print(f'Phase: {_args.phase}  (table={VOTES_TABLE})')
+
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
 if not DATABASE_URL:
     raise RuntimeError('DATABASE_URL environment variable is not set.')
@@ -26,11 +36,11 @@ start = datetime(2025, 4, 1, 18, 0, tzinfo=ET)
 
 conn = psycopg2.connect(DATABASE_URL)
 votes = pd.read_sql(
-    "SELECT timestamp FROM votes WHERE timestamp >= %s",
+    f"SELECT timestamp FROM {VOTES_TABLE} WHERE timestamp >= %s",
     conn, params=(start.isoformat(),), parse_dates=['timestamp']
 )
 all_votes = pd.read_sql(
-    "SELECT timestamp, ip_address FROM votes ORDER BY timestamp",
+    f"SELECT timestamp, ip_address FROM {VOTES_TABLE} ORDER BY timestamp",
     conn, parse_dates=['timestamp']
 )
 conn.close()

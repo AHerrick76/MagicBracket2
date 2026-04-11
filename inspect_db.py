@@ -3,8 +3,10 @@ Load votes and elo_ratings from the database into pandas DataFrames.
 
 Usage:
     DATABASE_URL=postgresql://... python inspect_db.py
+    DATABASE_URL=postgresql://... python inspect_db.py --phase top10
 '''
 
+import argparse
 import json
 import math
 import os
@@ -20,6 +22,15 @@ load_dotenv()
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from parse_data import load_processed_cards
 
+_parser = argparse.ArgumentParser()
+_parser.add_argument('--phase', choices=['full', 'top10'], default='full',
+                     help='Which phase to inspect: full (default) or top10')
+_args = _parser.parse_args()
+
+VOTES_TABLE = 'votes_top10'   if _args.phase == 'top10' else 'votes'
+ELO_TABLE   = 'elo_ratings_top10' if _args.phase == 'top10' else 'elo_ratings'
+print(f'Phase: {_args.phase}  (votes={VOTES_TABLE}, elo={ELO_TABLE})')
+
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
 
 if not DATABASE_URL:
@@ -27,8 +38,8 @@ if not DATABASE_URL:
 
 conn = psycopg2.connect(DATABASE_URL)
 
-votes      = pd.read_sql('SELECT * FROM votes      ORDER BY id',          conn)
-elo        = pd.read_sql('SELECT * FROM elo_ratings ORDER BY rating DESC', conn)
+votes      = pd.read_sql(f'SELECT * FROM {VOTES_TABLE} ORDER BY id',          conn)
+elo        = pd.read_sql(f'SELECT * FROM {ELO_TABLE}   ORDER BY rating DESC', conn)
 
 conn.close()
 

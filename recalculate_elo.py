@@ -2,15 +2,16 @@
 recalculate_elo.py — Replay all votes and rewrite elo_ratings from scratch.
 
 Reads every vote from the database in insertion order (by id), replays the
-Elo formula with the current app.py parameters (flat K, no decay), then
-updates the elo_ratings table in-place.
+Elo formula with the current parameters, then updates the elo table in-place.
 
 Usage:
     DATABASE_URL=postgresql://... python recalculate_elo.py
+    DATABASE_URL=postgresql://... python recalculate_elo.py --phase top10
 
-Safe to re-run: existing elo_ratings rows are overwritten, not duplicated.
+Safe to re-run: existing rows are overwritten, not duplicated.
 """
 
+import argparse
 import os
 import sys
 from dotenv import load_dotenv
@@ -19,11 +20,27 @@ load_dotenv()
 import psycopg2
 from psycopg2.extras import execute_values
 
-# ── Parameters — must match app.py ────────────────────────────────────────────
+_parser = argparse.ArgumentParser()
+_parser.add_argument('--phase', choices=['full', 'top10'], default='full',
+                     help='Which phase to recalculate: full (default) or top10')
+_args = _parser.parse_args()
 
-INITIAL_ELO = 1500.0
-ELO_K       = 32
-ELO_K_DECAY = 30
+# ── Parameters — must match the app for the chosen phase ─────────────────────
+
+if _args.phase == 'top10':
+    INITIAL_ELO = 1500.0   # note: top10 uses normalised starting Elos seeded in the DB
+    ELO_K       = 32
+    ELO_K_DECAY = 100
+    VOTES_TABLE = 'votes_top10'
+    ELO_TABLE   = 'elo_ratings_top10'
+else:
+    INITIAL_ELO = 1500.0
+    ELO_K       = 32
+    ELO_K_DECAY = 30
+    VOTES_TABLE = 'votes'
+    ELO_TABLE   = 'elo_ratings'
+
+print(f'Phase: {_args.phase}  (votes={VOTES_TABLE}, elo={ELO_TABLE})')
 
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
 
@@ -38,7 +55,7 @@ print('Connecting to database...')
 conn = psycopg2.connect(DATABASE_URL)
 cur  = conn.cursor()
 
-cur.execute('SELECT id, card_a, card_b, chosen FROM votes ORDER BY id')
+cur.execute(f'SELECT id, card_a, card_b, chosen FROM {VOTES_TABLE} ORDER BY id')
 votes = cur.fetchall()
 print(f'Loaded {len(votes)} votes.')
 
@@ -90,7 +107,7 @@ rows = [
 print(f'Writing {len(rows)} updated ratings...')
 execute_values(
     cur,
-    '''INSERT INTO elo_ratings (card_name, rating, wins, losses)
+    f'''INSERT INTO {ELO_TABLE} (card_name, rating, wins, losses)
        VALUES %s
        ON CONFLICT (card_name) DO UPDATE SET
            rating       = EXCLUDED.rating,

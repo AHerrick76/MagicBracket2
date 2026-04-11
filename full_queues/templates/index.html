@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top 10% Bracket</title>
+    <title>Magic Ranking v2</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -598,14 +598,13 @@
         <div id="nav-dropdown" role="menu">
             <a href="/faq" role="menuitem">FAQ</a>
             <a href="/share" role="menuitem">Share</a>
-            <a href="/universe" role="menuitem">Universe</a>
         </div>
     </nav>
 
     <header style="display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
-    <h1>Magic Ranking v2 - Top 10% Bracket</h1>
+    <h1>Magic Ranking v2</h1>
     <p id="intro-text" style="max-width:560px; text-align:center; font-size:0.85rem; color:#999; line-height:1.6;">
-        The top 10% of cards from the past decade are competing for a spot in the final 64. Pick the best card in each pair (using any criteria)!
+        Pick your favorite card in each pair! As you vote, our Elo ratings will help find the community's favorite cards of the last decade.
     </p>
     </header>
 
@@ -617,6 +616,9 @@
             </div>
             <span class="card-name" id="name-a"></span>
             <span class="card-set"  id="set-a"></span>
+            <span class="card-elo"  id="elo-a">
+                Elo: <span class="elo-value" id="elo-val-a"></span>
+            </span>
         </div>
 
         <div class="card-slot" id="slot-b">
@@ -626,6 +628,9 @@
             </div>
             <span class="card-name" id="name-b"></span>
             <span class="card-set"  id="set-b"></span>
+            <span class="card-elo"  id="elo-b">
+                Elo: <span class="elo-value" id="elo-val-b"></span>
+            </span>
         </div>
     </div>
 
@@ -638,10 +643,39 @@
     <div id="mobile-nav-links">
         <a id="mobile-faq-link" href="/faq">FAQ →</a>
         <a id="mobile-share-link" href="/share">Share →</a>
-        <a id="mobile-universe-link" href="/universe" style="padding:0.45rem 1.1rem;border:1px solid #444;border-radius:6px;color:#888;text-decoration:none;font-size:0.82rem;letter-spacing:0.03em;">Universe →</a>
     </div>
     <button id="img-scale-btn">Img: Large</button>
 
+    <!-- #controls-row is zero-height on desktop (children are position:fixed).
+         On mobile it becomes a flex row sitting between the title and matchup. -->
+    <div id="controls-row">
+        <div id="mode-control">
+            <div id="mode-header">
+                <span class="label-prefix">Mode:</span>
+                <span id="mode-name">Broad</span>
+            </div>
+            <input type="range" id="mode-slider" min="1" max="4" step="1" value="3">
+            <div id="mode-tick-labels">
+                <span>Similar</span>
+                <span>Diverse</span>
+                <span>Broad</span>
+                <span>Wild</span>
+            </div>
+            <div id="mode-desc">Any card from the closest quarter of the pool — loosely related at most</div>
+        </div>
+
+        <!-- DEV ONLY: closed-loop control — remove before deploying to production -->
+        <div id="closed-loop-control" style="display:none">
+            <div id="closed-loop-header">
+                <span id="closed-loop-status">Full Card List</span>
+                <label class="toggle-wrap">
+                    <input type="checkbox" id="closed-loop-toggle">
+                    <span class="toggle-track"></span>
+                </label>
+            </div>
+            <div id="closed-loop-desc">Use all cards normally</div>
+        </div>
+    </div>
 
     <div id="history-section">
         <div id="session-counter">0 pairs evaluated this session</div>
@@ -651,8 +685,10 @@
     <div id="loading">Loading…</div>
 
     <script>
-        let current  = null;
-        let isVoting = false;   // prevents double-clicks during transition
+        let current    = null;
+        let mode       = 3;
+        let closedLoop = false;
+        let isVoting   = false;   // prevents double-clicks during transition
 
         // Pre-fetch state: next matchup is fetched while user views current pair
         let prefetchedMatchup = null;
@@ -660,15 +696,28 @@
 
         function prefetchNext() {
             prefetchedMatchup = null;
-            prefetchPromise = fetch('/api/matchup')
+            prefetchPromise = fetch(`/api/matchup?mode=${mode}&closed_loop=${closedLoop ? 1 : 0}`)
                 .then(r => r.json())
                 .then(d => { prefetchedMatchup = d; return d; });
         }
 
-        const sessionCounter = document.getElementById('session-counter');
-        const voteHistoryEl  = document.getElementById('vote-history');
+        const MODE_INFO = {
+            1: { name: 'Similar', desc: 'Cards most likely to share a theme or role with your current card' },
+            2: { name: 'Diverse', desc: 'Cards with something in common, but drawn from a wider range of options' },
+            3: { name: 'Broad',   desc: 'Any card from the closest quarter of the pool — loosely related at most' },
+            4: { name: 'Wild',    desc: 'A completely random card — anything could show up' },
+        };
 
-        const HISTORY_KEY = 'voteHistory_top10';
+        const slider          = document.getElementById('mode-slider');
+        const modeName        = document.getElementById('mode-name');
+        const modeDesc        = document.getElementById('mode-desc');
+        const clToggle        = document.getElementById('closed-loop-toggle');
+        const clStatus        = document.getElementById('closed-loop-status');
+        const clDesc          = document.getElementById('closed-loop-desc');
+        const sessionCounter  = document.getElementById('session-counter');
+        const voteHistoryEl   = document.getElementById('vote-history');
+
+        const HISTORY_KEY = 'voteHistory';
         const storedHistory = JSON.parse(sessionStorage.getItem(HISTORY_KEY) || '[]');
         let voteCount = storedHistory.length;
         if (voteCount > 0) {
@@ -680,15 +729,43 @@
             }
         }
 
-        const imgA    = document.getElementById('img-a');
-        const imgB    = document.getElementById('img-b');
-        const nameA   = document.getElementById('name-a');
-        const nameB   = document.getElementById('name-b');
-        const frameA  = document.getElementById('frame-a');
-        const frameB  = document.getElementById('frame-b');
-        const setA    = document.getElementById('set-a');
-        const setB    = document.getElementById('set-b');
-        const preview = document.getElementById('face-preview');
+        function updateModeDisplay() {
+            const info = MODE_INFO[mode];
+            modeName.textContent = info.name;
+            modeDesc.textContent = info.desc;
+        }
+
+        slider.addEventListener('input', () => {
+            mode = parseInt(slider.value);
+            updateModeDisplay();
+            prefetchNext();  // discard stale pre-fetch, start new one with updated mode
+        });
+
+        clToggle.addEventListener('change', () => {
+            closedLoop = clToggle.checked;
+            clStatus.textContent = closedLoop ? 'Closed Loop' : 'Full Card List';
+            clStatus.classList.toggle('active', closedLoop);
+            clDesc.textContent = closedLoop
+                ? `Testing with a fixed pool of 25 cards`
+                : 'Use all cards normally';
+            // Immediately fetch a new matchup with the updated mode
+            setLoading(true);
+            fetch(`/api/matchup?mode=${mode}&closed_loop=${closedLoop ? 1 : 0}`)
+                .then(r => r.json())
+                .then(d => { showMatchup(d); setLoading(false); });
+        });
+
+        const imgA      = document.getElementById('img-a');
+        const imgB      = document.getElementById('img-b');
+        const nameA     = document.getElementById('name-a');
+        const nameB     = document.getElementById('name-b');
+        const frameA    = document.getElementById('frame-a');
+        const frameB    = document.getElementById('frame-b');
+        const setA      = document.getElementById('set-a');
+        const setB      = document.getElementById('set-b');
+        const eloValA   = document.getElementById('elo-val-a');
+        const eloValB   = document.getElementById('elo-val-b');
+        const preview   = document.getElementById('face-preview');
         const prevFront = document.getElementById('preview-front');
         const prevBack  = document.getElementById('preview-back');
         const flipBtnA  = document.getElementById('flip-btn-a');
@@ -769,6 +846,9 @@
             setA.textContent = d.set_a + (d.year_a ? ` (${d.year_a})` : '');
             setB.textContent = d.set_b + (d.year_b ? ` (${d.year_b})` : '');
 
+            eloValA.textContent = Math.round(d.elo_a_current);
+            eloValB.textContent = Math.round(d.elo_b_current);
+
             applyCard(imgA, frameA, nameA, flipBtnA, d.card_a, d.img_a_front, d.img_a_back, d.sideways_a);
             applyCard(imgB, frameB, nameB, flipBtnB, d.card_b, d.img_b_front, d.img_b_back, d.sideways_b);
 
@@ -819,18 +899,20 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    card_a:  cardA,
-                    card_b:  cardB,
-                    chosen:  chosen,
-                    config:  cfg,
-                    device:  deviceLabel,
+                    card_a:      cardA,
+                    card_b:      cardB,
+                    chosen:      chosen,
+                    config:      cfg,
+                    mode:        mode,
+                    closed_loop: closedLoop,
+                    device:      deviceLabel,
                 }),
             }).then(r => r.json());
 
             // Use pre-fetched matchup if ready; otherwise attach to in-flight promise or fetch fresh
             const matchupPromise = prefetchedMatchup
                 ? Promise.resolve(prefetchedMatchup)
-                : (prefetchPromise || fetch('/api/matchup').then(r => r.json()));
+                : (prefetchPromise || fetch(`/api/matchup?mode=${mode}&closed_loop=${closedLoop ? 1 : 0}`).then(r => r.json()));
             prefetchedMatchup = null;
             prefetchPromise   = null;
 
@@ -852,7 +934,7 @@
 
         // Initial matchup
         setLoading(true);
-        fetch('/api/matchup')
+        fetch(`/api/matchup?mode=${mode}&closed_loop=0`)
             .then(r => {
                 if (!r.ok) return r.text().then(t => { throw new Error(`HTTP ${r.status}: ${t}`); });
                 return r.json();

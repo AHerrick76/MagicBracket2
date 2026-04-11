@@ -5,6 +5,7 @@ Usage:
     DATABASE_URL=postgresql://... python votes_analysis.py
     DATABASE_URL=postgresql://... python votes_analysis.py --queue 2
     DATABASE_URL=postgresql://... python votes_analysis.py --queue 2 3 4
+    DATABASE_URL=postgresql://... python votes_analysis.py --phase top10
 """
 
 import argparse
@@ -30,10 +31,16 @@ UB_SETS      = {'spm', 'spe', 'tla', 'tle', 'fic', 'tmt', 'tmc', 'msh', 'msc'}
 UB_SLD_DATE  = '2025-06-13'
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--phase', choices=['full', 'top10'], default='full',
+                    help='Which phase to analyse: full (default) or top10')
 parser.add_argument('--queue',  type=int, nargs='+', default=[2], help='Queue ID(s) to analyse (default: 2)')
 parser.add_argument('--rarity', type=str, nargs='+', default=None,
                     help='Restrict Elo analysis to one or more rarities: common uncommon rare mythic (default: all)')
 args = parser.parse_args()
+
+VOTES_TABLE = 'votes_top10'       if args.phase == 'top10' else 'votes'
+ELO_TABLE   = 'elo_ratings_top10' if args.phase == 'top10' else 'elo_ratings'
+print(f'Phase: {args.phase}  (votes={VOTES_TABLE}, elo={ELO_TABLE})')
 
 queue_ids = args.queue
 label = f'Queue{"s" if len(queue_ids) > 1 else ""} {", ".join(str(q) for q in queue_ids)}'
@@ -83,7 +90,7 @@ df_queue['is_playtest'] = df_queue['is_playtest'].fillna(False).astype(bool)
 
 conn = psycopg2.connect(DATABASE_URL)
 elo  = pd.read_sql(
-    'SELECT card_name, rating, wins, losses FROM elo_ratings',
+    f'SELECT card_name, rating, wins, losses FROM {ELO_TABLE}',
     conn,
 )
 conn.close()
