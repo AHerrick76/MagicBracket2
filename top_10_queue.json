@@ -1,0 +1,7487 @@
+{
+  "generated_at": "2026-04-10T21:56:06.169408",
+  "total_cards": 1496,
+  "grand_mean_elo": 1668.08,
+  "cards": [
+    {
+      "name": "Abhorrent Oculus",
+      "queue_id": 7,
+      "normalized_elo": 1762.01
+    },
+    {
+      "name": "Abigale, Eloquent First-Year",
+      "queue_id": 14,
+      "normalized_elo": 1666.14
+    },
+    {
+      "name": "Abomination of Llanowar",
+      "queue_id": 16,
+      "normalized_elo": 1633.37
+    },
+    {
+      "name": "Abrade",
+      "queue_id": 16,
+      "normalized_elo": 1734.35
+    },
+    {
+      "name": "Abstruse Appropriation",
+      "queue_id": 17,
+      "normalized_elo": 1629.08
+    },
+    {
+      "name": "Abuelo, Ancestral Echo",
+      "queue_id": 17,
+      "normalized_elo": 1655.63
+    },
+    {
+      "name": "Abyssal Harvester",
+      "queue_id": 8,
+      "normalized_elo": 1674.94
+    },
+    {
+      "name": "Academy Manufactor",
+      "queue_id": 16,
+      "normalized_elo": 1711.8
+    },
+    {
+      "name": "Accursed Marauder",
+      "queue_id": 8,
+      "normalized_elo": 1708.27
+    },
+    {
+      "name": "Aclazotz, Deepest Betrayal // Temple of the Dead",
+      "queue_id": 9,
+      "normalized_elo": 1664.99
+    },
+    {
+      "name": "Adagia, Windswept Bastion",
+      "queue_id": 3,
+      "normalized_elo": 1628.74
+    },
+    {
+      "name": "Adeline, Resplendent Cathar",
+      "queue_id": 7,
+      "normalized_elo": 1745.01
+    },
+    {
+      "name": "Admiral Beckett Brass",
+      "queue_id": 10,
+      "normalized_elo": 1670.77
+    },
+    {
+      "name": "Aether Channeler",
+      "queue_id": 17,
+      "normalized_elo": 1650.96
+    },
+    {
+      "name": "Aftermath Analyst",
+      "queue_id": 2,
+      "normalized_elo": 1634.4
+    },
+    {
+      "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
+      "queue_id": 13,
+      "normalized_elo": 1668.37
+    },
+    {
+      "name": "Agatha of the Vile Cauldron",
+      "queue_id": 15,
+      "normalized_elo": 1630.12
+    },
+    {
+      "name": "Agatha's Soul Cauldron",
+      "queue_id": 14,
+      "normalized_elo": 1699.0
+    },
+    {
+      "name": "Agent of Treachery",
+      "queue_id": 10,
+      "normalized_elo": 1661.06
+    },
+    {
+      "name": "Ajani, Nacatl Pariah // Ajani, Nacatl Avenger",
+      "queue_id": 4,
+      "normalized_elo": 1686.3
+    },
+    {
+      "name": "Akroma's Will",
+      "queue_id": 17,
+      "normalized_elo": 1640.95
+    },
+    {
+      "name": "Alela, Artful Provocateur",
+      "queue_id": 12,
+      "normalized_elo": 1671.47
+    },
+    {
+      "name": "Alibou, Ancient Witness",
+      "queue_id": 16,
+      "normalized_elo": 1618.93
+    },
+    {
+      "name": "All That Glitters",
+      "queue_id": 17,
+      "normalized_elo": 1661.7
+    },
+    {
+      "name": "All Will Be One",
+      "queue_id": 8,
+      "normalized_elo": 1662.62
+    },
+    {
+      "name": "All-Out Assault",
+      "queue_id": 13,
+      "normalized_elo": 1627.66
+    },
+    {
+      "name": "Allosaurus Shepherd",
+      "queue_id": 11,
+      "normalized_elo": 1626.35
+    },
+    {
+      "name": "Alrund's Epiphany",
+      "queue_id": 6,
+      "normalized_elo": 1648.32
+    },
+    {
+      "name": "Amalia Benavides Aguirre",
+      "queue_id": 12,
+      "normalized_elo": 1713.23
+    },
+    {
+      "name": "Amphibian Downpour",
+      "queue_id": 17,
+      "normalized_elo": 1632.82
+    },
+    {
+      "name": "An Offer You Can't Refuse",
+      "queue_id": 12,
+      "normalized_elo": 1719.72
+    },
+    {
+      "name": "Anax, Hardened in the Forge",
+      "queue_id": 12,
+      "normalized_elo": 1682.87
+    },
+    {
+      "name": "Ancient Brass Dragon",
+      "queue_id": 17,
+      "normalized_elo": 1658.95
+    },
+    {
+      "name": "Ancient Copper Dragon",
+      "queue_id": 5,
+      "normalized_elo": 1673.82
+    },
+    {
+      "name": "Ancient Greenwarden",
+      "queue_id": 17,
+      "normalized_elo": 1636.59
+    },
+    {
+      "name": "Ancient Imperiosaur",
+      "queue_id": 17,
+      "normalized_elo": 1634.83
+    },
+    {
+      "name": "Ancient Silver Dragon",
+      "queue_id": 12,
+      "normalized_elo": 1643.37
+    },
+    {
+      "name": "Angel of Destiny",
+      "queue_id": 16,
+      "normalized_elo": 1649.41
+    },
+    {
+      "name": "Angel of Grace",
+      "queue_id": 8,
+      "normalized_elo": 1644.06
+    },
+    {
+      "name": "Angel of Suffering",
+      "queue_id": 13,
+      "normalized_elo": 1640.38
+    },
+    {
+      "name": "Angel of the Ruins",
+      "queue_id": 13,
+      "normalized_elo": 1645.49
+    },
+    {
+      "name": "Angrath's Rampage",
+      "queue_id": 12,
+      "normalized_elo": 1633.73
+    },
+    {
+      "name": "Anhelo, the Painter",
+      "queue_id": 17,
+      "normalized_elo": 1653.89
+    },
+    {
+      "name": "Anikthea, Hand of Erebos",
+      "queue_id": 11,
+      "normalized_elo": 1632.45
+    },
+    {
+      "name": "Anim Pakal, Thousandth Moon",
+      "queue_id": 4,
+      "normalized_elo": 1689.35
+    },
+    {
+      "name": "Anointed Procession",
+      "queue_id": 16,
+      "normalized_elo": 1671.89
+    },
+    {
+      "name": "Anticausal Vestige",
+      "queue_id": 13,
+      "normalized_elo": 1709.07
+    },
+    {
+      "name": "Ao, the Dawn Sky",
+      "queue_id": 16,
+      "normalized_elo": 1681.54
+    },
+    {
+      "name": "Apex Devastator",
+      "queue_id": 14,
+      "normalized_elo": 1660.44
+    },
+    {
+      "name": "Approach of the Second Sun",
+      "queue_id": 16,
+      "normalized_elo": 1739.59
+    },
+    {
+      "name": "Arabella, Abandoned Doll",
+      "queue_id": 2,
+      "normalized_elo": 1630.58
+    },
+    {
+      "name": "Arasta of the Endless Web",
+      "queue_id": 16,
+      "normalized_elo": 1658.56
+    },
+    {
+      "name": "Arboreal Grazer",
+      "queue_id": 17,
+      "normalized_elo": 1650.85
+    },
+    {
+      "name": "Arcades, the Strategist",
+      "queue_id": 16,
+      "normalized_elo": 1682.31
+    },
+    {
+      "name": "Arcane Bombardment",
+      "queue_id": 7,
+      "normalized_elo": 1669.85
+    },
+    {
+      "name": "Archaeomancer's Map",
+      "queue_id": 2,
+      "normalized_elo": 1640.53
+    },
+    {
+      "name": "Archangel Elspeth",
+      "queue_id": 16,
+      "normalized_elo": 1671.56
+    },
+    {
+      "name": "Archangel of Wrath",
+      "queue_id": 8,
+      "normalized_elo": 1677.64
+    },
+    {
+      "name": "Archdruid's Charm",
+      "queue_id": 16,
+      "normalized_elo": 1717.54
+    },
+    {
+      "name": "Archelos, Lagoon Mystic",
+      "queue_id": 11,
+      "normalized_elo": 1650.77
+    },
+    {
+      "name": "Archenemy's Charm",
+      "queue_id": 7,
+      "normalized_elo": 1642.19
+    },
+    {
+      "name": "Archfiend of Ifnir",
+      "queue_id": 11,
+      "normalized_elo": 1664.27
+    },
+    {
+      "name": "Archfiend of the Dross",
+      "queue_id": 14,
+      "normalized_elo": 1656.74
+    },
+    {
+      "name": "Archmage Emeritus",
+      "queue_id": 16,
+      "normalized_elo": 1677.17
+    },
+    {
+      "name": "Archmage of Runes",
+      "queue_id": 7,
+      "normalized_elo": 1621.73
+    },
+    {
+      "name": "Archmage's Charm",
+      "queue_id": 11,
+      "normalized_elo": 1710.4
+    },
+    {
+      "name": "Archon of Cruelty",
+      "queue_id": 5,
+      "normalized_elo": 1733.13
+    },
+    {
+      "name": "Archon of Emeria",
+      "queue_id": 13,
+      "normalized_elo": 1671.94
+    },
+    {
+      "name": "Archpriest of Shadows",
+      "queue_id": 5,
+      "normalized_elo": 1641.73
+    },
+    {
+      "name": "Arclight Phoenix",
+      "queue_id": 17,
+      "normalized_elo": 1670.99
+    },
+    {
+      "name": "Arena of Glory",
+      "queue_id": 9,
+      "normalized_elo": 1646.03
+    },
+    {
+      "name": "Argoth, Sanctum of Nature",
+      "queue_id": 17,
+      "normalized_elo": 1643.15
+    },
+    {
+      "name": "Arguel's Blood Fast // Temple of Aclazotz",
+      "queue_id": 6,
+      "normalized_elo": 1622.32
+    },
+    {
+      "name": "Arixmethes, Slumbering Isle",
+      "queue_id": 7,
+      "normalized_elo": 1673.46
+    },
+    {
+      "name": "Arlinn, the Pack's Hope // Arlinn, the Moon's Fury",
+      "queue_id": 17,
+      "normalized_elo": 1628.18
+    },
+    {
+      "name": "Artist's Talent",
+      "queue_id": 10,
+      "normalized_elo": 1654.33
+    },
+    {
+      "name": "Aryel, Knight of Windgrace",
+      "queue_id": 10,
+      "normalized_elo": 1636.38
+    },
+    {
+      "name": "As Foretold",
+      "queue_id": 16,
+      "normalized_elo": 1697.18
+    },
+    {
+      "name": "Ascendant Spirit",
+      "queue_id": 17,
+      "normalized_elo": 1645.19
+    },
+    {
+      "name": "Ashaya, Soul of the Wild",
+      "queue_id": 10,
+      "normalized_elo": 1626.39
+    },
+    {
+      "name": "Ashiok, Dream Render",
+      "queue_id": 12,
+      "normalized_elo": 1681.79
+    },
+    {
+      "name": "Ashnod, Flesh Mechanist",
+      "queue_id": 7,
+      "normalized_elo": 1631.83
+    },
+    {
+      "name": "Asmoranomardicadaistinaculdacar",
+      "queue_id": 2,
+      "normalized_elo": 1649.02
+    },
+    {
+      "name": "Assassin's Trophy",
+      "queue_id": 14,
+      "normalized_elo": 1741.5
+    },
+    {
+      "name": "Astelli Reclaimer",
+      "queue_id": 17,
+      "normalized_elo": 1633.38
+    },
+    {
+      "name": "Astral Dragon",
+      "queue_id": 17,
+      "normalized_elo": 1650.0
+    },
+    {
+      "name": "Athreos, Shroud-Veiled",
+      "queue_id": 16,
+      "normalized_elo": 1662.07
+    },
+    {
+      "name": "Atla Palani, Nest Tender",
+      "queue_id": 17,
+      "normalized_elo": 1631.44
+    },
+    {
+      "name": "Atraxa, Grand Unifier",
+      "queue_id": 7,
+      "normalized_elo": 1742.16
+    },
+    {
+      "name": "Atris, Oracle of Half-Truths",
+      "queue_id": 16,
+      "normalized_elo": 1630.46
+    },
+    {
+      "name": "Atsushi, the Blazing Sky",
+      "queue_id": 14,
+      "normalized_elo": 1650.19
+    },
+    {
+      "name": "Augur of Autumn",
+      "queue_id": 6,
+      "normalized_elo": 1713.43
+    },
+    {
+      "name": "Aurelia, Exemplar of Justice",
+      "queue_id": 2,
+      "normalized_elo": 1693.51
+    },
+    {
+      "name": "Aurora Awakener",
+      "queue_id": 4,
+      "normalized_elo": 1646.4
+    },
+    {
+      "name": "Aven Interrupter",
+      "queue_id": 10,
+      "normalized_elo": 1681.4
+    },
+    {
+      "name": "Awaken the Honored Dead",
+      "queue_id": 4,
+      "normalized_elo": 1649.43
+    },
+    {
+      "name": "Awaken the Woods",
+      "queue_id": 13,
+      "normalized_elo": 1710.73
+    },
+    {
+      "name": "Ayara, First of Locthwain",
+      "queue_id": 9,
+      "normalized_elo": 1704.68
+    },
+    {
+      "name": "Ayara, Widow of the Realm // Ayara, Furnace Queen",
+      "queue_id": 11,
+      "normalized_elo": 1633.98
+    },
+    {
+      "name": "Ayula, Queen Among Bears",
+      "queue_id": 9,
+      "normalized_elo": 1696.28
+    },
+    {
+      "name": "Baba Lysaga, Night Witch",
+      "queue_id": 16,
+      "normalized_elo": 1648.2
+    },
+    {
+      "name": "Back for More",
+      "queue_id": 6,
+      "normalized_elo": 1635.72
+    },
+    {
+      "name": "Bake into a Pie",
+      "queue_id": 12,
+      "normalized_elo": 1649.42
+    },
+    {
+      "name": "Bala Ged Recovery // Bala Ged Sanctuary",
+      "queue_id": 12,
+      "normalized_elo": 1645.66
+    },
+    {
+      "name": "Baleful Mastery",
+      "queue_id": 17,
+      "normalized_elo": 1679.11
+    },
+    {
+      "name": "Balmor, Battlemage Captain",
+      "queue_id": 4,
+      "normalized_elo": 1647.45
+    },
+    {
+      "name": "Baloth Prime",
+      "queue_id": 6,
+      "normalized_elo": 1622.07
+    },
+    {
+      "name": "Barkchannel Pathway // Tidechannel Pathway",
+      "queue_id": 15,
+      "normalized_elo": 1653.76
+    },
+    {
+      "name": "Barrensteppe Siege",
+      "queue_id": 6,
+      "normalized_elo": 1648.11
+    },
+    {
+      "name": "Barrowgoyf",
+      "queue_id": 15,
+      "normalized_elo": 1691.08
+    },
+    {
+      "name": "Basking Broodscale",
+      "queue_id": 14,
+      "normalized_elo": 1658.08
+    },
+    {
+      "name": "Bastion of Remembrance",
+      "queue_id": 10,
+      "normalized_elo": 1742.8
+    },
+    {
+      "name": "Baylen, the Haymaker",
+      "queue_id": 15,
+      "normalized_elo": 1630.5
+    },
+    {
+      "name": "Beanstalk Giant // Fertile Footsteps",
+      "queue_id": 14,
+      "normalized_elo": 1747.23
+    },
+    {
+      "name": "Beast Whisperer",
+      "queue_id": 17,
+      "normalized_elo": 1727.3
+    },
+    {
+      "name": "Bedevil",
+      "queue_id": 6,
+      "normalized_elo": 1701.79
+    },
+    {
+      "name": "Belbe, Corrupted Observer",
+      "queue_id": 5,
+      "normalized_elo": 1633.63
+    },
+    {
+      "name": "Beledros Witherbloom",
+      "queue_id": 16,
+      "normalized_elo": 1763.71
+    },
+    {
+      "name": "Bello, Bard of the Brambles",
+      "queue_id": 3,
+      "normalized_elo": 1629.36
+    },
+    {
+      "name": "Beseech the Mirror",
+      "queue_id": 17,
+      "normalized_elo": 1744.28
+    },
+    {
+      "name": "Betor, Ancestor's Voice",
+      "queue_id": 13,
+      "normalized_elo": 1645.31
+    },
+    {
+      "name": "Beza, the Bounding Spring",
+      "queue_id": 16,
+      "normalized_elo": 1710.67
+    },
+    {
+      "name": "Big Score",
+      "queue_id": 15,
+      "normalized_elo": 1694.63
+    },
+    {
+      "name": "Binding the Old Gods",
+      "queue_id": 5,
+      "normalized_elo": 1722.09
+    },
+    {
+      "name": "Biogenic Ooze",
+      "queue_id": 6,
+      "normalized_elo": 1630.67
+    },
+    {
+      "name": "Biomancer's Familiar",
+      "queue_id": 16,
+      "normalized_elo": 1628.92
+    },
+    {
+      "name": "Birgi, God of Storytelling // Harnfel, Horn of Bounty",
+      "queue_id": 3,
+      "normalized_elo": 1638.52
+    },
+    {
+      "name": "Birthing Ritual",
+      "queue_id": 14,
+      "normalized_elo": 1639.24
+    },
+    {
+      "name": "Bishop of Wings",
+      "queue_id": 9,
+      "normalized_elo": 1627.1
+    },
+    {
+      "name": "Bitter Triumph",
+      "queue_id": 6,
+      "normalized_elo": 1633.38
+    },
+    {
+      "name": "Bitterbloom Bearer",
+      "queue_id": 14,
+      "normalized_elo": 1731.53
+    },
+    {
+      "name": "Black Market Connections",
+      "queue_id": 17,
+      "normalized_elo": 1682.0
+    },
+    {
+      "name": "Black Sun's Twilight",
+      "queue_id": 17,
+      "normalized_elo": 1635.21
+    },
+    {
+      "name": "Blackblade Reforged",
+      "queue_id": 6,
+      "normalized_elo": 1691.97
+    },
+    {
+      "name": "Blade Historian",
+      "queue_id": 4,
+      "normalized_elo": 1661.89
+    },
+    {
+      "name": "Blade of the Oni",
+      "queue_id": 16,
+      "normalized_elo": 1633.81
+    },
+    {
+      "name": "Blasphemous Edict",
+      "queue_id": 6,
+      "normalized_elo": 1727.34
+    },
+    {
+      "name": "Blazing Rootwalla",
+      "queue_id": 16,
+      "normalized_elo": 1627.71
+    },
+    {
+      "name": "Bleachbone Verge",
+      "queue_id": 10,
+      "normalized_elo": 1651.85
+    },
+    {
+      "name": "Blex, Vexing Pest // Search for Blex",
+      "queue_id": 13,
+      "normalized_elo": 1632.42
+    },
+    {
+      "name": "Blink of an Eye",
+      "queue_id": 14,
+      "normalized_elo": 1631.7
+    },
+    {
+      "name": "Blood on the Snow",
+      "queue_id": 16,
+      "normalized_elo": 1653.39
+    },
+    {
+      "name": "Bloodchief's Thirst",
+      "queue_id": 4,
+      "normalized_elo": 1636.85
+    },
+    {
+      "name": "Bloodletter of Aclazotz",
+      "queue_id": 16,
+      "normalized_elo": 1726.74
+    },
+    {
+      "name": "Bloodthirsty Conqueror",
+      "queue_id": 15,
+      "normalized_elo": 1633.31
+    },
+    {
+      "name": "Blossoming Tortoise",
+      "queue_id": 2,
+      "normalized_elo": 1655.62
+    },
+    {
+      "name": "Blot Out the Sky",
+      "queue_id": 17,
+      "normalized_elo": 1665.01
+    },
+    {
+      "name": "Boggart Trawler // Boggart Bog",
+      "queue_id": 12,
+      "normalized_elo": 1630.17
+    },
+    {
+      "name": "Bolas's Citadel",
+      "queue_id": 6,
+      "normalized_elo": 1765.56
+    },
+    {
+      "name": "Bolt Bend",
+      "queue_id": 17,
+      "normalized_elo": 1643.78
+    },
+    {
+      "name": "Bone Shards",
+      "queue_id": 6,
+      "normalized_elo": 1687.3
+    },
+    {
+      "name": "Bonecrusher Giant // Stomp",
+      "queue_id": 8,
+      "normalized_elo": 1710.23
+    },
+    {
+      "name": "Bonehoard Dracosaur",
+      "queue_id": 11,
+      "normalized_elo": 1672.58
+    },
+    {
+      "name": "Bontu the Glorified",
+      "queue_id": 2,
+      "normalized_elo": 1674.65
+    },
+    {
+      "name": "Boon-Bringer Valkyrie",
+      "queue_id": 17,
+      "normalized_elo": 1641.22
+    },
+    {
+      "name": "Borborygmos and Fblthp",
+      "queue_id": 12,
+      "normalized_elo": 1630.13
+    },
+    {
+      "name": "Boseiju, Who Endures",
+      "queue_id": 10,
+      "normalized_elo": 1733.77
+    },
+    {
+      "name": "Bountiful Promenade",
+      "queue_id": 16,
+      "normalized_elo": 1620.0
+    },
+    {
+      "name": "Bounty of the Luxa",
+      "queue_id": 13,
+      "normalized_elo": 1650.98
+    },
+    {
+      "name": "Braids, Arisen Nightmare",
+      "queue_id": 11,
+      "normalized_elo": 1732.69
+    },
+    {
+      "name": "Branching Evolution",
+      "queue_id": 6,
+      "normalized_elo": 1619.49
+    },
+    {
+      "name": "Brass's Bounty",
+      "queue_id": 6,
+      "normalized_elo": 1617.25
+    },
+    {
+      "name": "Brazen Borrower // Petty Theft",
+      "queue_id": 17,
+      "normalized_elo": 1735.59
+    },
+    {
+      "name": "Breach the Multiverse",
+      "queue_id": 2,
+      "normalized_elo": 1691.85
+    },
+    {
+      "name": "Breena, the Demagogue",
+      "queue_id": 17,
+      "normalized_elo": 1702.47
+    },
+    {
+      "name": "Bria, Riptide Rogue",
+      "queue_id": 15,
+      "normalized_elo": 1627.03
+    },
+    {
+      "name": "Brightglass Gearhulk",
+      "queue_id": 17,
+      "normalized_elo": 1706.4
+    },
+    {
+      "name": "Brigid, Clachan's Heart // Brigid, Doun's Mind",
+      "queue_id": 14,
+      "normalized_elo": 1654.01
+    },
+    {
+      "name": "Brilliant Restoration",
+      "queue_id": 15,
+      "normalized_elo": 1640.62
+    },
+    {
+      "name": "Bristly Bill, Spine Sower",
+      "queue_id": 13,
+      "normalized_elo": 1682.13
+    },
+    {
+      "name": "Brokkos, Apex of Forever",
+      "queue_id": 6,
+      "normalized_elo": 1637.3
+    },
+    {
+      "name": "Brotherhood's End",
+      "queue_id": 9,
+      "normalized_elo": 1631.37
+    },
+    {
+      "name": "Brudiclad, Telchor Engineer",
+      "queue_id": 10,
+      "normalized_elo": 1692.8
+    },
+    {
+      "name": "Brutal Cathar // Moonrage Brute",
+      "queue_id": 4,
+      "normalized_elo": 1646.31
+    },
+    {
+      "name": "Buried in the Garden",
+      "queue_id": 16,
+      "normalized_elo": 1639.43
+    },
+    {
+      "name": "Burning-Rune Demon",
+      "queue_id": 13,
+      "normalized_elo": 1623.42
+    },
+    {
+      "name": "Bushwhack",
+      "queue_id": 14,
+      "normalized_elo": 1630.35
+    },
+    {
+      "name": "By Invitation Only",
+      "queue_id": 5,
+      "normalized_elo": 1627.11
+    },
+    {
+      "name": "Cabal Stronghold",
+      "queue_id": 8,
+      "normalized_elo": 1621.62
+    },
+    {
+      "name": "Calamity, Galloping Inferno",
+      "queue_id": 7,
+      "normalized_elo": 1625.15
+    },
+    {
+      "name": "Calix, Destiny's Hand",
+      "queue_id": 4,
+      "normalized_elo": 1632.58
+    },
+    {
+      "name": "Calix, Guided by Fate",
+      "queue_id": 17,
+      "normalized_elo": 1644.9
+    },
+    {
+      "name": "Call of the Death-Dweller",
+      "queue_id": 16,
+      "normalized_elo": 1656.95
+    },
+    {
+      "name": "Cankerbloom",
+      "queue_id": 17,
+      "normalized_elo": 1702.37
+    },
+    {
+      "name": "Captive Audience",
+      "queue_id": 17,
+      "normalized_elo": 1689.08
+    },
+    {
+      "name": "Caretaker's Talent",
+      "queue_id": 2,
+      "normalized_elo": 1680.58
+    },
+    {
+      "name": "Carnage Tyrant",
+      "queue_id": 6,
+      "normalized_elo": 1619.25
+    },
+    {
+      "name": "Carrot Cake",
+      "queue_id": 12,
+      "normalized_elo": 1637.17
+    },
+    {
+      "name": "Castle Locthwain",
+      "queue_id": 14,
+      "normalized_elo": 1695.56
+    },
+    {
+      "name": "Castle Vantress",
+      "queue_id": 5,
+      "normalized_elo": 1637.97
+    },
+    {
+      "name": "Casualties of War",
+      "queue_id": 13,
+      "normalized_elo": 1734.04
+    },
+    {
+      "name": "Cathar Commando",
+      "queue_id": 7,
+      "normalized_elo": 1654.4
+    },
+    {
+      "name": "Cauldron Familiar",
+      "queue_id": 13,
+      "normalized_elo": 1754.88
+    },
+    {
+      "name": "Cavalier of Dawn",
+      "queue_id": 16,
+      "normalized_elo": 1666.15
+    },
+    {
+      "name": "Cavalier of Flame",
+      "queue_id": 13,
+      "normalized_elo": 1642.21
+    },
+    {
+      "name": "Cavalier of Gales",
+      "queue_id": 17,
+      "normalized_elo": 1667.16
+    },
+    {
+      "name": "Cavalier of Night",
+      "queue_id": 6,
+      "normalized_elo": 1678.02
+    },
+    {
+      "name": "Cavalier of Thorns",
+      "queue_id": 15,
+      "normalized_elo": 1704.69
+    },
+    {
+      "name": "Cecil, Dark Knight // Cecil, Redeemed Paladin",
+      "queue_id": 7,
+      "normalized_elo": 1621.83
+    },
+    {
+      "name": "Chainer, Nightmare Adept",
+      "queue_id": 15,
+      "normalized_elo": 1643.48
+    },
+    {
+      "name": "Champion of Dusk",
+      "queue_id": 17,
+      "normalized_elo": 1648.37
+    },
+    {
+      "name": "Champion of the Perished",
+      "queue_id": 9,
+      "normalized_elo": 1648.12
+    },
+    {
+      "name": "Champions of the Perfect",
+      "queue_id": 9,
+      "normalized_elo": 1639.04
+    },
+    {
+      "name": "Chance for Glory",
+      "queue_id": 17,
+      "normalized_elo": 1712.61
+    },
+    {
+      "name": "Chandra's Incinerator",
+      "queue_id": 3,
+      "normalized_elo": 1654.95
+    },
+    {
+      "name": "Chandra, Awakened Inferno",
+      "queue_id": 16,
+      "normalized_elo": 1659.72
+    },
+    {
+      "name": "Chandra, Hope's Beacon",
+      "queue_id": 14,
+      "normalized_elo": 1649.4
+    },
+    {
+      "name": "Changeling Outcast",
+      "queue_id": 3,
+      "normalized_elo": 1634.0
+    },
+    {
+      "name": "Charix, the Raging Isle",
+      "queue_id": 17,
+      "normalized_elo": 1668.75
+    },
+    {
+      "name": "Charming Prince",
+      "queue_id": 17,
+      "normalized_elo": 1668.54
+    },
+    {
+      "name": "Charming Scoundrel",
+      "queue_id": 11,
+      "normalized_elo": 1646.87
+    },
+    {
+      "name": "Chart a Course",
+      "queue_id": 5,
+      "normalized_elo": 1665.35
+    },
+    {
+      "name": "Chatterfang, Squirrel General",
+      "queue_id": 9,
+      "normalized_elo": 1737.78
+    },
+    {
+      "name": "Chatterstorm",
+      "queue_id": 15,
+      "normalized_elo": 1703.26
+    },
+    {
+      "name": "Chimil, the Inner Sun",
+      "queue_id": 16,
+      "normalized_elo": 1674.19
+    },
+    {
+      "name": "Chitterspitter",
+      "queue_id": 4,
+      "normalized_elo": 1647.57
+    },
+    {
+      "name": "Chomping Changeling",
+      "queue_id": 16,
+      "normalized_elo": 1659.46
+    },
+    {
+      "name": "Chromatic Orrery",
+      "queue_id": 15,
+      "normalized_elo": 1643.27
+    },
+    {
+      "name": "Chrome Host Seedshark",
+      "queue_id": 14,
+      "normalized_elo": 1707.33
+    },
+    {
+      "name": "Cindervines",
+      "queue_id": 9,
+      "normalized_elo": 1672.41
+    },
+    {
+      "name": "Circle of Dreams Druid",
+      "queue_id": 8,
+      "normalized_elo": 1654.09
+    },
+    {
+      "name": "City on Fire",
+      "queue_id": 15,
+      "normalized_elo": 1663.09
+    },
+    {
+      "name": "Cityscape Leveler",
+      "queue_id": 3,
+      "normalized_elo": 1655.81
+    },
+    {
+      "name": "Clackbridge Troll",
+      "queue_id": 7,
+      "normalized_elo": 1623.25
+    },
+    {
+      "name": "Claim the Firstborn",
+      "queue_id": 14,
+      "normalized_elo": 1690.52
+    },
+    {
+      "name": "Clarion Conqueror",
+      "queue_id": 7,
+      "normalized_elo": 1678.05
+    },
+    {
+      "name": "Codie, Vociferous Codex",
+      "queue_id": 17,
+      "normalized_elo": 1684.91
+    },
+    {
+      "name": "Colfenor, the Last Yew",
+      "queue_id": 17,
+      "normalized_elo": 1630.63
+    },
+    {
+      "name": "Collector Ouphe",
+      "queue_id": 11,
+      "normalized_elo": 1704.38
+    },
+    {
+      "name": "Colossal Skyturtle",
+      "queue_id": 11,
+      "normalized_elo": 1676.57
+    },
+    {
+      "name": "Colossification",
+      "queue_id": 15,
+      "normalized_elo": 1623.82
+    },
+    {
+      "name": "Colossus Hammer",
+      "queue_id": 14,
+      "normalized_elo": 1734.31
+    },
+    {
+      "name": "Commence the Endgame",
+      "queue_id": 8,
+      "normalized_elo": 1647.85
+    },
+    {
+      "name": "Commercial District",
+      "queue_id": 14,
+      "normalized_elo": 1668.41
+    },
+    {
+      "name": "Commit // Memory",
+      "queue_id": 12,
+      "normalized_elo": 1652.14
+    },
+    {
+      "name": "Commodore Guff",
+      "queue_id": 7,
+      "normalized_elo": 1632.24
+    },
+    {
+      "name": "Conduit of Worlds",
+      "queue_id": 5,
+      "normalized_elo": 1661.95
+    },
+    {
+      "name": "Confounding Riddle",
+      "queue_id": 8,
+      "normalized_elo": 1628.63
+    },
+    {
+      "name": "Consider",
+      "queue_id": 9,
+      "normalized_elo": 1718.98
+    },
+    {
+      "name": "Conspicuous Snoop",
+      "queue_id": 5,
+      "normalized_elo": 1632.84
+    },
+    {
+      "name": "Conspiracy Theorist",
+      "queue_id": 16,
+      "normalized_elo": 1644.21
+    },
+    {
+      "name": "Consult the Star Charts",
+      "queue_id": 5,
+      "normalized_elo": 1696.49
+    },
+    {
+      "name": "Cordial Vampire",
+      "queue_id": 17,
+      "normalized_elo": 1645.82
+    },
+    {
+      "name": "Cori-Steel Cutter",
+      "queue_id": 15,
+      "normalized_elo": 1655.18
+    },
+    {
+      "name": "Coruscation Mage",
+      "queue_id": 13,
+      "normalized_elo": 1646.31
+    },
+    {
+      "name": "Cosima, God of the Voyage // The Omenkeel",
+      "queue_id": 10,
+      "normalized_elo": 1645.15
+    },
+    {
+      "name": "Cosmogoyf",
+      "queue_id": 6,
+      "normalized_elo": 1674.0
+    },
+    {
+      "name": "Cosmogrand Zenith",
+      "queue_id": 16,
+      "normalized_elo": 1660.93
+    },
+    {
+      "name": "Coveted Jewel",
+      "queue_id": 12,
+      "normalized_elo": 1665.59
+    },
+    {
+      "name": "Crabomination",
+      "queue_id": 3,
+      "normalized_elo": 1670.6
+    },
+    {
+      "name": "Crackle with Power",
+      "queue_id": 2,
+      "normalized_elo": 1652.78
+    },
+    {
+      "name": "Crackling Drake",
+      "queue_id": 6,
+      "normalized_elo": 1669.95
+    },
+    {
+      "name": "Crafty Cutpurse",
+      "queue_id": 17,
+      "normalized_elo": 1649.16
+    },
+    {
+      "name": "Cranial Ram",
+      "queue_id": 9,
+      "normalized_elo": 1654.29
+    },
+    {
+      "name": "Crashing Footfalls",
+      "queue_id": 3,
+      "normalized_elo": 1639.86
+    },
+    {
+      "name": "Creative Outburst",
+      "queue_id": 17,
+      "normalized_elo": 1658.15
+    },
+    {
+      "name": "Croaking Counterpart",
+      "queue_id": 15,
+      "normalized_elo": 1629.78
+    },
+    {
+      "name": "Cruel Somnophage // Can't Wake Up",
+      "queue_id": 16,
+      "normalized_elo": 1637.64
+    },
+    {
+      "name": "Cryogen Relic",
+      "queue_id": 14,
+      "normalized_elo": 1645.62
+    },
+    {
+      "name": "Cryptic Coat",
+      "queue_id": 7,
+      "normalized_elo": 1623.95
+    },
+    {
+      "name": "Culling Ritual",
+      "queue_id": 3,
+      "normalized_elo": 1715.8
+    },
+    {
+      "name": "Cultivator Colossus",
+      "queue_id": 6,
+      "normalized_elo": 1664.8
+    },
+    {
+      "name": "Cunning Nightbonder",
+      "queue_id": 17,
+      "normalized_elo": 1640.92
+    },
+    {
+      "name": "Curiosity Crafter",
+      "queue_id": 8,
+      "normalized_elo": 1666.37
+    },
+    {
+      "name": "Curious Colossus",
+      "queue_id": 14,
+      "normalized_elo": 1640.18
+    },
+    {
+      "name": "Currency Converter",
+      "queue_id": 14,
+      "normalized_elo": 1660.24
+    },
+    {
+      "name": "Cursed Mirror",
+      "queue_id": 17,
+      "normalized_elo": 1675.96
+    },
+    {
+      "name": "Cut // Ribbons",
+      "queue_id": 13,
+      "normalized_elo": 1648.62
+    },
+    {
+      "name": "Cut Down",
+      "queue_id": 11,
+      "normalized_elo": 1752.93
+    },
+    {
+      "name": "Dakkon, Shadow Slayer",
+      "queue_id": 15,
+      "normalized_elo": 1651.2
+    },
+    {
+      "name": "Damn",
+      "queue_id": 5,
+      "normalized_elo": 1802.43
+    },
+    {
+      "name": "Danitha, Benalia's Hope",
+      "queue_id": 6,
+      "normalized_elo": 1623.46
+    },
+    {
+      "name": "Darkbore Pathway // Slitherbore Pathway",
+      "queue_id": 10,
+      "normalized_elo": 1623.78
+    },
+    {
+      "name": "Darkstar Augur",
+      "queue_id": 4,
+      "normalized_elo": 1668.43
+    },
+    {
+      "name": "Dauthi Voidwalker",
+      "queue_id": 2,
+      "normalized_elo": 1743.98
+    },
+    {
+      "name": "Dead of Winter",
+      "queue_id": 11,
+      "normalized_elo": 1625.27
+    },
+    {
+      "name": "Deathsprout",
+      "queue_id": 5,
+      "normalized_elo": 1631.52
+    },
+    {
+      "name": "Decadent Dragon // Expensive Taste",
+      "queue_id": 5,
+      "normalized_elo": 1654.77
+    },
+    {
+      "name": "Deceit",
+      "queue_id": 16,
+      "normalized_elo": 1720.3
+    },
+    {
+      "name": "Deep-Cavern Bat",
+      "queue_id": 14,
+      "normalized_elo": 1648.66
+    },
+    {
+      "name": "Defiler of Dreams",
+      "queue_id": 4,
+      "normalized_elo": 1637.94
+    },
+    {
+      "name": "Deflecting Swat",
+      "queue_id": 17,
+      "normalized_elo": 1703.59
+    },
+    {
+      "name": "Delayed Blast Fireball",
+      "queue_id": 7,
+      "normalized_elo": 1636.34
+    },
+    {
+      "name": "Delina, Wild Mage",
+      "queue_id": 8,
+      "normalized_elo": 1641.81
+    },
+    {
+      "name": "Delney, Streetwise Lookout",
+      "queue_id": 6,
+      "normalized_elo": 1676.12
+    },
+    {
+      "name": "Demonic Counsel",
+      "queue_id": 6,
+      "normalized_elo": 1618.32
+    },
+    {
+      "name": "Demonic Embrace",
+      "queue_id": 16,
+      "normalized_elo": 1625.92
+    },
+    {
+      "name": "Demonlord Belzenlok",
+      "queue_id": 13,
+      "normalized_elo": 1691.86
+    },
+    {
+      "name": "Descent into Avernus",
+      "queue_id": 17,
+      "normalized_elo": 1693.92
+    },
+    {
+      "name": "Destiny Spinner",
+      "queue_id": 2,
+      "normalized_elo": 1630.62
+    },
+    {
+      "name": "Detective's Phoenix",
+      "queue_id": 6,
+      "normalized_elo": 1643.32
+    },
+    {
+      "name": "Devilish Valet",
+      "queue_id": 13,
+      "normalized_elo": 1648.68
+    },
+    {
+      "name": "Dihada, Binder of Wills",
+      "queue_id": 17,
+      "normalized_elo": 1640.47
+    },
+    {
+      "name": "Dina, Soul Steeper",
+      "queue_id": 17,
+      "normalized_elo": 1675.11
+    },
+    {
+      "name": "Dire Fleet Daredevil",
+      "queue_id": 11,
+      "normalized_elo": 1623.42
+    },
+    {
+      "name": "Disa the Restless",
+      "queue_id": 8,
+      "normalized_elo": 1649.56
+    },
+    {
+      "name": "Disallow",
+      "queue_id": 17,
+      "normalized_elo": 1689.87
+    },
+    {
+      "name": "Disciple of Freyalise // Garden of Freyalise",
+      "queue_id": 15,
+      "normalized_elo": 1702.0
+    },
+    {
+      "name": "Discontinuity",
+      "queue_id": 17,
+      "normalized_elo": 1659.85
+    },
+    {
+      "name": "Disinformation Campaign",
+      "queue_id": 16,
+      "normalized_elo": 1622.34
+    },
+    {
+      "name": "Displacer Kitten",
+      "queue_id": 5,
+      "normalized_elo": 1786.5
+    },
+    {
+      "name": "Divide by Zero",
+      "queue_id": 7,
+      "normalized_elo": 1641.21
+    },
+    {
+      "name": "Divine Visitation",
+      "queue_id": 16,
+      "normalized_elo": 1655.96
+    },
+    {
+      "name": "Doc Aurlock, Grizzled Genius",
+      "queue_id": 15,
+      "normalized_elo": 1645.82
+    },
+    {
+      "name": "Domri, Anarch of Bolas",
+      "queue_id": 16,
+      "normalized_elo": 1621.49
+    },
+    {
+      "name": "Doom Foretold",
+      "queue_id": 14,
+      "normalized_elo": 1687.36
+    },
+    {
+      "name": "Doom Whisperer",
+      "queue_id": 6,
+      "normalized_elo": 1675.97
+    },
+    {
+      "name": "Doomsday Excruciator",
+      "queue_id": 15,
+      "normalized_elo": 1704.96
+    },
+    {
+      "name": "Doomskar",
+      "queue_id": 4,
+      "normalized_elo": 1643.94
+    },
+    {
+      "name": "Doppelgang",
+      "queue_id": 9,
+      "normalized_elo": 1673.11
+    },
+    {
+      "name": "Doran, Besieged by Time",
+      "queue_id": 5,
+      "normalized_elo": 1692.17
+    },
+    {
+      "name": "Dour Port-Mage",
+      "queue_id": 14,
+      "normalized_elo": 1651.55
+    },
+    {
+      "name": "Dovin's Veto",
+      "queue_id": 17,
+      "normalized_elo": 1659.45
+    },
+    {
+      "name": "Dragon's Rage Channeler",
+      "queue_id": 14,
+      "normalized_elo": 1727.9
+    },
+    {
+      "name": "Dragonback Assault",
+      "queue_id": 7,
+      "normalized_elo": 1664.25
+    },
+    {
+      "name": "Dragonhawk, Fate's Tempest",
+      "queue_id": 4,
+      "normalized_elo": 1664.83
+    },
+    {
+      "name": "Drakuseth, Maw of Flames",
+      "queue_id": 15,
+      "normalized_elo": 1648.58
+    },
+    {
+      "name": "Drana and Linvala",
+      "queue_id": 11,
+      "normalized_elo": 1668.32
+    },
+    {
+      "name": "Drana, the Last Bloodchief",
+      "queue_id": 12,
+      "normalized_elo": 1650.44
+    },
+    {
+      "name": "Dread Presence",
+      "queue_id": 13,
+      "normalized_elo": 1657.02
+    },
+    {
+      "name": "Dreadhorde Arcanist",
+      "queue_id": 17,
+      "normalized_elo": 1631.91
+    },
+    {
+      "name": "Dreadhorde Butcher",
+      "queue_id": 16,
+      "normalized_elo": 1640.81
+    },
+    {
+      "name": "Dreadhorde Invasion",
+      "queue_id": 12,
+      "normalized_elo": 1648.66
+    },
+    {
+      "name": "Dream Trawler",
+      "queue_id": 5,
+      "normalized_elo": 1683.14
+    },
+    {
+      "name": "Dreamtide Whale",
+      "queue_id": 7,
+      "normalized_elo": 1674.21
+    },
+    {
+      "name": "Dress Down",
+      "queue_id": 11,
+      "normalized_elo": 1660.64
+    },
+    {
+      "name": "Drivnod, Carnage Dominus",
+      "queue_id": 5,
+      "normalized_elo": 1629.46
+    },
+    {
+      "name": "Drown in the Loch",
+      "queue_id": 10,
+      "normalized_elo": 1728.7
+    },
+    {
+      "name": "Dryad of the Ilysian Grove",
+      "queue_id": 15,
+      "normalized_elo": 1730.19
+    },
+    {
+      "name": "Dusk // Dawn",
+      "queue_id": 17,
+      "normalized_elo": 1662.36
+    },
+    {
+      "name": "Echo of Eons",
+      "queue_id": 3,
+      "normalized_elo": 1668.97
+    },
+    {
+      "name": "Eddymurk Crab",
+      "queue_id": 4,
+      "normalized_elo": 1660.17
+    },
+    {
+      "name": "Edgar Markov",
+      "queue_id": 13,
+      "normalized_elo": 1633.92
+    },
+    {
+      "name": "Eerie Ultimatum",
+      "queue_id": 5,
+      "normalized_elo": 1708.09
+    },
+    {
+      "name": "Eiganjo, Seat of the Empire",
+      "queue_id": 2,
+      "normalized_elo": 1637.75
+    },
+    {
+      "name": "Eirdu, Carrier of Dawn // Isilu, Carrier of Twilight",
+      "queue_id": 10,
+      "normalized_elo": 1723.02
+    },
+    {
+      "name": "Elas il-Kor, Sadistic Pilgrim",
+      "queue_id": 6,
+      "normalized_elo": 1690.68
+    },
+    {
+      "name": "Elder Gargaroth",
+      "queue_id": 16,
+      "normalized_elo": 1716.24
+    },
+    {
+      "name": "Electrodominance",
+      "queue_id": 3,
+      "normalized_elo": 1643.04
+    },
+    {
+      "name": "Elegant Parlor",
+      "queue_id": 13,
+      "normalized_elo": 1636.9
+    },
+    {
+      "name": "Elegy Acolyte",
+      "queue_id": 11,
+      "normalized_elo": 1640.83
+    },
+    {
+      "name": "Elenda, Saint of Dusk",
+      "queue_id": 9,
+      "normalized_elo": 1664.16
+    },
+    {
+      "name": "Elenda, the Dusk Rose",
+      "queue_id": 11,
+      "normalized_elo": 1684.12
+    },
+    {
+      "name": "Elesh Norn // The Argent Etchings",
+      "queue_id": 16,
+      "normalized_elo": 1674.55
+    },
+    {
+      "name": "Elesh Norn, Mother of Machines",
+      "queue_id": 17,
+      "normalized_elo": 1725.26
+    },
+    {
+      "name": "Elite Spellbinder",
+      "queue_id": 7,
+      "normalized_elo": 1648.49
+    },
+    {
+      "name": "Elsha of the Infinite",
+      "queue_id": 13,
+      "normalized_elo": 1630.21
+    },
+    {
+      "name": "Elspeth Conquers Death",
+      "queue_id": 6,
+      "normalized_elo": 1741.72
+    },
+    {
+      "name": "Elspeth Resplendent",
+      "queue_id": 12,
+      "normalized_elo": 1665.98
+    },
+    {
+      "name": "Elspeth, Storm Slayer",
+      "queue_id": 6,
+      "normalized_elo": 1725.69
+    },
+    {
+      "name": "Elspeth, Sun's Nemesis",
+      "queue_id": 16,
+      "normalized_elo": 1676.86
+    },
+    {
+      "name": "Eluge, the Shoreless Sea",
+      "queue_id": 6,
+      "normalized_elo": 1680.26
+    },
+    {
+      "name": "Elvish Reclaimer",
+      "queue_id": 13,
+      "normalized_elo": 1655.34
+    },
+    {
+      "name": "Elvish Warmaster",
+      "queue_id": 3,
+      "normalized_elo": 1641.42
+    },
+    {
+      "name": "Embercleave",
+      "queue_id": 15,
+      "normalized_elo": 1789.33
+    },
+    {
+      "name": "Emberheart Challenger",
+      "queue_id": 8,
+      "normalized_elo": 1669.11
+    },
+    {
+      "name": "Emergent Ultimatum",
+      "queue_id": 15,
+      "normalized_elo": 1662.8
+    },
+    {
+      "name": "Emeria's Call // Emeria, Shattered Skyclave",
+      "queue_id": 16,
+      "normalized_elo": 1650.31
+    },
+    {
+      "name": "Emperor of Bones",
+      "queue_id": 11,
+      "normalized_elo": 1680.94
+    },
+    {
+      "name": "Emptiness",
+      "queue_id": 17,
+      "normalized_elo": 1744.27
+    },
+    {
+      "name": "Emrakul, the World Anew",
+      "queue_id": 16,
+      "normalized_elo": 1625.96
+    },
+    {
+      "name": "Emry, Lurker of the Loch",
+      "queue_id": 13,
+      "normalized_elo": 1765.11
+    },
+    {
+      "name": "End-Raze Forerunners",
+      "queue_id": 12,
+      "normalized_elo": 1634.82
+    },
+    {
+      "name": "Endurance",
+      "queue_id": 16,
+      "normalized_elo": 1703.31
+    },
+    {
+      "name": "Enduring Courage",
+      "queue_id": 10,
+      "normalized_elo": 1643.15
+    },
+    {
+      "name": "Enduring Curiosity",
+      "queue_id": 4,
+      "normalized_elo": 1748.43
+    },
+    {
+      "name": "Enduring Innocence",
+      "queue_id": 8,
+      "normalized_elo": 1723.33
+    },
+    {
+      "name": "Enduring Tenacity",
+      "queue_id": 11,
+      "normalized_elo": 1681.74
+    },
+    {
+      "name": "Enduring Vitality",
+      "queue_id": 5,
+      "normalized_elo": 1676.06
+    },
+    {
+      "name": "Enigmatic Incarnation",
+      "queue_id": 16,
+      "normalized_elo": 1638.33
+    },
+    {
+      "name": "Enter the God-Eternals",
+      "queue_id": 15,
+      "normalized_elo": 1617.46
+    },
+    {
+      "name": "Entreat the Dead",
+      "queue_id": 17,
+      "normalized_elo": 1631.75
+    },
+    {
+      "name": "Ephemerate",
+      "queue_id": 10,
+      "normalized_elo": 1809.2
+    },
+    {
+      "name": "Eradicator Valkyrie",
+      "queue_id": 17,
+      "normalized_elo": 1651.17
+    },
+    {
+      "name": "Erebos, Bleak-Hearted",
+      "queue_id": 6,
+      "normalized_elo": 1669.22
+    },
+    {
+      "name": "Eriette of the Charmed Apple",
+      "queue_id": 7,
+      "normalized_elo": 1712.13
+    },
+    {
+      "name": "Errant and Giada",
+      "queue_id": 10,
+      "normalized_elo": 1625.64
+    },
+    {
+      "name": "Ertai Resurrected",
+      "queue_id": 13,
+      "normalized_elo": 1715.33
+    },
+    {
+      "name": "Eruth, Tormented Prophet",
+      "queue_id": 14,
+      "normalized_elo": 1632.45
+    },
+    {
+      "name": "Escape to the Wilds",
+      "queue_id": 17,
+      "normalized_elo": 1686.87
+    },
+    {
+      "name": "Esika's Chariot",
+      "queue_id": 5,
+      "normalized_elo": 1703.92
+    },
+    {
+      "name": "Esika, God of the Tree // The Prismatic Bridge",
+      "queue_id": 11,
+      "normalized_elo": 1666.71
+    },
+    {
+      "name": "Esix, Fractal Bloom",
+      "queue_id": 6,
+      "normalized_elo": 1646.65
+    },
+    {
+      "name": "Esper Sentinel",
+      "queue_id": 3,
+      "normalized_elo": 1701.33
+    },
+    {
+      "name": "Etali, Primal Conqueror // Etali, Primal Sickness",
+      "queue_id": 17,
+      "normalized_elo": 1703.92
+    },
+    {
+      "name": "Etali, Primal Storm",
+      "queue_id": 16,
+      "normalized_elo": 1689.08
+    },
+    {
+      "name": "Ethereal Forager",
+      "queue_id": 17,
+      "normalized_elo": 1627.43
+    },
+    {
+      "name": "Etrata, the Silencer",
+      "queue_id": 10,
+      "normalized_elo": 1643.12
+    },
+    {
+      "name": "Evolution Sage",
+      "queue_id": 6,
+      "normalized_elo": 1706.81
+    },
+    {
+      "name": "Evolution Witness",
+      "queue_id": 9,
+      "normalized_elo": 1638.46
+    },
+    {
+      "name": "Exalted Sunborn",
+      "queue_id": 14,
+      "normalized_elo": 1675.62
+    },
+    {
+      "name": "Exemplar of Light",
+      "queue_id": 3,
+      "normalized_elo": 1633.03
+    },
+    {
+      "name": "Expansion // Explosion",
+      "queue_id": 4,
+      "normalized_elo": 1705.86
+    },
+    {
+      "name": "Experimental Frenzy",
+      "queue_id": 17,
+      "normalized_elo": 1652.68
+    },
+    {
+      "name": "Experimental Synthesizer",
+      "queue_id": 17,
+      "normalized_elo": 1657.69
+    },
+    {
+      "name": "Expressive Iteration",
+      "queue_id": 4,
+      "normalized_elo": 1744.03
+    },
+    {
+      "name": "Extinction Event",
+      "queue_id": 4,
+      "normalized_elo": 1667.31
+    },
+    {
+      "name": "Extus, Oriq Overlord // Awaken the Blood Avatar",
+      "queue_id": 16,
+      "normalized_elo": 1636.6
+    },
+    {
+      "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "queue_id": 17,
+      "normalized_elo": 1740.47
+    },
+    {
+      "name": "Fabled Passage",
+      "queue_id": 16,
+      "normalized_elo": 1741.83
+    },
+    {
+      "name": "Fade from History",
+      "queue_id": 17,
+      "normalized_elo": 1631.23
+    },
+    {
+      "name": "Fading Hope",
+      "queue_id": 16,
+      "normalized_elo": 1670.22
+    },
+    {
+      "name": "Fae of Wishes // Granted",
+      "queue_id": 16,
+      "normalized_elo": 1653.76
+    },
+    {
+      "name": "Faeburrow Elder",
+      "queue_id": 10,
+      "normalized_elo": 1694.27
+    },
+    {
+      "name": "Faerie Mastermind",
+      "queue_id": 16,
+      "normalized_elo": 1676.82
+    },
+    {
+      "name": "Faithful Mending",
+      "queue_id": 8,
+      "normalized_elo": 1639.74
+    },
+    {
+      "name": "Falco Spara, Pactweaver",
+      "queue_id": 16,
+      "normalized_elo": 1662.45
+    },
+    {
+      "name": "Faldorn, Dread Wolf Herald",
+      "queue_id": 7,
+      "normalized_elo": 1629.69
+    },
+    {
+      "name": "Fallen Shinobi",
+      "queue_id": 7,
+      "normalized_elo": 1678.28
+    },
+    {
+      "name": "Famished Worldsire",
+      "queue_id": 17,
+      "normalized_elo": 1714.55
+    },
+    {
+      "name": "Fanatic of Rhonas",
+      "queue_id": 7,
+      "normalized_elo": 1728.18
+    },
+    {
+      "name": "Fangkeeper's Familiar",
+      "queue_id": 16,
+      "normalized_elo": 1645.38
+    },
+    {
+      "name": "Farewell",
+      "queue_id": 9,
+      "normalized_elo": 1741.05
+    },
+    {
+      "name": "Fatal Push",
+      "queue_id": 10,
+      "normalized_elo": 1684.62
+    },
+    {
+      "name": "Fateful Absence",
+      "queue_id": 16,
+      "normalized_elo": 1666.73
+    },
+    {
+      "name": "Fblthp, the Lost",
+      "queue_id": 14,
+      "normalized_elo": 1649.73
+    },
+    {
+      "name": "Fear of Missing Out",
+      "queue_id": 6,
+      "normalized_elo": 1709.23
+    },
+    {
+      "name": "Feasting Troll King",
+      "queue_id": 12,
+      "normalized_elo": 1644.43
+    },
+    {
+      "name": "Fecund Greenshell",
+      "queue_id": 14,
+      "normalized_elo": 1708.02
+    },
+    {
+      "name": "Feed the Swarm",
+      "queue_id": 8,
+      "normalized_elo": 1668.49
+    },
+    {
+      "name": "Felidar Guardian",
+      "queue_id": 12,
+      "normalized_elo": 1664.17
+    },
+    {
+      "name": "Felidar Retreat",
+      "queue_id": 8,
+      "normalized_elo": 1675.92
+    },
+    {
+      "name": "Fell",
+      "queue_id": 11,
+      "normalized_elo": 1621.62
+    },
+    {
+      "name": "Fell the Profane // Fell Mire",
+      "queue_id": 14,
+      "normalized_elo": 1644.02
+    },
+    {
+      "name": "Field of the Dead",
+      "queue_id": 14,
+      "normalized_elo": 1731.51
+    },
+    {
+      "name": "Fiend Artisan",
+      "queue_id": 16,
+      "normalized_elo": 1664.85
+    },
+    {
+      "name": "Fiery Emancipation",
+      "queue_id": 7,
+      "normalized_elo": 1651.76
+    },
+    {
+      "name": "Fiery Islet",
+      "queue_id": 11,
+      "normalized_elo": 1635.71
+    },
+    {
+      "name": "Fighter Class",
+      "queue_id": 7,
+      "normalized_elo": 1625.23
+    },
+    {
+      "name": "Figure of Fable",
+      "queue_id": 15,
+      "normalized_elo": 1667.37
+    },
+    {
+      "name": "Final Showdown",
+      "queue_id": 5,
+      "normalized_elo": 1685.92
+    },
+    {
+      "name": "Finale of Devastation",
+      "queue_id": 8,
+      "normalized_elo": 1705.16
+    },
+    {
+      "name": "Finale of Glory",
+      "queue_id": 8,
+      "normalized_elo": 1636.61
+    },
+    {
+      "name": "Find // Finality",
+      "queue_id": 17,
+      "normalized_elo": 1649.92
+    },
+    {
+      "name": "Firebrand Archer",
+      "queue_id": 11,
+      "normalized_elo": 1633.37
+    },
+    {
+      "name": "Fires of Invention",
+      "queue_id": 8,
+      "normalized_elo": 1677.15
+    },
+    {
+      "name": "Flame of Anor",
+      "queue_id": 7,
+      "normalized_elo": 1639.03
+    },
+    {
+      "name": "Flare of Fortitude",
+      "queue_id": 16,
+      "normalized_elo": 1621.0
+    },
+    {
+      "name": "Flare of Malice",
+      "queue_id": 12,
+      "normalized_elo": 1651.43
+    },
+    {
+      "name": "Flubs, the Fool",
+      "queue_id": 9,
+      "normalized_elo": 1742.58
+    },
+    {
+      "name": "Flux Channeler",
+      "queue_id": 15,
+      "normalized_elo": 1616.89
+    },
+    {
+      "name": "Fomori Vault",
+      "queue_id": 13,
+      "normalized_elo": 1643.12
+    },
+    {
+      "name": "Force of Despair",
+      "queue_id": 13,
+      "normalized_elo": 1684.62
+    },
+    {
+      "name": "Force of Negation",
+      "queue_id": 17,
+      "normalized_elo": 1690.34
+    },
+    {
+      "name": "Force of Vigor",
+      "queue_id": 17,
+      "normalized_elo": 1645.66
+    },
+    {
+      "name": "Formidable Speaker",
+      "queue_id": 7,
+      "normalized_elo": 1752.12
+    },
+    {
+      "name": "Forsaken Monument",
+      "queue_id": 4,
+      "normalized_elo": 1646.58
+    },
+    {
+      "name": "Forth Eorlingas!",
+      "queue_id": 8,
+      "normalized_elo": 1634.78
+    },
+    {
+      "name": "Foundation Breaker",
+      "queue_id": 4,
+      "normalized_elo": 1695.04
+    },
+    {
+      "name": "Fountainport",
+      "queue_id": 14,
+      "normalized_elo": 1655.16
+    },
+    {
+      "name": "Fracture",
+      "queue_id": 7,
+      "normalized_elo": 1623.6
+    },
+    {
+      "name": "Fractured Identity",
+      "queue_id": 16,
+      "normalized_elo": 1685.05
+    },
+    {
+      "name": "Freestrider Lookout",
+      "queue_id": 6,
+      "normalized_elo": 1640.03
+    },
+    {
+      "name": "Frenzied Baloth",
+      "queue_id": 6,
+      "normalized_elo": 1650.96
+    },
+    {
+      "name": "Frogify",
+      "queue_id": 13,
+      "normalized_elo": 1625.1
+    },
+    {
+      "name": "Fury",
+      "queue_id": 3,
+      "normalized_elo": 1777.23
+    },
+    {
+      "name": "Fynn, the Fangbearer",
+      "queue_id": 9,
+      "normalized_elo": 1673.12
+    },
+    {
+      "name": "Gala Greeters",
+      "queue_id": 17,
+      "normalized_elo": 1678.23
+    },
+    {
+      "name": "Galazeth Prismari",
+      "queue_id": 15,
+      "normalized_elo": 1663.81
+    },
+    {
+      "name": "Gargos, Vicious Watcher",
+      "queue_id": 6,
+      "normalized_elo": 1630.38
+    },
+    {
+      "name": "Garruk's Uprising",
+      "queue_id": 7,
+      "normalized_elo": 1682.21
+    },
+    {
+      "name": "Garruk, Cursed Huntsman",
+      "queue_id": 7,
+      "normalized_elo": 1638.81
+    },
+    {
+      "name": "Garth One-Eye",
+      "queue_id": 10,
+      "normalized_elo": 1628.84
+    },
+    {
+      "name": "General Kudro of Drannith",
+      "queue_id": 9,
+      "normalized_elo": 1628.63
+    },
+    {
+      "name": "Generous Plunderer",
+      "queue_id": 8,
+      "normalized_elo": 1668.83
+    },
+    {
+      "name": "Genesis Ultimatum",
+      "queue_id": 4,
+      "normalized_elo": 1662.05
+    },
+    {
+      "name": "Get Lost",
+      "queue_id": 5,
+      "normalized_elo": 1665.17
+    },
+    {
+      "name": "Geyadrone Dihada",
+      "queue_id": 17,
+      "normalized_elo": 1646.93
+    },
+    {
+      "name": "Ghalta, Primal Hunger",
+      "queue_id": 2,
+      "normalized_elo": 1729.05
+    },
+    {
+      "name": "Ghalta, Stampede Tyrant",
+      "queue_id": 16,
+      "normalized_elo": 1711.5
+    },
+    {
+      "name": "Ghostly Pilferer",
+      "queue_id": 8,
+      "normalized_elo": 1647.27
+    },
+    {
+      "name": "Giada, Font of Hope",
+      "queue_id": 3,
+      "normalized_elo": 1653.28
+    },
+    {
+      "name": "Gideon Blackblade",
+      "queue_id": 8,
+      "normalized_elo": 1640.53
+    },
+    {
+      "name": "Gifted Aetherborn",
+      "queue_id": 4,
+      "normalized_elo": 1657.78
+    },
+    {
+      "name": "Gigantosaurus",
+      "queue_id": 5,
+      "normalized_elo": 1674.73
+    },
+    {
+      "name": "Gilded Goose",
+      "queue_id": 14,
+      "normalized_elo": 1700.26
+    },
+    {
+      "name": "Gingerbrute",
+      "queue_id": 17,
+      "normalized_elo": 1636.39
+    },
+    {
+      "name": "Gisa, Glorious Resurrector",
+      "queue_id": 11,
+      "normalized_elo": 1624.8
+    },
+    {
+      "name": "Gisa, the Hellraiser",
+      "queue_id": 16,
+      "normalized_elo": 1678.21
+    },
+    {
+      "name": "Gishath, Sun's Avatar",
+      "queue_id": 11,
+      "normalized_elo": 1667.23
+    },
+    {
+      "name": "Giver of Runes",
+      "queue_id": 13,
+      "normalized_elo": 1655.41
+    },
+    {
+      "name": "Gix's Command",
+      "queue_id": 14,
+      "normalized_elo": 1641.4
+    },
+    {
+      "name": "Gix, Yawgmoth Praetor",
+      "queue_id": 2,
+      "normalized_elo": 1709.77
+    },
+    {
+      "name": "Glarb, Calamity's Augur",
+      "queue_id": 2,
+      "normalized_elo": 1658.2
+    },
+    {
+      "name": "Glaring Fleshraker",
+      "queue_id": 12,
+      "normalized_elo": 1637.0
+    },
+    {
+      "name": "Glasspool Mimic // Glasspool Shore",
+      "queue_id": 15,
+      "normalized_elo": 1732.11
+    },
+    {
+      "name": "Glasswing Grace // Age-Graced Chapel",
+      "queue_id": 10,
+      "normalized_elo": 1643.79
+    },
+    {
+      "name": "Gleaming Geardrake",
+      "queue_id": 4,
+      "normalized_elo": 1634.94
+    },
+    {
+      "name": "Glimpse the Impossible",
+      "queue_id": 12,
+      "normalized_elo": 1636.6
+    },
+    {
+      "name": "Glint-Horn Buccaneer",
+      "queue_id": 7,
+      "normalized_elo": 1630.11
+    },
+    {
+      "name": "Glissa Sunslayer",
+      "queue_id": 9,
+      "normalized_elo": 1648.41
+    },
+    {
+      "name": "Gloomlake Verge",
+      "queue_id": 12,
+      "normalized_elo": 1672.5
+    },
+    {
+      "name": "Glorious End",
+      "queue_id": 17,
+      "normalized_elo": 1660.35
+    },
+    {
+      "name": "Glorybringer",
+      "queue_id": 15,
+      "normalized_elo": 1679.22
+    },
+    {
+      "name": "Goblin Anarchomancer",
+      "queue_id": 16,
+      "normalized_elo": 1667.96
+    },
+    {
+      "name": "Goblin Chainwhirler",
+      "queue_id": 17,
+      "normalized_elo": 1663.17
+    },
+    {
+      "name": "Goblin Engineer",
+      "queue_id": 17,
+      "normalized_elo": 1645.49
+    },
+    {
+      "name": "God-Eternal Bontu",
+      "queue_id": 4,
+      "normalized_elo": 1624.89
+    },
+    {
+      "name": "God-Eternal Kefnet",
+      "queue_id": 16,
+      "normalized_elo": 1653.58
+    },
+    {
+      "name": "God-Eternal Oketra",
+      "queue_id": 6,
+      "normalized_elo": 1680.53
+    },
+    {
+      "name": "God-Eternal Rhonas",
+      "queue_id": 17,
+      "normalized_elo": 1639.76
+    },
+    {
+      "name": "God-Pharaoh's Gift",
+      "queue_id": 11,
+      "normalized_elo": 1631.51
+    },
+    {
+      "name": "God-Pharaoh's Statue",
+      "queue_id": 4,
+      "normalized_elo": 1627.04
+    },
+    {
+      "name": "Golden Egg",
+      "queue_id": 16,
+      "normalized_elo": 1633.19
+    },
+    {
+      "name": "Goldspan Dragon",
+      "queue_id": 17,
+      "normalized_elo": 1788.81
+    },
+    {
+      "name": "Goldvein Hydra",
+      "queue_id": 7,
+      "normalized_elo": 1688.18
+    },
+    {
+      "name": "Goreclaw, Terror of Qal Sisma",
+      "queue_id": 2,
+      "normalized_elo": 1664.41
+    },
+    {
+      "name": "Grand Warlord Radha",
+      "queue_id": 16,
+      "normalized_elo": 1621.17
+    },
+    {
+      "name": "Gravebreaker Lamia",
+      "queue_id": 17,
+      "normalized_elo": 1666.65
+    },
+    {
+      "name": "Greasefang, Okiba Boss",
+      "queue_id": 14,
+      "normalized_elo": 1677.58
+    },
+    {
+      "name": "Grief",
+      "queue_id": 15,
+      "normalized_elo": 1723.48
+    },
+    {
+      "name": "Grievous Wound",
+      "queue_id": 13,
+      "normalized_elo": 1637.24
+    },
+    {
+      "name": "Grim Hireling",
+      "queue_id": 15,
+      "normalized_elo": 1627.05
+    },
+    {
+      "name": "Grist, Voracious Larva // Grist, the Plague Swarm",
+      "queue_id": 12,
+      "normalized_elo": 1647.9
+    },
+    {
+      "name": "Grist, the Hunger Tide",
+      "queue_id": 5,
+      "normalized_elo": 1791.78
+    },
+    {
+      "name": "Grolnok, the Omnivore",
+      "queue_id": 10,
+      "normalized_elo": 1641.66
+    },
+    {
+      "name": "Grothama, All-Devouring",
+      "queue_id": 16,
+      "normalized_elo": 1679.16
+    },
+    {
+      "name": "Growing Rites of Itlimoc // Itlimoc, Cradle of the Sun",
+      "queue_id": 17,
+      "normalized_elo": 1728.8
+    },
+    {
+      "name": "Growth Spiral",
+      "queue_id": 16,
+      "normalized_elo": 1765.31
+    },
+    {
+      "name": "Gruff Triplets",
+      "queue_id": 16,
+      "normalized_elo": 1666.63
+    },
+    {
+      "name": "Grumgully, the Generous",
+      "queue_id": 17,
+      "normalized_elo": 1651.62
+    },
+    {
+      "name": "Gruul Spellbreaker",
+      "queue_id": 16,
+      "normalized_elo": 1653.6
+    },
+    {
+      "name": "Guardian Project",
+      "queue_id": 10,
+      "normalized_elo": 1656.3
+    },
+    {
+      "name": "Gutterbones",
+      "queue_id": 16,
+      "normalized_elo": 1686.48
+    },
+    {
+      "name": "Gwenna, Eyes of Gaea",
+      "queue_id": 17,
+      "normalized_elo": 1642.56
+    },
+    {
+      "name": "Gyruda, Doom of Depths",
+      "queue_id": 13,
+      "normalized_elo": 1753.25
+    },
+    {
+      "name": "Halana and Alena, Partners",
+      "queue_id": 4,
+      "normalized_elo": 1638.97
+    },
+    {
+      "name": "Haliya, Guided by Light",
+      "queue_id": 17,
+      "normalized_elo": 1651.23
+    },
+    {
+      "name": "Hall of Heliod's Generosity",
+      "queue_id": 17,
+      "normalized_elo": 1631.28
+    },
+    {
+      "name": "Hall of Storm Giants",
+      "queue_id": 6,
+      "normalized_elo": 1617.89
+    },
+    {
+      "name": "Hallowed Haunting",
+      "queue_id": 8,
+      "normalized_elo": 1638.82
+    },
+    {
+      "name": "Halo Fountain",
+      "queue_id": 16,
+      "normalized_elo": 1644.92
+    },
+    {
+      "name": "Halvar, God of Battle // Sword of the Realms",
+      "queue_id": 12,
+      "normalized_elo": 1641.25
+    },
+    {
+      "name": "Hanged Executioner",
+      "queue_id": 4,
+      "normalized_elo": 1648.82
+    },
+    {
+      "name": "Hapatra, Vizier of Poisons",
+      "queue_id": 10,
+      "normalized_elo": 1700.39
+    },
+    {
+      "name": "Harbinger of the Seas",
+      "queue_id": 5,
+      "normalized_elo": 1687.37
+    },
+    {
+      "name": "Harmonic Prodigy",
+      "queue_id": 10,
+      "normalized_elo": 1685.89
+    },
+    {
+      "name": "Harmonious Archon",
+      "queue_id": 12,
+      "normalized_elo": 1626.58
+    },
+    {
+      "name": "Harness Infinity",
+      "queue_id": 16,
+      "normalized_elo": 1654.16
+    },
+    {
+      "name": "Harsh Mentor",
+      "queue_id": 9,
+      "normalized_elo": 1687.77
+    },
+    {
+      "name": "Harvester of Misery",
+      "queue_id": 9,
+      "normalized_elo": 1629.04
+    },
+    {
+      "name": "Hashaton, Scarab's Fist",
+      "queue_id": 7,
+      "normalized_elo": 1678.4
+    },
+    {
+      "name": "Haughty Djinn",
+      "queue_id": 5,
+      "normalized_elo": 1689.66
+    },
+    {
+      "name": "Hauntwoods Shrieker",
+      "queue_id": 6,
+      "normalized_elo": 1626.71
+    },
+    {
+      "name": "Haywire Mite",
+      "queue_id": 15,
+      "normalized_elo": 1733.78
+    },
+    {
+      "name": "Hazoret the Fervent",
+      "queue_id": 15,
+      "normalized_elo": 1642.68
+    },
+    {
+      "name": "Healer's Hawk",
+      "queue_id": 5,
+      "normalized_elo": 1623.97
+    },
+    {
+      "name": "Heartflame Duelist // Heartflame Slash",
+      "queue_id": 5,
+      "normalized_elo": 1629.38
+    },
+    {
+      "name": "Hearthhull, the Worldseed",
+      "queue_id": 16,
+      "normalized_elo": 1621.52
+    },
+    {
+      "name": "Heartless Act",
+      "queue_id": 16,
+      "normalized_elo": 1633.09
+    },
+    {
+      "name": "Hedge Maze",
+      "queue_id": 13,
+      "normalized_elo": 1681.74
+    },
+    {
+      "name": "Helga, Skittish Seer",
+      "queue_id": 9,
+      "normalized_elo": 1679.81
+    },
+    {
+      "name": "Heliod, Sun-Crowned",
+      "queue_id": 11,
+      "normalized_elo": 1659.18
+    },
+    {
+      "name": "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+      "queue_id": 13,
+      "normalized_elo": 1711.43
+    },
+    {
+      "name": "Helm of the Host",
+      "queue_id": 13,
+      "normalized_elo": 1686.54
+    },
+    {
+      "name": "Helpful Hunter",
+      "queue_id": 17,
+      "normalized_elo": 1641.65
+    },
+    {
+      "name": "Hengegate Pathway // Mistgate Pathway",
+      "queue_id": 14,
+      "normalized_elo": 1664.13
+    },
+    {
+      "name": "Henrika Domnathi // Henrika, Infernal Seer",
+      "queue_id": 16,
+      "normalized_elo": 1628.83
+    },
+    {
+      "name": "Herald of Eternal Dawn",
+      "queue_id": 16,
+      "normalized_elo": 1641.13
+    },
+    {
+      "name": "Herd Heirloom",
+      "queue_id": 3,
+      "normalized_elo": 1626.92
+    },
+    {
+      "name": "Herigast, Erupting Nullkite",
+      "queue_id": 10,
+      "normalized_elo": 1623.67
+    },
+    {
+      "name": "Heroic Intervention",
+      "queue_id": 17,
+      "normalized_elo": 1733.31
+    },
+    {
+      "name": "Heroic Reinforcements",
+      "queue_id": 12,
+      "normalized_elo": 1634.66
+    },
+    {
+      "name": "Hexdrinker",
+      "queue_id": 16,
+      "normalized_elo": 1748.55
+    },
+    {
+      "name": "Hexing Squelcher",
+      "queue_id": 16,
+      "normalized_elo": 1624.49
+    },
+    {
+      "name": "Hidetsugu Consumes All // Vessel of the All-Consuming",
+      "queue_id": 15,
+      "normalized_elo": 1667.51
+    },
+    {
+      "name": "High Fae Trickster",
+      "queue_id": 8,
+      "normalized_elo": 1655.9
+    },
+    {
+      "name": "High Perfect Morcant",
+      "queue_id": 16,
+      "normalized_elo": 1639.57
+    },
+    {
+      "name": "Hinata, Dawn-Crowned",
+      "queue_id": 5,
+      "normalized_elo": 1678.29
+    },
+    {
+      "name": "History of Benalia",
+      "queue_id": 8,
+      "normalized_elo": 1705.98
+    },
+    {
+      "name": "Hive of the Eye Tyrant",
+      "queue_id": 4,
+      "normalized_elo": 1660.09
+    },
+    {
+      "name": "Hoarding Broodlord",
+      "queue_id": 4,
+      "normalized_elo": 1687.21
+    },
+    {
+      "name": "Hogaak, Arisen Necropolis",
+      "queue_id": 17,
+      "normalized_elo": 1671.89
+    },
+    {
+      "name": "Hollow One",
+      "queue_id": 10,
+      "normalized_elo": 1640.49
+    },
+    {
+      "name": "Homunculus Horde",
+      "queue_id": 14,
+      "normalized_elo": 1633.25
+    },
+    {
+      "name": "Hopeless Nightmare",
+      "queue_id": 4,
+      "normalized_elo": 1662.32
+    },
+    {
+      "name": "Horned Loch-Whale // Lagoon Breach",
+      "queue_id": 16,
+      "normalized_elo": 1624.73
+    },
+    {
+      "name": "Hostage Taker",
+      "queue_id": 8,
+      "normalized_elo": 1780.38
+    },
+    {
+      "name": "Hour of Devastation",
+      "queue_id": 17,
+      "normalized_elo": 1629.72
+    },
+    {
+      "name": "Hour of Promise",
+      "queue_id": 17,
+      "normalized_elo": 1648.03
+    },
+    {
+      "name": "Hullbreaker Horror",
+      "queue_id": 16,
+      "normalized_elo": 1696.14
+    },
+    {
+      "name": "Hunter's Talent",
+      "queue_id": 11,
+      "normalized_elo": 1634.63
+    },
+    {
+      "name": "Hushbringer",
+      "queue_id": 17,
+      "normalized_elo": 1642.88
+    },
+    {
+      "name": "Hushwood Verge",
+      "queue_id": 7,
+      "normalized_elo": 1630.86
+    },
+    {
+      "name": "Hydroid Krasis",
+      "queue_id": 4,
+      "normalized_elo": 1732.96
+    },
+    {
+      "name": "Hylda of the Icy Crown",
+      "queue_id": 14,
+      "normalized_elo": 1631.57
+    },
+    {
+      "name": "Ice-Fang Coatl",
+      "queue_id": 16,
+      "normalized_elo": 1695.89
+    },
+    {
+      "name": "Icetill Explorer",
+      "queue_id": 4,
+      "normalized_elo": 1736.14
+    },
+    {
+      "name": "Ichormoon Gauntlet",
+      "queue_id": 14,
+      "normalized_elo": 1649.55
+    },
+    {
+      "name": "Idol of Oblivion",
+      "queue_id": 17,
+      "normalized_elo": 1673.12
+    },
+    {
+      "name": "Ignoble Hierarch",
+      "queue_id": 15,
+      "normalized_elo": 1750.37
+    },
+    {
+      "name": "Ilharg, the Raze-Boar",
+      "queue_id": 4,
+      "normalized_elo": 1657.73
+    },
+    {
+      "name": "Illuna, Apex of Wishes",
+      "queue_id": 14,
+      "normalized_elo": 1657.52
+    },
+    {
+      "name": "Immersturm Predator",
+      "queue_id": 7,
+      "normalized_elo": 1685.46
+    },
+    {
+      "name": "Imodane, the Pyrohammer",
+      "queue_id": 7,
+      "normalized_elo": 1629.05
+    },
+    {
+      "name": "Imoti, Celebrant of Bounty",
+      "queue_id": 9,
+      "normalized_elo": 1629.12
+    },
+    {
+      "name": "Impervious Greatwurm",
+      "queue_id": 11,
+      "normalized_elo": 1655.21
+    },
+    {
+      "name": "Incubation Druid",
+      "queue_id": 12,
+      "normalized_elo": 1728.24
+    },
+    {
+      "name": "Indatha Triome",
+      "queue_id": 16,
+      "normalized_elo": 1689.39
+    },
+    {
+      "name": "Indomitable Creativity",
+      "queue_id": 10,
+      "normalized_elo": 1690.85
+    },
+    {
+      "name": "Infernal Grasp",
+      "queue_id": 8,
+      "normalized_elo": 1673.47
+    },
+    {
+      "name": "Inkshield",
+      "queue_id": 16,
+      "normalized_elo": 1695.98
+    },
+    {
+      "name": "Innkeeper's Talent",
+      "queue_id": 11,
+      "normalized_elo": 1703.34
+    },
+    {
+      "name": "Insatiable Avarice",
+      "queue_id": 14,
+      "normalized_elo": 1655.23
+    },
+    {
+      "name": "Insidious Fungus",
+      "queue_id": 16,
+      "normalized_elo": 1655.36
+    },
+    {
+      "name": "Insidious Roots",
+      "queue_id": 8,
+      "normalized_elo": 1777.89
+    },
+    {
+      "name": "Inspired Ultimatum",
+      "queue_id": 14,
+      "normalized_elo": 1637.3
+    },
+    {
+      "name": "Inspiring Overseer",
+      "queue_id": 13,
+      "normalized_elo": 1647.25
+    },
+    {
+      "name": "Inspiring Statuary",
+      "queue_id": 12,
+      "normalized_elo": 1662.72
+    },
+    {
+      "name": "Inti, Seneschal of the Sun",
+      "queue_id": 11,
+      "normalized_elo": 1675.23
+    },
+    {
+      "name": "Into the Flood Maw",
+      "queue_id": 3,
+      "normalized_elo": 1664.42
+    },
+    {
+      "name": "Invasion of Alara // Awaken the Maelstrom",
+      "queue_id": 2,
+      "normalized_elo": 1627.94
+    },
+    {
+      "name": "Invasion of Ikoria // Zilortha, Apex of Ikoria",
+      "queue_id": 5,
+      "normalized_elo": 1640.63
+    },
+    {
+      "name": "Invasion of Zendikar // Awakened Skyclave",
+      "queue_id": 16,
+      "normalized_elo": 1640.38
+    },
+    {
+      "name": "Invert Polarity",
+      "queue_id": 10,
+      "normalized_elo": 1650.65
+    },
+    {
+      "name": "Invoke Despair",
+      "queue_id": 16,
+      "normalized_elo": 1650.98
+    },
+    {
+      "name": "Irencrag Feat",
+      "queue_id": 8,
+      "normalized_elo": 1635.44
+    },
+    {
+      "name": "Irencrag Pyromancer",
+      "queue_id": 10,
+      "normalized_elo": 1638.72
+    },
+    {
+      "name": "Iridescent Vinelasher",
+      "queue_id": 16,
+      "normalized_elo": 1647.53
+    },
+    {
+      "name": "Isshin, Two Heavens as One",
+      "queue_id": 12,
+      "normalized_elo": 1627.9
+    },
+    {
+      "name": "Ivy, Gleeful Spellthief",
+      "queue_id": 5,
+      "normalized_elo": 1653.15
+    },
+    {
+      "name": "Jace, Wielder of Mysteries",
+      "queue_id": 8,
+      "normalized_elo": 1678.89
+    },
+    {
+      "name": "Jace, the Perfected Mind",
+      "queue_id": 4,
+      "normalized_elo": 1633.0
+    },
+    {
+      "name": "Jacked Rabbit",
+      "queue_id": 9,
+      "normalized_elo": 1651.75
+    },
+    {
+      "name": "Jadar, Ghoulcaller of Nephalia",
+      "queue_id": 15,
+      "normalized_elo": 1659.87
+    },
+    {
+      "name": "Jaheira, Friend of the Forest",
+      "queue_id": 5,
+      "normalized_elo": 1628.65
+    },
+    {
+      "name": "Jaxis, the Troublemaker",
+      "queue_id": 9,
+      "normalized_elo": 1704.81
+    },
+    {
+      "name": "Jaya's Immolating Inferno",
+      "queue_id": 7,
+      "normalized_elo": 1625.14
+    },
+    {
+      "name": "Jegantha, the Wellspring",
+      "queue_id": 2,
+      "normalized_elo": 1664.48
+    },
+    {
+      "name": "Jeskai Revelation",
+      "queue_id": 16,
+      "normalized_elo": 1638.66
+    },
+    {
+      "name": "Jetmir's Garden",
+      "queue_id": 15,
+      "normalized_elo": 1696.66
+    },
+    {
+      "name": "Jetmir, Nexus of Revels",
+      "queue_id": 11,
+      "normalized_elo": 1665.4
+    },
+    {
+      "name": "Jhoira, Weatherlight Captain",
+      "queue_id": 12,
+      "normalized_elo": 1707.1
+    },
+    {
+      "name": "Jin-Gitaxias // The Great Synthesis",
+      "queue_id": 17,
+      "normalized_elo": 1649.54
+    },
+    {
+      "name": "Jin-Gitaxias, Progress Tyrant",
+      "queue_id": 5,
+      "normalized_elo": 1627.86
+    },
+    {
+      "name": "Jinnie Fay, Jetmir's Second",
+      "queue_id": 17,
+      "normalized_elo": 1653.45
+    },
+    {
+      "name": "Judith, the Scourge Diva",
+      "queue_id": 15,
+      "normalized_elo": 1724.3
+    },
+    {
+      "name": "Jukai Naturalist",
+      "queue_id": 4,
+      "normalized_elo": 1690.5
+    },
+    {
+      "name": "Jumbo Cactuar",
+      "queue_id": 6,
+      "normalized_elo": 1618.26
+    },
+    {
+      "name": "Junji, the Midnight Sky",
+      "queue_id": 14,
+      "normalized_elo": 1687.63
+    },
+    {
+      "name": "Juri, Master of the Revue",
+      "queue_id": 10,
+      "normalized_elo": 1639.85
+    },
+    {
+      "name": "Kaheera, the Orphanguard",
+      "queue_id": 16,
+      "normalized_elo": 1692.21
+    },
+    {
+      "name": "Kairi, the Swirling Sky",
+      "queue_id": 7,
+      "normalized_elo": 1661.63
+    },
+    {
+      "name": "Kaito, Bane of Nightmares",
+      "queue_id": 10,
+      "normalized_elo": 1694.92
+    },
+    {
+      "name": "Kalain, Reclusive Painter",
+      "queue_id": 4,
+      "normalized_elo": 1641.49
+    },
+    {
+      "name": "Kalamax, the Stormsire",
+      "queue_id": 5,
+      "normalized_elo": 1654.71
+    },
+    {
+      "name": "Kaldra Compleat",
+      "queue_id": 9,
+      "normalized_elo": 1654.34
+    },
+    {
+      "name": "Kami of Transience",
+      "queue_id": 16,
+      "normalized_elo": 1620.94
+    },
+    {
+      "name": "Kami of Whispered Hopes",
+      "queue_id": 10,
+      "normalized_elo": 1632.04
+    },
+    {
+      "name": "Kappa Cannoneer",
+      "queue_id": 16,
+      "normalized_elo": 1692.01
+    },
+    {
+      "name": "Kardur, Doomscourge",
+      "queue_id": 7,
+      "normalized_elo": 1622.7
+    },
+    {
+      "name": "Kargan Intimidator",
+      "queue_id": 12,
+      "normalized_elo": 1652.67
+    },
+    {
+      "name": "Karn's Temporal Sundering",
+      "queue_id": 13,
+      "normalized_elo": 1635.38
+    },
+    {
+      "name": "Karn, Legacy Reforged",
+      "queue_id": 9,
+      "normalized_elo": 1667.98
+    },
+    {
+      "name": "Karn, Scion of Urza",
+      "queue_id": 13,
+      "normalized_elo": 1728.02
+    },
+    {
+      "name": "Karn, the Great Creator",
+      "queue_id": 2,
+      "normalized_elo": 1674.02
+    },
+    {
+      "name": "Karumonix, the Rat King",
+      "queue_id": 17,
+      "normalized_elo": 1647.27
+    },
+    {
+      "name": "Kastral, the Windcrested",
+      "queue_id": 7,
+      "normalized_elo": 1679.33
+    },
+    {
+      "name": "Kaya the Inexorable",
+      "queue_id": 2,
+      "normalized_elo": 1627.81
+    },
+    {
+      "name": "Keen-Eyed Curator",
+      "queue_id": 16,
+      "normalized_elo": 1659.95
+    },
+    {
+      "name": "Kenrith's Transformation",
+      "queue_id": 17,
+      "normalized_elo": 1659.79
+    },
+    {
+      "name": "Kenrith, the Returned King",
+      "queue_id": 12,
+      "normalized_elo": 1666.6
+    },
+    {
+      "name": "Keruga, the Macrosage",
+      "queue_id": 15,
+      "normalized_elo": 1615.14
+    },
+    {
+      "name": "Kethis, the Hidden Hand",
+      "queue_id": 6,
+      "normalized_elo": 1640.63
+    },
+    {
+      "name": "Ketramose, the New Dawn",
+      "queue_id": 3,
+      "normalized_elo": 1649.32
+    },
+    {
+      "name": "Ketria Triome",
+      "queue_id": 10,
+      "normalized_elo": 1642.8
+    },
+    {
+      "name": "Kibo, Uktabi Prince",
+      "queue_id": 13,
+      "normalized_elo": 1712.7
+    },
+    {
+      "name": "Kiora Bests the Sea God",
+      "queue_id": 16,
+      "normalized_elo": 1669.6
+    },
+    {
+      "name": "Kiora, Behemoth Beckoner",
+      "queue_id": 9,
+      "normalized_elo": 1672.8
+    },
+    {
+      "name": "Kiora, the Rising Tide",
+      "queue_id": 17,
+      "normalized_elo": 1679.04
+    },
+    {
+      "name": "Kirol, Attentive First-Year",
+      "queue_id": 16,
+      "normalized_elo": 1628.38
+    },
+    {
+      "name": "Klothys, God of Destiny",
+      "queue_id": 17,
+      "normalized_elo": 1724.91
+    },
+    {
+      "name": "Knight of Autumn",
+      "queue_id": 8,
+      "normalized_elo": 1717.91
+    },
+    {
+      "name": "Knight of the Ebon Legion",
+      "queue_id": 11,
+      "normalized_elo": 1690.47
+    },
+    {
+      "name": "Knight-Errant of Eos",
+      "queue_id": 12,
+      "normalized_elo": 1692.63
+    },
+    {
+      "name": "Kodama of the East Tree",
+      "queue_id": 17,
+      "normalized_elo": 1641.58
+    },
+    {
+      "name": "Kodama of the West Tree",
+      "queue_id": 15,
+      "normalized_elo": 1686.66
+    },
+    {
+      "name": "Kogla, the Titan Ape",
+      "queue_id": 16,
+      "normalized_elo": 1729.48
+    },
+    {
+      "name": "Koma, Cosmos Serpent",
+      "queue_id": 15,
+      "normalized_elo": 1717.9
+    },
+    {
+      "name": "Koma, World-Eater",
+      "queue_id": 10,
+      "normalized_elo": 1629.01
+    },
+    {
+      "name": "Korvold, Fae-Cursed King",
+      "queue_id": 3,
+      "normalized_elo": 1654.14
+    },
+    {
+      "name": "Kozilek's Command",
+      "queue_id": 16,
+      "normalized_elo": 1676.91
+    },
+    {
+      "name": "Kozilek, the Broken Reality",
+      "queue_id": 11,
+      "normalized_elo": 1649.4
+    },
+    {
+      "name": "Kroxa and Kunoros",
+      "queue_id": 16,
+      "normalized_elo": 1641.96
+    },
+    {
+      "name": "Kroxa, Titan of Death's Hunger",
+      "queue_id": 2,
+      "normalized_elo": 1677.87
+    },
+    {
+      "name": "Kudo, King Among Bears",
+      "queue_id": 17,
+      "normalized_elo": 1729.87
+    },
+    {
+      "name": "Kumena, Tyrant of Orazca",
+      "queue_id": 17,
+      "normalized_elo": 1653.43
+    },
+    {
+      "name": "Kunoros, Hound of Athreos",
+      "queue_id": 16,
+      "normalized_elo": 1630.69
+    },
+    {
+      "name": "Kura, the Boundless Sky",
+      "queue_id": 15,
+      "normalized_elo": 1641.21
+    },
+    {
+      "name": "Kykar, Wind's Fury",
+      "queue_id": 8,
+      "normalized_elo": 1693.71
+    },
+    {
+      "name": "Laelia, the Blade Reforged",
+      "queue_id": 10,
+      "normalized_elo": 1664.08
+    },
+    {
+      "name": "Last March of the Ents",
+      "queue_id": 7,
+      "normalized_elo": 1621.62
+    },
+    {
+      "name": "Lathliss, Dragon Queen",
+      "queue_id": 11,
+      "normalized_elo": 1646.59
+    },
+    {
+      "name": "Laughing Jasper Flint",
+      "queue_id": 12,
+      "normalized_elo": 1676.83
+    },
+    {
+      "name": "Lavaleaper",
+      "queue_id": 8,
+      "normalized_elo": 1624.0
+    },
+    {
+      "name": "Lazav, the Multifarious",
+      "queue_id": 7,
+      "normalized_elo": 1690.35
+    },
+    {
+      "name": "Leaf-Crowned Visionary",
+      "queue_id": 2,
+      "normalized_elo": 1627.38
+    },
+    {
+      "name": "Ledger Shredder",
+      "queue_id": 4,
+      "normalized_elo": 1737.13
+    },
+    {
+      "name": "Legion Warboss",
+      "queue_id": 13,
+      "normalized_elo": 1696.24
+    },
+    {
+      "name": "Legion's Landing // Adanto, the First Fort",
+      "queue_id": 15,
+      "normalized_elo": 1680.75
+    },
+    {
+      "name": "Leyline Axe",
+      "queue_id": 14,
+      "normalized_elo": 1629.63
+    },
+    {
+      "name": "Leyline Binding",
+      "queue_id": 16,
+      "normalized_elo": 1676.83
+    },
+    {
+      "name": "Leyline Prowler",
+      "queue_id": 17,
+      "normalized_elo": 1668.26
+    },
+    {
+      "name": "Leyline Tyrant",
+      "queue_id": 15,
+      "normalized_elo": 1658.56
+    },
+    {
+      "name": "Leyline of Resonance",
+      "queue_id": 2,
+      "normalized_elo": 1671.14
+    },
+    {
+      "name": "Liberator, Urza's Battlethopter",
+      "queue_id": 13,
+      "normalized_elo": 1625.08
+    },
+    {
+      "name": "Lich's Mastery",
+      "queue_id": 15,
+      "normalized_elo": 1655.95
+    },
+    {
+      "name": "Lier, Disciple of the Drowned",
+      "queue_id": 17,
+      "normalized_elo": 1710.61
+    },
+    {
+      "name": "Liesa, Forgotten Archangel",
+      "queue_id": 5,
+      "normalized_elo": 1624.8
+    },
+    {
+      "name": "Lifecrafter's Bestiary",
+      "queue_id": 17,
+      "normalized_elo": 1654.28
+    },
+    {
+      "name": "Light Up the Stage",
+      "queue_id": 14,
+      "normalized_elo": 1732.8
+    },
+    {
+      "name": "Light-Paws, Emperor's Voice",
+      "queue_id": 9,
+      "normalized_elo": 1669.19
+    },
+    {
+      "name": "Lightning Skelemental",
+      "queue_id": 10,
+      "normalized_elo": 1652.21
+    },
+    {
+      "name": "Lightstall Inquisitor",
+      "queue_id": 15,
+      "normalized_elo": 1624.0
+    },
+    {
+      "name": "Likeness Looter",
+      "queue_id": 5,
+      "normalized_elo": 1656.1
+    },
+    {
+      "name": "Liliana's Contract",
+      "queue_id": 5,
+      "normalized_elo": 1632.1
+    },
+    {
+      "name": "Liliana, Death's Majesty",
+      "queue_id": 17,
+      "normalized_elo": 1708.04
+    },
+    {
+      "name": "Liliana, Dreadhorde General",
+      "queue_id": 16,
+      "normalized_elo": 1815.02
+    },
+    {
+      "name": "Liliana, Waker of the Dead",
+      "queue_id": 9,
+      "normalized_elo": 1642.57
+    },
+    {
+      "name": "Lion Sash",
+      "queue_id": 16,
+      "normalized_elo": 1683.31
+    },
+    {
+      "name": "Liquimetal Torque",
+      "queue_id": 7,
+      "normalized_elo": 1702.96
+    },
+    {
+      "name": "Lithoform Engine",
+      "queue_id": 8,
+      "normalized_elo": 1640.2
+    },
+    {
+      "name": "Loch Mare",
+      "queue_id": 16,
+      "normalized_elo": 1683.26
+    },
+    {
+      "name": "Lolth, Spider Queen",
+      "queue_id": 11,
+      "normalized_elo": 1654.88
+    },
+    {
+      "name": "Lonis, Cryptozoologist",
+      "queue_id": 12,
+      "normalized_elo": 1706.28
+    },
+    {
+      "name": "Loran of the Third Path",
+      "queue_id": 14,
+      "normalized_elo": 1727.81
+    },
+    {
+      "name": "Lord Windgrace",
+      "queue_id": 8,
+      "normalized_elo": 1684.69
+    },
+    {
+      "name": "Lorehold, the Historian",
+      "queue_id": 16,
+      "normalized_elo": 1672.63
+    },
+    {
+      "name": "Lost Jitte",
+      "queue_id": 17,
+      "normalized_elo": 1639.47
+    },
+    {
+      "name": "Lotus Field",
+      "queue_id": 16,
+      "normalized_elo": 1719.79
+    },
+    {
+      "name": "Lovestruck Beast // Heart's Desire",
+      "queue_id": 15,
+      "normalized_elo": 1641.65
+    },
+    {
+      "name": "Lucky Clover",
+      "queue_id": 14,
+      "normalized_elo": 1638.45
+    },
+    {
+      "name": "Luminarch Aspirant",
+      "queue_id": 13,
+      "normalized_elo": 1663.33
+    },
+    {
+      "name": "Luminous Broodmoth",
+      "queue_id": 4,
+      "normalized_elo": 1683.31
+    },
+    {
+      "name": "Lumra, Bellow of the Woods",
+      "queue_id": 6,
+      "normalized_elo": 1636.43
+    },
+    {
+      "name": "Lurrus of the Dream-Den",
+      "queue_id": 9,
+      "normalized_elo": 1698.49
+    },
+    {
+      "name": "Lush Portico",
+      "queue_id": 11,
+      "normalized_elo": 1638.1
+    },
+    {
+      "name": "Lyra Dawnbringer",
+      "queue_id": 6,
+      "normalized_elo": 1749.78
+    },
+    {
+      "name": "Mabel, Heir to Cragflame",
+      "queue_id": 10,
+      "normalized_elo": 1633.79
+    },
+    {
+      "name": "Magda, Brazen Outlaw",
+      "queue_id": 12,
+      "normalized_elo": 1694.91
+    },
+    {
+      "name": "Magda, the Hoardmaster",
+      "queue_id": 16,
+      "normalized_elo": 1626.64
+    },
+    {
+      "name": "Magma Opus",
+      "queue_id": 14,
+      "normalized_elo": 1714.73
+    },
+    {
+      "name": "Maha, Its Feathers Night",
+      "queue_id": 17,
+      "normalized_elo": 1755.52
+    },
+    {
+      "name": "Malakir Rebirth // Malakir Mire",
+      "queue_id": 15,
+      "normalized_elo": 1671.7
+    },
+    {
+      "name": "Malcolm, Alluring Scoundrel",
+      "queue_id": 7,
+      "normalized_elo": 1742.8
+    },
+    {
+      "name": "Malevolent Hermit // Benevolent Geist",
+      "queue_id": 3,
+      "normalized_elo": 1632.8
+    },
+    {
+      "name": "Malevolent Rumble",
+      "queue_id": 15,
+      "normalized_elo": 1647.28
+    },
+    {
+      "name": "Mangara, the Diplomat",
+      "queue_id": 11,
+      "normalized_elo": 1662.67
+    },
+    {
+      "name": "Maralen, Fae Ascendant",
+      "queue_id": 14,
+      "normalized_elo": 1635.74
+    },
+    {
+      "name": "Marang River Regent // Coil and Catch",
+      "queue_id": 8,
+      "normalized_elo": 1707.84
+    },
+    {
+      "name": "March of Otherworldly Light",
+      "queue_id": 16,
+      "normalized_elo": 1693.79
+    },
+    {
+      "name": "March of Swirling Mist",
+      "queue_id": 5,
+      "normalized_elo": 1630.02
+    },
+    {
+      "name": "March of the Multitudes",
+      "queue_id": 8,
+      "normalized_elo": 1641.32
+    },
+    {
+      "name": "Mardu Siegebreaker",
+      "queue_id": 16,
+      "normalized_elo": 1692.47
+    },
+    {
+      "name": "Marionette Apprentice",
+      "queue_id": 13,
+      "normalized_elo": 1780.56
+    },
+    {
+      "name": "Marit Lage's Slumber",
+      "queue_id": 14,
+      "normalized_elo": 1641.0
+    },
+    {
+      "name": "Marvin, Murderous Mimic",
+      "queue_id": 7,
+      "normalized_elo": 1638.53
+    },
+    {
+      "name": "Marwyn, the Nurturer",
+      "queue_id": 15,
+      "normalized_elo": 1658.28
+    },
+    {
+      "name": "Masked Vandal",
+      "queue_id": 11,
+      "normalized_elo": 1629.02
+    },
+    {
+      "name": "Maskwood Nexus",
+      "queue_id": 2,
+      "normalized_elo": 1647.87
+    },
+    {
+      "name": "Mass Manipulation",
+      "queue_id": 15,
+      "normalized_elo": 1625.61
+    },
+    {
+      "name": "Massacre Girl",
+      "queue_id": 14,
+      "normalized_elo": 1715.11
+    },
+    {
+      "name": "Massacre Girl, Known Killer",
+      "queue_id": 16,
+      "normalized_elo": 1721.59
+    },
+    {
+      "name": "Master of Death",
+      "queue_id": 9,
+      "normalized_elo": 1664.56
+    },
+    {
+      "name": "Mathemagics",
+      "queue_id": 15,
+      "normalized_elo": 1666.19
+    },
+    {
+      "name": "Mayhem Devil",
+      "queue_id": 14,
+      "normalized_elo": 1699.68
+    },
+    {
+      "name": "Mechanized Production",
+      "queue_id": 11,
+      "normalized_elo": 1675.69
+    },
+    {
+      "name": "Mechtitan Core",
+      "queue_id": 17,
+      "normalized_elo": 1634.65
+    },
+    {
+      "name": "Memory Deluge",
+      "queue_id": 13,
+      "normalized_elo": 1681.44
+    },
+    {
+      "name": "Mendicant Core, Guidelight",
+      "queue_id": 2,
+      "normalized_elo": 1627.12
+    },
+    {
+      "name": "Metallic Rebuke",
+      "queue_id": 14,
+      "normalized_elo": 1652.37
+    },
+    {
+      "name": "Metamorphosis Fanatic",
+      "queue_id": 3,
+      "normalized_elo": 1659.94
+    },
+    {
+      "name": "Meteor Golem",
+      "queue_id": 9,
+      "normalized_elo": 1696.54
+    },
+    {
+      "name": "Meticulous Archive",
+      "queue_id": 8,
+      "normalized_elo": 1683.05
+    },
+    {
+      "name": "Midnight Clock",
+      "queue_id": 6,
+      "normalized_elo": 1747.1
+    },
+    {
+      "name": "Midnight Reaper",
+      "queue_id": 8,
+      "normalized_elo": 1714.62
+    },
+    {
+      "name": "Mindsplice Apparatus",
+      "queue_id": 13,
+      "normalized_elo": 1621.89
+    },
+    {
+      "name": "Minsc & Boo, Timeless Heroes",
+      "queue_id": 10,
+      "normalized_elo": 1676.78
+    },
+    {
+      "name": "Mirage Mirror",
+      "queue_id": 6,
+      "normalized_elo": 1639.41
+    },
+    {
+      "name": "Mire Triton",
+      "queue_id": 4,
+      "normalized_elo": 1630.74
+    },
+    {
+      "name": "Mirrodin Besieged",
+      "queue_id": 7,
+      "normalized_elo": 1699.34
+    },
+    {
+      "name": "Mirror Box",
+      "queue_id": 9,
+      "normalized_elo": 1653.19
+    },
+    {
+      "name": "Mirror Image",
+      "queue_id": 4,
+      "normalized_elo": 1664.67
+    },
+    {
+      "name": "Mirrorform",
+      "queue_id": 14,
+      "normalized_elo": 1726.55
+    },
+    {
+      "name": "Mirrormade",
+      "queue_id": 15,
+      "normalized_elo": 1636.99
+    },
+    {
+      "name": "Mirrorshell Crab",
+      "queue_id": 4,
+      "normalized_elo": 1658.46
+    },
+    {
+      "name": "Mishra, Claimed by Gix",
+      "queue_id": 14,
+      "normalized_elo": 1652.51
+    },
+    {
+      "name": "Mishra, Eminent One",
+      "queue_id": 7,
+      "normalized_elo": 1623.66
+    },
+    {
+      "name": "Mistrise Village",
+      "queue_id": 15,
+      "normalized_elo": 1629.13
+    },
+    {
+      "name": "Mnemonic Betrayal",
+      "queue_id": 11,
+      "normalized_elo": 1642.63
+    },
+    {
+      "name": "Mockingbird",
+      "queue_id": 9,
+      "normalized_elo": 1726.21
+    },
+    {
+      "name": "Moldervine Reclamation",
+      "queue_id": 17,
+      "normalized_elo": 1652.34
+    },
+    {
+      "name": "Mondrak, Glory Dominus",
+      "queue_id": 16,
+      "normalized_elo": 1675.73
+    },
+    {
+      "name": "Monument to Endurance",
+      "queue_id": 3,
+      "normalized_elo": 1705.95
+    },
+    {
+      "name": "Moonshadow",
+      "queue_id": 16,
+      "normalized_elo": 1692.63
+    },
+    {
+      "name": "Moonshaker Cavalry",
+      "queue_id": 17,
+      "normalized_elo": 1658.51
+    },
+    {
+      "name": "Moonveil Regent",
+      "queue_id": 17,
+      "normalized_elo": 1632.77
+    },
+    {
+      "name": "Moraug, Fury of Akoum",
+      "queue_id": 17,
+      "normalized_elo": 1670.93
+    },
+    {
+      "name": "Morbid Opportunist",
+      "queue_id": 15,
+      "normalized_elo": 1682.09
+    },
+    {
+      "name": "Moritte of the Frost",
+      "queue_id": 5,
+      "normalized_elo": 1665.04
+    },
+    {
+      "name": "Mossborn Hydra",
+      "queue_id": 2,
+      "normalized_elo": 1649.13
+    },
+    {
+      "name": "Mosswood Dreadknight // Dread Whispers",
+      "queue_id": 4,
+      "normalized_elo": 1717.33
+    },
+    {
+      "name": "Mox Amber",
+      "queue_id": 11,
+      "normalized_elo": 1719.84
+    },
+    {
+      "name": "Muldrotha, the Gravetide",
+      "queue_id": 4,
+      "normalized_elo": 1697.88
+    },
+    {
+      "name": "Murderous Rider // Swift End",
+      "queue_id": 15,
+      "normalized_elo": 1744.92
+    },
+    {
+      "name": "Murktide Regent",
+      "queue_id": 17,
+      "normalized_elo": 1781.37
+    },
+    {
+      "name": "Murmuring Mystic",
+      "queue_id": 15,
+      "normalized_elo": 1619.42
+    },
+    {
+      "name": "Mutable Explorer",
+      "queue_id": 9,
+      "normalized_elo": 1706.51
+    },
+    {
+      "name": "Myrel, Shield of Argive",
+      "queue_id": 14,
+      "normalized_elo": 1693.17
+    },
+    {
+      "name": "Myrkul, Lord of Bones",
+      "queue_id": 12,
+      "normalized_elo": 1640.3
+    },
+    {
+      "name": "Mystic Forge",
+      "queue_id": 2,
+      "normalized_elo": 1644.07
+    },
+    {
+      "name": "Mystic Reflection",
+      "queue_id": 4,
+      "normalized_elo": 1658.48
+    },
+    {
+      "name": "Mystic Sanctuary",
+      "queue_id": 9,
+      "normalized_elo": 1679.6
+    },
+    {
+      "name": "Mystical Dispute",
+      "queue_id": 4,
+      "normalized_elo": 1729.93
+    },
+    {
+      "name": "Mythos of Illuna",
+      "queue_id": 13,
+      "normalized_elo": 1678.85
+    },
+    {
+      "name": "Mythos of Nethroi",
+      "queue_id": 11,
+      "normalized_elo": 1682.84
+    },
+    {
+      "name": "Nadir Kraken",
+      "queue_id": 10,
+      "normalized_elo": 1652.78
+    },
+    {
+      "name": "Nahiri, Forged in Fury",
+      "queue_id": 5,
+      "normalized_elo": 1633.73
+    },
+    {
+      "name": "Najeela, the Blade-Blossom",
+      "queue_id": 3,
+      "normalized_elo": 1661.18
+    },
+    {
+      "name": "Narset's Reversal",
+      "queue_id": 17,
+      "normalized_elo": 1673.75
+    },
+    {
+      "name": "Narset, Parter of Veils",
+      "queue_id": 17,
+      "normalized_elo": 1710.48
+    },
+    {
+      "name": "Nature's Rhythm",
+      "queue_id": 15,
+      "normalized_elo": 1637.99
+    },
+    {
+      "name": "Necrodominance",
+      "queue_id": 13,
+      "normalized_elo": 1651.04
+    },
+    {
+      "name": "Needleverge Pathway // Pillarverge Pathway",
+      "queue_id": 8,
+      "normalized_elo": 1655.63
+    },
+    {
+      "name": "Neheb, the Eternal",
+      "queue_id": 17,
+      "normalized_elo": 1676.45
+    },
+    {
+      "name": "Nemata, Primeval Warden",
+      "queue_id": 14,
+      "normalized_elo": 1649.23
+    },
+    {
+      "name": "Neoform",
+      "queue_id": 2,
+      "normalized_elo": 1655.77
+    },
+    {
+      "name": "Neriv, Heart of the Storm",
+      "queue_id": 14,
+      "normalized_elo": 1639.75
+    },
+    {
+      "name": "Nethergoyf",
+      "queue_id": 14,
+      "normalized_elo": 1679.36
+    },
+    {
+      "name": "Nethroi, Apex of Death",
+      "queue_id": 14,
+      "normalized_elo": 1695.06
+    },
+    {
+      "name": "Nettlecyst",
+      "queue_id": 14,
+      "normalized_elo": 1673.41
+    },
+    {
+      "name": "Nexus of Fate",
+      "queue_id": 6,
+      "normalized_elo": 1700.9
+    },
+    {
+      "name": "Nezahal, Primal Tide",
+      "queue_id": 17,
+      "normalized_elo": 1696.46
+    },
+    {
+      "name": "Nicol Bolas, Dragon-God",
+      "queue_id": 17,
+      "normalized_elo": 1728.09
+    },
+    {
+      "name": "Nicol Bolas, God-Pharaoh",
+      "queue_id": 9,
+      "normalized_elo": 1778.54
+    },
+    {
+      "name": "Nicol Bolas, the Ravager // Nicol Bolas, the Arisen",
+      "queue_id": 15,
+      "normalized_elo": 1730.18
+    },
+    {
+      "name": "Night of the Sweets' Revenge",
+      "queue_id": 12,
+      "normalized_elo": 1694.35
+    },
+    {
+      "name": "Nighthawk Scavenger",
+      "queue_id": 13,
+      "normalized_elo": 1659.88
+    },
+    {
+      "name": "Nightmare Shepherd",
+      "queue_id": 4,
+      "normalized_elo": 1662.83
+    },
+    {
+      "name": "Nightpack Ambusher",
+      "queue_id": 4,
+      "normalized_elo": 1651.92
+    },
+    {
+      "name": "Nikya of the Old Ways",
+      "queue_id": 15,
+      "normalized_elo": 1625.4
+    },
+    {
+      "name": "Nine Lives",
+      "queue_id": 3,
+      "normalized_elo": 1682.88
+    },
+    {
+      "name": "Nine-Lives Familiar",
+      "queue_id": 17,
+      "normalized_elo": 1663.11
+    },
+    {
+      "name": "Nissa of Shadowed Boughs",
+      "queue_id": 4,
+      "normalized_elo": 1680.64
+    },
+    {
+      "name": "Nissa, Ascended Animist",
+      "queue_id": 2,
+      "normalized_elo": 1651.77
+    },
+    {
+      "name": "Nissa, Resurgent Animist",
+      "queue_id": 14,
+      "normalized_elo": 1666.82
+    },
+    {
+      "name": "Nissa, Steward of Elements",
+      "queue_id": 5,
+      "normalized_elo": 1637.78
+    },
+    {
+      "name": "Nissa, Who Shakes the World",
+      "queue_id": 15,
+      "normalized_elo": 1733.34
+    },
+    {
+      "name": "Niv-Mizzet Reborn",
+      "queue_id": 13,
+      "normalized_elo": 1671.92
+    },
+    {
+      "name": "Niv-Mizzet, Parun",
+      "queue_id": 8,
+      "normalized_elo": 1674.96
+    },
+    {
+      "name": "Niv-Mizzet, Supreme",
+      "queue_id": 13,
+      "normalized_elo": 1632.96
+    },
+    {
+      "name": "No More Lies",
+      "queue_id": 6,
+      "normalized_elo": 1699.23
+    },
+    {
+      "name": "Notion Rain",
+      "queue_id": 9,
+      "normalized_elo": 1641.48
+    },
+    {
+      "name": "Nova Hellkite",
+      "queue_id": 2,
+      "normalized_elo": 1651.63
+    },
+    {
+      "name": "Nulldrifter",
+      "queue_id": 14,
+      "normalized_elo": 1647.5
+    },
+    {
+      "name": "Nylea, Keen-Eyed",
+      "queue_id": 9,
+      "normalized_elo": 1625.58
+    },
+    {
+      "name": "Nyxbloom Ancient",
+      "queue_id": 7,
+      "normalized_elo": 1659.38
+    },
+    {
+      "name": "Ob Nixilis, Captive Kingpin",
+      "queue_id": 12,
+      "normalized_elo": 1651.14
+    },
+    {
+      "name": "Ob Nixilis, the Adversary",
+      "queue_id": 5,
+      "normalized_elo": 1694.97
+    },
+    {
+      "name": "Obeka, Brute Chronologist",
+      "queue_id": 16,
+      "normalized_elo": 1675.04
+    },
+    {
+      "name": "Obosh, the Preypiercer",
+      "queue_id": 13,
+      "normalized_elo": 1717.34
+    },
+    {
+      "name": "Obscura Charm",
+      "queue_id": 17,
+      "normalized_elo": 1630.41
+    },
+    {
+      "name": "Ocelot Pride",
+      "queue_id": 9,
+      "normalized_elo": 1692.32
+    },
+    {
+      "name": "Ognis, the Dragon's Lash",
+      "queue_id": 11,
+      "normalized_elo": 1631.22
+    },
+    {
+      "name": "Ohran Frostfang",
+      "queue_id": 4,
+      "normalized_elo": 1638.88
+    },
+    {
+      "name": "Oildeep Gearhulk",
+      "queue_id": 13,
+      "normalized_elo": 1686.97
+    },
+    {
+      "name": "Ojer Axonil, Deepest Might // Temple of Power",
+      "queue_id": 12,
+      "normalized_elo": 1682.81
+    },
+    {
+      "name": "Oketra's Monument",
+      "queue_id": 17,
+      "normalized_elo": 1676.38
+    },
+    {
+      "name": "Oko, Thief of Crowns",
+      "queue_id": 8,
+      "normalized_elo": 1727.44
+    },
+    {
+      "name": "Old Gnawbone",
+      "queue_id": 14,
+      "normalized_elo": 1632.76
+    },
+    {
+      "name": "Old Rutstein",
+      "queue_id": 13,
+      "normalized_elo": 1627.38
+    },
+    {
+      "name": "Old Stickfingers",
+      "queue_id": 16,
+      "normalized_elo": 1673.77
+    },
+    {
+      "name": "Omen of the Sea",
+      "queue_id": 12,
+      "normalized_elo": 1626.37
+    },
+    {
+      "name": "Ominous Seas",
+      "queue_id": 16,
+      "normalized_elo": 1702.34
+    },
+    {
+      "name": "Omnath, Locus of Creation",
+      "queue_id": 3,
+      "normalized_elo": 1699.41
+    },
+    {
+      "name": "Omnath, Locus of the Roil",
+      "queue_id": 3,
+      "normalized_elo": 1643.93
+    },
+    {
+      "name": "Once Upon a Time",
+      "queue_id": 11,
+      "normalized_elo": 1655.88
+    },
+    {
+      "name": "Oni-Cult Anvil",
+      "queue_id": 15,
+      "normalized_elo": 1692.67
+    },
+    {
+      "name": "Order of Midnight // Alter Fate",
+      "queue_id": 8,
+      "normalized_elo": 1628.58
+    },
+    {
+      "name": "Ornithopter of Paradise",
+      "queue_id": 16,
+      "normalized_elo": 1720.52
+    },
+    {
+      "name": "Orthion, Hero of Lavabrink",
+      "queue_id": 8,
+      "normalized_elo": 1630.15
+    },
+    {
+      "name": "Orvar, the All-Form",
+      "queue_id": 16,
+      "normalized_elo": 1668.06
+    },
+    {
+      "name": "Ossification",
+      "queue_id": 16,
+      "normalized_elo": 1641.98
+    },
+    {
+      "name": "Osteomancer Adept",
+      "queue_id": 16,
+      "normalized_elo": 1655.53
+    },
+    {
+      "name": "Otawara, Soaring City",
+      "queue_id": 6,
+      "normalized_elo": 1706.98
+    },
+    {
+      "name": "Otherworldly Gaze",
+      "queue_id": 3,
+      "normalized_elo": 1636.18
+    },
+    {
+      "name": "Ouroboroid",
+      "queue_id": 10,
+      "normalized_elo": 1729.43
+    },
+    {
+      "name": "Outcaster Trailblazer",
+      "queue_id": 3,
+      "normalized_elo": 1628.92
+    },
+    {
+      "name": "Outrageous Robbery",
+      "queue_id": 13,
+      "normalized_elo": 1652.17
+    },
+    {
+      "name": "Overcharged Amalgam",
+      "queue_id": 3,
+      "normalized_elo": 1645.11
+    },
+    {
+      "name": "Overlord of the Balemurk",
+      "queue_id": 16,
+      "normalized_elo": 1755.34
+    },
+    {
+      "name": "Overlord of the Boilerbilges",
+      "queue_id": 12,
+      "normalized_elo": 1721.79
+    },
+    {
+      "name": "Overlord of the Floodpits",
+      "queue_id": 4,
+      "normalized_elo": 1707.1
+    },
+    {
+      "name": "Overlord of the Hauntwoods",
+      "queue_id": 5,
+      "normalized_elo": 1733.57
+    },
+    {
+      "name": "Overlord of the Mistmoors",
+      "queue_id": 16,
+      "normalized_elo": 1660.59
+    },
+    {
+      "name": "Overwhelming Splendor",
+      "queue_id": 15,
+      "normalized_elo": 1672.92
+    },
+    {
+      "name": "Ox of Agonas",
+      "queue_id": 16,
+      "normalized_elo": 1669.09
+    },
+    {
+      "name": "Ozolith, the Shattered Spire",
+      "queue_id": 11,
+      "normalized_elo": 1674.54
+    },
+    {
+      "name": "Pack Leader",
+      "queue_id": 6,
+      "normalized_elo": 1637.77
+    },
+    {
+      "name": "Palladia-Mors, the Ruiner",
+      "queue_id": 17,
+      "normalized_elo": 1632.07
+    },
+    {
+      "name": "Paradise Druid",
+      "queue_id": 16,
+      "normalized_elo": 1730.69
+    },
+    {
+      "name": "Paradox Engine",
+      "queue_id": 17,
+      "normalized_elo": 1672.4
+    },
+    {
+      "name": "Parhelion II",
+      "queue_id": 17,
+      "normalized_elo": 1661.17
+    },
+    {
+      "name": "Pawpatch Recruit",
+      "queue_id": 17,
+      "normalized_elo": 1630.1
+    },
+    {
+      "name": "Peer into the Abyss",
+      "queue_id": 11,
+      "normalized_elo": 1712.42
+    },
+    {
+      "name": "Pelt Collector",
+      "queue_id": 10,
+      "normalized_elo": 1642.71
+    },
+    {
+      "name": "Persist",
+      "queue_id": 4,
+      "normalized_elo": 1747.58
+    },
+    {
+      "name": "Pest Control",
+      "queue_id": 16,
+      "normalized_elo": 1661.41
+    },
+    {
+      "name": "Pestilent Spirit",
+      "queue_id": 14,
+      "normalized_elo": 1631.34
+    },
+    {
+      "name": "Phlage, Titan of Fire's Fury",
+      "queue_id": 16,
+      "normalized_elo": 1756.74
+    },
+    {
+      "name": "Phoenix Chick",
+      "queue_id": 16,
+      "normalized_elo": 1629.76
+    },
+    {
+      "name": "Phyrexian Dragon Engine",
+      "queue_id": 11,
+      "normalized_elo": 1649.7
+    },
+    {
+      "name": "Phyrexian Scriptures",
+      "queue_id": 17,
+      "normalized_elo": 1680.08
+    },
+    {
+      "name": "Pile On",
+      "queue_id": 13,
+      "normalized_elo": 1657.18
+    },
+    {
+      "name": "Pillage the Bog",
+      "queue_id": 8,
+      "normalized_elo": 1631.81
+    },
+    {
+      "name": "Pinnacle Emissary",
+      "queue_id": 16,
+      "normalized_elo": 1695.34
+    },
+    {
+      "name": "Pinnacle Monk // Mystic Peak",
+      "queue_id": 14,
+      "normalized_elo": 1649.39
+    },
+    {
+      "name": "Pinnacle Starcage",
+      "queue_id": 16,
+      "normalized_elo": 1660.15
+    },
+    {
+      "name": "Pitiless Plunderer",
+      "queue_id": 17,
+      "normalized_elo": 1684.13
+    },
+    {
+      "name": "Plague Engineer",
+      "queue_id": 16,
+      "normalized_elo": 1650.17
+    },
+    {
+      "name": "Plaguecrafter",
+      "queue_id": 10,
+      "normalized_elo": 1671.83
+    },
+    {
+      "name": "Planar Bridge",
+      "queue_id": 16,
+      "normalized_elo": 1637.03
+    },
+    {
+      "name": "Planar Genesis",
+      "queue_id": 13,
+      "normalized_elo": 1629.65
+    },
+    {
+      "name": "Plaza of Heroes",
+      "queue_id": 9,
+      "normalized_elo": 1626.0
+    },
+    {
+      "name": "Poison Dart Frog",
+      "queue_id": 11,
+      "normalized_elo": 1710.34
+    },
+    {
+      "name": "Poison-Tip Archer",
+      "queue_id": 2,
+      "normalized_elo": 1665.0
+    },
+    {
+      "name": "Polukranos, Unchained",
+      "queue_id": 14,
+      "normalized_elo": 1636.65
+    },
+    {
+      "name": "Polyraptor",
+      "queue_id": 17,
+      "normalized_elo": 1671.3
+    },
+    {
+      "name": "Poppet Stitcher // Poppet Factory",
+      "queue_id": 14,
+      "normalized_elo": 1656.98
+    },
+    {
+      "name": "Portal to Phyrexia",
+      "queue_id": 3,
+      "normalized_elo": 1730.63
+    },
+    {
+      "name": "Powerbalance",
+      "queue_id": 17,
+      "normalized_elo": 1643.17
+    },
+    {
+      "name": "Preacher of the Schism",
+      "queue_id": 13,
+      "normalized_elo": 1680.4
+    },
+    {
+      "name": "Priest of Fell Rites",
+      "queue_id": 17,
+      "normalized_elo": 1687.14
+    },
+    {
+      "name": "Priest of Forgotten Gods",
+      "queue_id": 14,
+      "normalized_elo": 1747.52
+    },
+    {
+      "name": "Primal Amulet // Primal Wellspring",
+      "queue_id": 13,
+      "normalized_elo": 1695.1
+    },
+    {
+      "name": "Primal Might",
+      "queue_id": 3,
+      "normalized_elo": 1643.69
+    },
+    {
+      "name": "Prime Speaker Vannifar",
+      "queue_id": 7,
+      "normalized_elo": 1675.97
+    },
+    {
+      "name": "Prismari Command",
+      "queue_id": 16,
+      "normalized_elo": 1682.68
+    },
+    {
+      "name": "Prismatic Vista",
+      "queue_id": 5,
+      "normalized_elo": 1676.44
+    },
+    {
+      "name": "Prisoner's Dilemma",
+      "queue_id": 5,
+      "normalized_elo": 1651.05
+    },
+    {
+      "name": "Profane Tutor",
+      "queue_id": 17,
+      "normalized_elo": 1637.43
+    },
+    {
+      "name": "Professional Face-Breaker",
+      "queue_id": 15,
+      "normalized_elo": 1710.47
+    },
+    {
+      "name": "Professor Onyx",
+      "queue_id": 4,
+      "normalized_elo": 1667.33
+    },
+    {
+      "name": "Proft's Eidetic Memory",
+      "queue_id": 13,
+      "normalized_elo": 1743.46
+    },
+    {
+      "name": "Prosperous Innkeeper",
+      "queue_id": 17,
+      "normalized_elo": 1660.28
+    },
+    {
+      "name": "Prosperous Thief",
+      "queue_id": 17,
+      "normalized_elo": 1656.42
+    },
+    {
+      "name": "Psychic Frog",
+      "queue_id": 10,
+      "normalized_elo": 1712.04
+    },
+    {
+      "name": "Pull from Tomorrow",
+      "queue_id": 16,
+      "normalized_elo": 1642.77
+    },
+    {
+      "name": "Pyrogoyf",
+      "queue_id": 5,
+      "normalized_elo": 1712.5
+    },
+    {
+      "name": "Qarsi Revenant",
+      "queue_id": 4,
+      "normalized_elo": 1694.48
+    },
+    {
+      "name": "Quantum Riddler",
+      "queue_id": 2,
+      "normalized_elo": 1740.86
+    },
+    {
+      "name": "Quartzwood Crasher",
+      "queue_id": 14,
+      "normalized_elo": 1647.94
+    },
+    {
+      "name": "Questing Beast",
+      "queue_id": 11,
+      "normalized_elo": 1733.37
+    },
+    {
+      "name": "Questing Druid // Seek the Beast",
+      "queue_id": 13,
+      "normalized_elo": 1729.19
+    },
+    {
+      "name": "Queza, Augur of Agonies",
+      "queue_id": 16,
+      "normalized_elo": 1629.84
+    },
+    {
+      "name": "Quintorius Kand",
+      "queue_id": 13,
+      "normalized_elo": 1638.67
+    },
+    {
+      "name": "Quintorius, Loremaster",
+      "queue_id": 11,
+      "normalized_elo": 1648.66
+    },
+    {
+      "name": "Raff Capashen, Ship's Mage",
+      "queue_id": 16,
+      "normalized_elo": 1628.66
+    },
+    {
+      "name": "Raffine's Tower",
+      "queue_id": 13,
+      "normalized_elo": 1640.77
+    },
+    {
+      "name": "Raffine, Scheming Seer",
+      "queue_id": 9,
+      "normalized_elo": 1662.93
+    },
+    {
+      "name": "Ragavan, Nimble Pilferer",
+      "queue_id": 14,
+      "normalized_elo": 1704.78
+    },
+    {
+      "name": "Ragost, Deft Gastronaut",
+      "queue_id": 3,
+      "normalized_elo": 1692.28
+    },
+    {
+      "name": "Raise the Past",
+      "queue_id": 16,
+      "normalized_elo": 1706.25
+    },
+    {
+      "name": "Rakdos, the Showstopper",
+      "queue_id": 17,
+      "normalized_elo": 1692.94
+    },
+    {
+      "name": "Ral, Crackling Wit",
+      "queue_id": 15,
+      "normalized_elo": 1678.71
+    },
+    {
+      "name": "Ral, Monsoon Mage // Ral, Leyline Prodigy",
+      "queue_id": 16,
+      "normalized_elo": 1671.79
+    },
+    {
+      "name": "Ramos, Dragon Engine",
+      "queue_id": 8,
+      "normalized_elo": 1650.66
+    },
+    {
+      "name": "Rampaging Ferocidon",
+      "queue_id": 11,
+      "normalized_elo": 1655.36
+    },
+    {
+      "name": "Ramunap Excavator",
+      "queue_id": 9,
+      "normalized_elo": 1697.06
+    },
+    {
+      "name": "Ranger-Captain of Eos",
+      "queue_id": 3,
+      "normalized_elo": 1676.57
+    },
+    {
+      "name": "Rankle, Master of Pranks",
+      "queue_id": 17,
+      "normalized_elo": 1741.53
+    },
+    {
+      "name": "Rat Colony",
+      "queue_id": 17,
+      "normalized_elo": 1637.76
+    },
+    {
+      "name": "Ratadrabik of Urborg",
+      "queue_id": 16,
+      "normalized_elo": 1627.77
+    },
+    {
+      "name": "Raucous Theater",
+      "queue_id": 10,
+      "normalized_elo": 1625.9
+    },
+    {
+      "name": "Raugrin Triome",
+      "queue_id": 6,
+      "normalized_elo": 1679.08
+    },
+    {
+      "name": "Ravager Wurm",
+      "queue_id": 17,
+      "normalized_elo": 1680.17
+    },
+    {
+      "name": "Ravenous Chupacabra",
+      "queue_id": 4,
+      "normalized_elo": 1714.61
+    },
+    {
+      "name": "Razaketh, the Foulblooded",
+      "queue_id": 7,
+      "normalized_elo": 1623.34
+    },
+    {
+      "name": "Razorkin Needlehead",
+      "queue_id": 5,
+      "normalized_elo": 1659.99
+    },
+    {
+      "name": "Realm-Cloaked Giant // Cast Off",
+      "queue_id": 16,
+      "normalized_elo": 1669.49
+    },
+    {
+      "name": "Realmbreaker, the Invasion Tree",
+      "queue_id": 17,
+      "normalized_elo": 1643.95
+    },
+    {
+      "name": "Realmwalker",
+      "queue_id": 9,
+      "normalized_elo": 1660.69
+    },
+    {
+      "name": "Reckoner Bankbuster",
+      "queue_id": 15,
+      "normalized_elo": 1678.36
+    },
+    {
+      "name": "Refurbished Familiar",
+      "queue_id": 3,
+      "normalized_elo": 1642.73
+    },
+    {
+      "name": "Regal Bunnicorn",
+      "queue_id": 15,
+      "normalized_elo": 1698.08
+    },
+    {
+      "name": "Regal Caracal",
+      "queue_id": 14,
+      "normalized_elo": 1693.57
+    },
+    {
+      "name": "Rekindling Phoenix",
+      "queue_id": 2,
+      "normalized_elo": 1632.3
+    },
+    {
+      "name": "Rendmaw, Creaking Nest",
+      "queue_id": 17,
+      "normalized_elo": 1657.9
+    },
+    {
+      "name": "Reprieve",
+      "queue_id": 16,
+      "normalized_elo": 1636.68
+    },
+    {
+      "name": "Repudiate // Replicate",
+      "queue_id": 17,
+      "normalized_elo": 1637.96
+    },
+    {
+      "name": "Resplendent Angel",
+      "queue_id": 3,
+      "normalized_elo": 1660.29
+    },
+    {
+      "name": "Restless Cottage",
+      "queue_id": 16,
+      "normalized_elo": 1641.79
+    },
+    {
+      "name": "Restless Fortress",
+      "queue_id": 17,
+      "normalized_elo": 1641.69
+    },
+    {
+      "name": "Retrofitter Foundry",
+      "queue_id": 2,
+      "normalized_elo": 1729.46
+    },
+    {
+      "name": "Return of the Wildspeaker",
+      "queue_id": 6,
+      "normalized_elo": 1658.39
+    },
+    {
+      "name": "Return the Favor",
+      "queue_id": 17,
+      "normalized_elo": 1633.89
+    },
+    {
+      "name": "Rev, Tithe Extractor",
+      "queue_id": 3,
+      "normalized_elo": 1656.49
+    },
+    {
+      "name": "Revel in Riches",
+      "queue_id": 14,
+      "normalized_elo": 1713.28
+    },
+    {
+      "name": "Revitalizing Repast // Old-Growth Grove",
+      "queue_id": 10,
+      "normalized_elo": 1641.2
+    },
+    {
+      "name": "Rhonas the Indomitable",
+      "queue_id": 8,
+      "normalized_elo": 1654.71
+    },
+    {
+      "name": "Rhonas's Monument",
+      "queue_id": 6,
+      "normalized_elo": 1649.3
+    },
+    {
+      "name": "Rhythm of the Wild",
+      "queue_id": 9,
+      "normalized_elo": 1713.74
+    },
+    {
+      "name": "Righteous Valkyrie",
+      "queue_id": 15,
+      "normalized_elo": 1669.48
+    },
+    {
+      "name": "Rip Apart",
+      "queue_id": 5,
+      "normalized_elo": 1665.51
+    },
+    {
+      "name": "Ripples of Undeath",
+      "queue_id": 6,
+      "normalized_elo": 1680.91
+    },
+    {
+      "name": "Riptide Gearhulk",
+      "queue_id": 17,
+      "normalized_elo": 1657.76
+    },
+    {
+      "name": "Risen Reef",
+      "queue_id": 7,
+      "normalized_elo": 1796.18
+    },
+    {
+      "name": "Rishkar's Expertise",
+      "queue_id": 16,
+      "normalized_elo": 1629.34
+    },
+    {
+      "name": "Rishkar, Peema Renegade",
+      "queue_id": 4,
+      "normalized_elo": 1633.6
+    },
+    {
+      "name": "Rivaz of the Claw",
+      "queue_id": 5,
+      "normalized_elo": 1623.88
+    },
+    {
+      "name": "Roaming Throne",
+      "queue_id": 16,
+      "normalized_elo": 1712.26
+    },
+    {
+      "name": "Roaring Furnace // Steaming Sauna",
+      "queue_id": 3,
+      "normalized_elo": 1633.03
+    },
+    {
+      "name": "Robber of the Rich",
+      "queue_id": 13,
+      "normalized_elo": 1718.92
+    },
+    {
+      "name": "Rograkh, Son of Rohgahh",
+      "queue_id": 17,
+      "normalized_elo": 1631.27
+    },
+    {
+      "name": "Roiling Dragonstorm",
+      "queue_id": 4,
+      "normalized_elo": 1624.89
+    },
+    {
+      "name": "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+      "queue_id": 8,
+      "normalized_elo": 1664.59
+    },
+    {
+      "name": "Rot-Curse Rakshasa",
+      "queue_id": 17,
+      "normalized_elo": 1631.7
+    },
+    {
+      "name": "Rottenmouth Viper",
+      "queue_id": 4,
+      "normalized_elo": 1741.86
+    },
+    {
+      "name": "Rotting Regisaur",
+      "queue_id": 10,
+      "normalized_elo": 1624.35
+    },
+    {
+      "name": "Rowan, Scion of War",
+      "queue_id": 9,
+      "normalized_elo": 1658.37
+    },
+    {
+      "name": "Roxanne, Starfall Savant",
+      "queue_id": 10,
+      "normalized_elo": 1649.88
+    },
+    {
+      "name": "Ruin Crab",
+      "queue_id": 4,
+      "normalized_elo": 1658.84
+    },
+    {
+      "name": "Ruinous Ultimatum",
+      "queue_id": 9,
+      "normalized_elo": 1739.65
+    },
+    {
+      "name": "Run Away Together",
+      "queue_id": 13,
+      "normalized_elo": 1642.37
+    },
+    {
+      "name": "Runaway Steam-Kin",
+      "queue_id": 10,
+      "normalized_elo": 1751.32
+    },
+    {
+      "name": "Sab-Sunen, Luxa Embodied",
+      "queue_id": 9,
+      "normalized_elo": 1705.69
+    },
+    {
+      "name": "Saheeli, Sublime Artificer",
+      "queue_id": 4,
+      "normalized_elo": 1686.56
+    },
+    {
+      "name": "Sai, Master Thopterist",
+      "queue_id": 10,
+      "normalized_elo": 1663.37
+    },
+    {
+      "name": "Sakashima of a Thousand Faces",
+      "queue_id": 13,
+      "normalized_elo": 1662.82
+    },
+    {
+      "name": "Sanctuary Warden",
+      "queue_id": 10,
+      "normalized_elo": 1623.51
+    },
+    {
+      "name": "Sanctum Seeker",
+      "queue_id": 6,
+      "normalized_elo": 1661.65
+    },
+    {
+      "name": "Sanctum Weaver",
+      "queue_id": 5,
+      "normalized_elo": 1691.37
+    },
+    {
+      "name": "Sandstorm Salvager",
+      "queue_id": 6,
+      "normalized_elo": 1623.15
+    },
+    {
+      "name": "Sandwurm Convergence",
+      "queue_id": 16,
+      "normalized_elo": 1685.66
+    },
+    {
+      "name": "Sanguine Evangelist",
+      "queue_id": 12,
+      "normalized_elo": 1651.08
+    },
+    {
+      "name": "Satoru Umezawa",
+      "queue_id": 17,
+      "normalized_elo": 1664.19
+    },
+    {
+      "name": "Satoru, the Infiltrator",
+      "queue_id": 8,
+      "normalized_elo": 1650.09
+    },
+    {
+      "name": "Savai Triome",
+      "queue_id": 5,
+      "normalized_elo": 1666.45
+    },
+    {
+      "name": "Saw It Coming",
+      "queue_id": 5,
+      "normalized_elo": 1629.56
+    },
+    {
+      "name": "Saw in Half",
+      "queue_id": 5,
+      "normalized_elo": 1646.61
+    },
+    {
+      "name": "Scalding Viper // Steam Clean",
+      "queue_id": 10,
+      "normalized_elo": 1657.45
+    },
+    {
+      "name": "Scale Up",
+      "queue_id": 14,
+      "normalized_elo": 1649.67
+    },
+    {
+      "name": "Scavenger Grounds",
+      "queue_id": 16,
+      "normalized_elo": 1687.12
+    },
+    {
+      "name": "Scavenger Regent // Exude Toxin",
+      "queue_id": 13,
+      "normalized_elo": 1634.64
+    },
+    {
+      "name": "Scavenger's Talent",
+      "queue_id": 14,
+      "normalized_elo": 1663.57
+    },
+    {
+      "name": "Scheming Symmetry",
+      "queue_id": 7,
+      "normalized_elo": 1714.29
+    },
+    {
+      "name": "Scion of Draco",
+      "queue_id": 15,
+      "normalized_elo": 1702.73
+    },
+    {
+      "name": "Scourge of the Skyclaves",
+      "queue_id": 6,
+      "normalized_elo": 1625.96
+    },
+    {
+      "name": "Scrap Trawler",
+      "queue_id": 10,
+      "normalized_elo": 1670.24
+    },
+    {
+      "name": "Scrawling Crawler",
+      "queue_id": 7,
+      "normalized_elo": 1669.67
+    },
+    {
+      "name": "Screaming Nemesis",
+      "queue_id": 17,
+      "normalized_elo": 1646.01
+    },
+    {
+      "name": "Scute Swarm",
+      "queue_id": 15,
+      "normalized_elo": 1714.61
+    },
+    {
+      "name": "Scythecat Cub",
+      "queue_id": 12,
+      "normalized_elo": 1657.99
+    },
+    {
+      "name": "Sea Gate Restoration // Sea Gate, Reborn",
+      "queue_id": 2,
+      "normalized_elo": 1658.92
+    },
+    {
+      "name": "Sea-Dasher Octopus",
+      "queue_id": 13,
+      "normalized_elo": 1637.26
+    },
+    {
+      "name": "Seal Away",
+      "queue_id": 4,
+      "normalized_elo": 1625.77
+    },
+    {
+      "name": "Search for Azcanta // Azcanta, the Sunken Ruin",
+      "queue_id": 17,
+      "normalized_elo": 1733.27
+    },
+    {
+      "name": "Season of Gathering",
+      "queue_id": 14,
+      "normalized_elo": 1646.15
+    },
+    {
+      "name": "Season of Growth",
+      "queue_id": 13,
+      "normalized_elo": 1632.05
+    },
+    {
+      "name": "Season of Loss",
+      "queue_id": 14,
+      "normalized_elo": 1687.51
+    },
+    {
+      "name": "Season of Weaving",
+      "queue_id": 16,
+      "normalized_elo": 1633.43
+    },
+    {
+      "name": "Season of the Burrow",
+      "queue_id": 15,
+      "normalized_elo": 1631.72
+    },
+    {
+      "name": "Seasoned Pyromancer",
+      "queue_id": 7,
+      "normalized_elo": 1679.92
+    },
+    {
+      "name": "Secret Rendezvous",
+      "queue_id": 8,
+      "normalized_elo": 1715.49
+    },
+    {
+      "name": "Sedgemoor Witch",
+      "queue_id": 12,
+      "normalized_elo": 1734.13
+    },
+    {
+      "name": "Seize the Spoils",
+      "queue_id": 3,
+      "normalized_elo": 1644.73
+    },
+    {
+      "name": "Seize the Spotlight",
+      "queue_id": 6,
+      "normalized_elo": 1622.55
+    },
+    {
+      "name": "Selfless Savior",
+      "queue_id": 11,
+      "normalized_elo": 1731.11
+    },
+    {
+      "name": "Sentinel of the Nameless City",
+      "queue_id": 16,
+      "normalized_elo": 1626.87
+    },
+    {
+      "name": "Sephara, Sky's Blade",
+      "queue_id": 17,
+      "normalized_elo": 1646.08
+    },
+    {
+      "name": "Seraph of the Scales",
+      "queue_id": 6,
+      "normalized_elo": 1663.57
+    },
+    {
+      "name": "Serra the Benevolent",
+      "queue_id": 7,
+      "normalized_elo": 1644.21
+    },
+    {
+      "name": "Serra's Emissary",
+      "queue_id": 17,
+      "normalized_elo": 1672.53
+    },
+    {
+      "name": "Setessan Champion",
+      "queue_id": 10,
+      "normalized_elo": 1674.43
+    },
+    {
+      "name": "Settle the Wreckage",
+      "queue_id": 12,
+      "normalized_elo": 1741.27
+    },
+    {
+      "name": "Sevinne's Reclamation",
+      "queue_id": 6,
+      "normalized_elo": 1683.0
+    },
+    {
+      "name": "Shadow of the Grave",
+      "queue_id": 3,
+      "normalized_elo": 1647.78
+    },
+    {
+      "name": "Shadowspear",
+      "queue_id": 11,
+      "normalized_elo": 1792.69
+    },
+    {
+      "name": "Shadowy Backstreet",
+      "queue_id": 10,
+      "normalized_elo": 1673.43
+    },
+    {
+      "name": "Shadrix Silverquill",
+      "queue_id": 16,
+      "normalized_elo": 1710.88
+    },
+    {
+      "name": "Shalai, Voice of Plenty",
+      "queue_id": 17,
+      "normalized_elo": 1687.34
+    },
+    {
+      "name": "Shambling Ghast",
+      "queue_id": 12,
+      "normalized_elo": 1631.12
+    },
+    {
+      "name": "Shark Typhoon",
+      "queue_id": 13,
+      "normalized_elo": 1773.68
+    },
+    {
+      "name": "Sharktocrab",
+      "queue_id": 5,
+      "normalized_elo": 1624.49
+    },
+    {
+      "name": "Shatterskull Smashing // Shatterskull, the Hammer Pass",
+      "queue_id": 10,
+      "normalized_elo": 1652.35
+    },
+    {
+      "name": "Sheltered by Ghosts",
+      "queue_id": 11,
+      "normalized_elo": 1634.56
+    },
+    {
+      "name": "Sheoldred // The True Scriptures",
+      "queue_id": 13,
+      "normalized_elo": 1683.05
+    },
+    {
+      "name": "Sheoldred's Edict",
+      "queue_id": 7,
+      "normalized_elo": 1685.7
+    },
+    {
+      "name": "Sheoldred, the Apocalypse",
+      "queue_id": 11,
+      "normalized_elo": 1838.59
+    },
+    {
+      "name": "Shifting Woodland",
+      "queue_id": 13,
+      "normalized_elo": 1716.83
+    },
+    {
+      "name": "Shigeki, Jukai Visionary",
+      "queue_id": 16,
+      "normalized_elo": 1731.98
+    },
+    {
+      "name": "Shilgengar, Sire of Famine",
+      "queue_id": 17,
+      "normalized_elo": 1661.53
+    },
+    {
+      "name": "Shinechaser",
+      "queue_id": 17,
+      "normalized_elo": 1627.59
+    },
+    {
+      "name": "Shoot the Sheriff",
+      "queue_id": 17,
+      "normalized_elo": 1631.1
+    },
+    {
+      "name": "Shorikai, Genesis Engine",
+      "queue_id": 16,
+      "normalized_elo": 1624.38
+    },
+    {
+      "name": "Shroofus Sproutsire",
+      "queue_id": 16,
+      "normalized_elo": 1618.66
+    },
+    {
+      "name": "Sidisi, Regent of the Mire",
+      "queue_id": 15,
+      "normalized_elo": 1625.54
+    },
+    {
+      "name": "Sigarda, Champion of Light",
+      "queue_id": 10,
+      "normalized_elo": 1633.43
+    },
+    {
+      "name": "Silent Clearing",
+      "queue_id": 9,
+      "normalized_elo": 1625.08
+    },
+    {
+      "name": "Silent Hallcreeper",
+      "queue_id": 11,
+      "normalized_elo": 1644.63
+    },
+    {
+      "name": "Silverback Elder",
+      "queue_id": 8,
+      "normalized_elo": 1636.68
+    },
+    {
+      "name": "Simic Ascendancy",
+      "queue_id": 16,
+      "normalized_elo": 1628.79
+    },
+    {
+      "name": "Simulacrum Synthesizer",
+      "queue_id": 2,
+      "normalized_elo": 1691.95
+    },
+    {
+      "name": "Singularity Rupture",
+      "queue_id": 17,
+      "normalized_elo": 1688.79
+    },
+    {
+      "name": "Sink into Stupor // Soporific Springs",
+      "queue_id": 2,
+      "normalized_elo": 1711.05
+    },
+    {
+      "name": "Sinkhole Surveyor",
+      "queue_id": 13,
+      "normalized_elo": 1627.92
+    },
+    {
+      "name": "Siphon Insight",
+      "queue_id": 5,
+      "normalized_elo": 1648.1
+    },
+    {
+      "name": "Sire of Seven Deaths",
+      "queue_id": 17,
+      "normalized_elo": 1713.42
+    },
+    {
+      "name": "Siren Stormtamer",
+      "queue_id": 16,
+      "normalized_elo": 1674.61
+    },
+    {
+      "name": "Six",
+      "queue_id": 16,
+      "normalized_elo": 1767.08
+    },
+    {
+      "name": "Skrelv, Defector Mite",
+      "queue_id": 13,
+      "normalized_elo": 1631.77
+    },
+    {
+      "name": "Skyclave Apparition",
+      "queue_id": 11,
+      "normalized_elo": 1706.14
+    },
+    {
+      "name": "Slimefoot and Squee",
+      "queue_id": 10,
+      "normalized_elo": 1627.13
+    },
+    {
+      "name": "Slimefoot, the Stowaway",
+      "queue_id": 9,
+      "normalized_elo": 1660.37
+    },
+    {
+      "name": "Slip Out the Back",
+      "queue_id": 16,
+      "normalized_elo": 1664.87
+    },
+    {
+      "name": "Slither Blade",
+      "queue_id": 3,
+      "normalized_elo": 1667.75
+    },
+    {
+      "name": "Slitherwisp",
+      "queue_id": 8,
+      "normalized_elo": 1634.13
+    },
+    {
+      "name": "Slogurk, the Overslime",
+      "queue_id": 12,
+      "normalized_elo": 1648.8
+    },
+    {
+      "name": "Smoldering Egg // Ashmouth Dragon",
+      "queue_id": 16,
+      "normalized_elo": 1676.56
+    },
+    {
+      "name": "Smuggler's Surprise",
+      "queue_id": 15,
+      "normalized_elo": 1703.43
+    },
+    {
+      "name": "Snakeskin Veil",
+      "queue_id": 13,
+      "normalized_elo": 1651.02
+    },
+    {
+      "name": "Snapdax, Apex of the Hunt",
+      "queue_id": 2,
+      "normalized_elo": 1629.1
+    },
+    {
+      "name": "Snarling Gorehound",
+      "queue_id": 17,
+      "normalized_elo": 1632.15
+    },
+    {
+      "name": "Solemnity",
+      "queue_id": 4,
+      "normalized_elo": 1650.41
+    },
+    {
+      "name": "Solitude",
+      "queue_id": 11,
+      "normalized_elo": 1702.49
+    },
+    {
+      "name": "Solphim, Mayhem Dominus",
+      "queue_id": 10,
+      "normalized_elo": 1660.12
+    },
+    {
+      "name": "Song of Creation",
+      "queue_id": 13,
+      "normalized_elo": 1696.34
+    },
+    {
+      "name": "Songcrafter Mage",
+      "queue_id": 5,
+      "normalized_elo": 1646.57
+    },
+    {
+      "name": "Sorin of House Markov // Sorin, Ravenous Neonate",
+      "queue_id": 11,
+      "normalized_elo": 1673.49
+    },
+    {
+      "name": "Sorin the Mirthless",
+      "queue_id": 11,
+      "normalized_elo": 1628.9
+    },
+    {
+      "name": "Sorin, Imperious Bloodlord",
+      "queue_id": 17,
+      "normalized_elo": 1702.75
+    },
+    {
+      "name": "Sorin, Vengeful Bloodlord",
+      "queue_id": 14,
+      "normalized_elo": 1669.2
+    },
+    {
+      "name": "Sothera, the Supervoid",
+      "queue_id": 12,
+      "normalized_elo": 1628.15
+    },
+    {
+      "name": "Soul Diviner",
+      "queue_id": 13,
+      "normalized_elo": 1643.03
+    },
+    {
+      "name": "Soul Immolation",
+      "queue_id": 17,
+      "normalized_elo": 1687.99
+    },
+    {
+      "name": "Soul Partition",
+      "queue_id": 16,
+      "normalized_elo": 1628.55
+    },
+    {
+      "name": "Soul Shatter",
+      "queue_id": 14,
+      "normalized_elo": 1662.21
+    },
+    {
+      "name": "Soul of Windgrace",
+      "queue_id": 17,
+      "normalized_elo": 1690.72
+    },
+    {
+      "name": "Soul-Guide Lantern",
+      "queue_id": 4,
+      "normalized_elo": 1657.23
+    },
+    {
+      "name": "Soul-Scar Mage",
+      "queue_id": 9,
+      "normalized_elo": 1672.34
+    },
+    {
+      "name": "Soulherder",
+      "queue_id": 17,
+      "normalized_elo": 1720.17
+    },
+    {
+      "name": "Sovereign Okinec Ahau",
+      "queue_id": 9,
+      "normalized_elo": 1648.05
+    },
+    {
+      "name": "Sowing Mycospawn",
+      "queue_id": 13,
+      "normalized_elo": 1633.83
+    },
+    {
+      "name": "Spara's Headquarters",
+      "queue_id": 11,
+      "normalized_elo": 1656.92
+    },
+    {
+      "name": "Spark Double",
+      "queue_id": 16,
+      "normalized_elo": 1693.04
+    },
+    {
+      "name": "Spawn of Mayhem",
+      "queue_id": 15,
+      "normalized_elo": 1642.35
+    },
+    {
+      "name": "Spectator Seating",
+      "queue_id": 9,
+      "normalized_elo": 1630.88
+    },
+    {
+      "name": "Spellseeker",
+      "queue_id": 7,
+      "normalized_elo": 1745.5
+    },
+    {
+      "name": "Spelunking",
+      "queue_id": 7,
+      "normalized_elo": 1676.24
+    },
+    {
+      "name": "Sphinx of the Second Sun",
+      "queue_id": 11,
+      "normalized_elo": 1659.09
+    },
+    {
+      "name": "Spikefield Hazard // Spikefield Cave",
+      "queue_id": 16,
+      "normalized_elo": 1627.89
+    },
+    {
+      "name": "Spinerock Tyrant",
+      "queue_id": 17,
+      "normalized_elo": 1649.55
+    },
+    {
+      "name": "Spirited Companion",
+      "queue_id": 3,
+      "normalized_elo": 1741.94
+    },
+    {
+      "name": "Split Up",
+      "queue_id": 6,
+      "normalized_elo": 1697.12
+    },
+    {
+      "name": "Springbloom Druid",
+      "queue_id": 17,
+      "normalized_elo": 1654.78
+    },
+    {
+      "name": "Springheart Nantuko",
+      "queue_id": 5,
+      "normalized_elo": 1646.93
+    },
+    {
+      "name": "Sprite Dragon",
+      "queue_id": 13,
+      "normalized_elo": 1662.61
+    },
+    {
+      "name": "Spyglass Siren",
+      "queue_id": 16,
+      "normalized_elo": 1660.2
+    },
+    {
+      "name": "Squee, the Immortal",
+      "queue_id": 13,
+      "normalized_elo": 1695.56
+    },
+    {
+      "name": "Squirming Emergence",
+      "queue_id": 16,
+      "normalized_elo": 1647.03
+    },
+    {
+      "name": "Squirrel Sovereign",
+      "queue_id": 3,
+      "normalized_elo": 1633.06
+    },
+    {
+      "name": "Sram, Senior Edificer",
+      "queue_id": 15,
+      "normalized_elo": 1700.47
+    },
+    {
+      "name": "Staff of Compleation",
+      "queue_id": 14,
+      "normalized_elo": 1633.57
+    },
+    {
+      "name": "Staff of the Storyteller",
+      "queue_id": 16,
+      "normalized_elo": 1629.98
+    },
+    {
+      "name": "Star of Extinction",
+      "queue_id": 16,
+      "normalized_elo": 1631.09
+    },
+    {
+      "name": "Starfield Shepherd",
+      "queue_id": 5,
+      "normalized_elo": 1638.14
+    },
+    {
+      "name": "Stargaze",
+      "queue_id": 14,
+      "normalized_elo": 1629.32
+    },
+    {
+      "name": "Starwinder",
+      "queue_id": 17,
+      "normalized_elo": 1679.13
+    },
+    {
+      "name": "Steel Seraph",
+      "queue_id": 16,
+      "normalized_elo": 1631.64
+    },
+    {
+      "name": "Stella Lee, Wild Card",
+      "queue_id": 7,
+      "normalized_elo": 1641.53
+    },
+    {
+      "name": "Stitcher's Supplier",
+      "queue_id": 16,
+      "normalized_elo": 1738.35
+    },
+    {
+      "name": "Stock Up",
+      "queue_id": 5,
+      "normalized_elo": 1650.32
+    },
+    {
+      "name": "Stonecoil Serpent",
+      "queue_id": 10,
+      "normalized_elo": 1684.62
+    },
+    {
+      "name": "Storm the Vault // Vault of Catlacan",
+      "queue_id": 17,
+      "normalized_elo": 1672.34
+    },
+    {
+      "name": "Storm-Kiln Artist",
+      "queue_id": 17,
+      "normalized_elo": 1729.75
+    },
+    {
+      "name": "Stormcarved Coast",
+      "queue_id": 14,
+      "normalized_elo": 1640.31
+    },
+    {
+      "name": "Stormcatch Mentor",
+      "queue_id": 5,
+      "normalized_elo": 1653.36
+    },
+    {
+      "name": "Stormchaser's Talent",
+      "queue_id": 8,
+      "normalized_elo": 1659.54
+    },
+    {
+      "name": "Stormfist Crusader",
+      "queue_id": 13,
+      "normalized_elo": 1644.08
+    },
+    {
+      "name": "Stormscale Scion",
+      "queue_id": 11,
+      "normalized_elo": 1709.63
+    },
+    {
+      "name": "Strict Proctor",
+      "queue_id": 15,
+      "normalized_elo": 1651.69
+    },
+    {
+      "name": "Strike It Rich",
+      "queue_id": 14,
+      "normalized_elo": 1648.5
+    },
+    {
+      "name": "Strix Serenade",
+      "queue_id": 14,
+      "normalized_elo": 1650.27
+    },
+    {
+      "name": "Strixhaven Stadium",
+      "queue_id": 12,
+      "normalized_elo": 1638.88
+    },
+    {
+      "name": "Stroke of Midnight",
+      "queue_id": 12,
+      "normalized_elo": 1636.75
+    },
+    {
+      "name": "Stump Stomp // Burnwillow Clearing",
+      "queue_id": 11,
+      "normalized_elo": 1624.66
+    },
+    {
+      "name": "Sublime Epiphany",
+      "queue_id": 17,
+      "normalized_elo": 1725.95
+    },
+    {
+      "name": "Subtlety",
+      "queue_id": 8,
+      "normalized_elo": 1645.42
+    },
+    {
+      "name": "Sunbird's Invocation",
+      "queue_id": 14,
+      "normalized_elo": 1634.7
+    },
+    {
+      "name": "Sunderflock",
+      "queue_id": 16,
+      "normalized_elo": 1646.66
+    },
+    {
+      "name": "Sunfall",
+      "queue_id": 16,
+      "normalized_elo": 1647.26
+    },
+    {
+      "name": "Sunspine Lynx",
+      "queue_id": 10,
+      "normalized_elo": 1641.6
+    },
+    {
+      "name": "Surge Engine",
+      "queue_id": 8,
+      "normalized_elo": 1655.67
+    },
+    {
+      "name": "Surrak, Elusive Hunter",
+      "queue_id": 16,
+      "normalized_elo": 1664.98
+    },
+    {
+      "name": "Svella, Ice Shaper",
+      "queue_id": 14,
+      "normalized_elo": 1668.05
+    },
+    {
+      "name": "Svyelun of Sea and Sky",
+      "queue_id": 15,
+      "normalized_elo": 1640.64
+    },
+    {
+      "name": "Swiftblade Vindicator",
+      "queue_id": 15,
+      "normalized_elo": 1620.48
+    },
+    {
+      "name": "Sword of Forge and Frontier",
+      "queue_id": 13,
+      "normalized_elo": 1635.37
+    },
+    {
+      "name": "Sword of Hearth and Home",
+      "queue_id": 2,
+      "normalized_elo": 1712.45
+    },
+    {
+      "name": "Sword of Once and Future",
+      "queue_id": 3,
+      "normalized_elo": 1631.01
+    },
+    {
+      "name": "Sword of Sinew and Steel",
+      "queue_id": 5,
+      "normalized_elo": 1639.46
+    },
+    {
+      "name": "Sword of Truth and Justice",
+      "queue_id": 4,
+      "normalized_elo": 1643.34
+    },
+    {
+      "name": "Sygg, Wanderwine Wisdom // Sygg, Wanderbrine Shield",
+      "queue_id": 6,
+      "normalized_elo": 1650.06
+    },
+    {
+      "name": "Syr Ginger, the Meal Ender",
+      "queue_id": 16,
+      "normalized_elo": 1635.58
+    },
+    {
+      "name": "Syr Gwyn, Hero of Ashvale",
+      "queue_id": 16,
+      "normalized_elo": 1686.26
+    },
+    {
+      "name": "Syr Konrad, the Grim",
+      "queue_id": 8,
+      "normalized_elo": 1739.31
+    },
+    {
+      "name": "Syr Vondam, Sunstar Exemplar",
+      "queue_id": 13,
+      "normalized_elo": 1621.02
+    },
+    {
+      "name": "Sythis, Harvest's Hand",
+      "queue_id": 5,
+      "normalized_elo": 1680.02
+    },
+    {
+      "name": "Taigam, Master Opportunist",
+      "queue_id": 17,
+      "normalized_elo": 1666.15
+    },
+    {
+      "name": "Tainted Indulgence",
+      "queue_id": 16,
+      "normalized_elo": 1638.23
+    },
+    {
+      "name": "Takenuma, Abandoned Mire",
+      "queue_id": 16,
+      "normalized_elo": 1726.24
+    },
+    {
+      "name": "Talion, the Kindly Lord",
+      "queue_id": 12,
+      "normalized_elo": 1714.33
+    },
+    {
+      "name": "Talisman of Conviction",
+      "queue_id": 2,
+      "normalized_elo": 1669.64
+    },
+    {
+      "name": "Talisman of Creativity",
+      "queue_id": 16,
+      "normalized_elo": 1664.36
+    },
+    {
+      "name": "Talisman of Curiosity",
+      "queue_id": 2,
+      "normalized_elo": 1647.53
+    },
+    {
+      "name": "Tam, Mindful First-Year",
+      "queue_id": 4,
+      "normalized_elo": 1640.12
+    },
+    {
+      "name": "Tameshi, Reality Architect",
+      "queue_id": 16,
+      "normalized_elo": 1681.0
+    },
+    {
+      "name": "Tamiyo's Safekeeping",
+      "queue_id": 17,
+      "normalized_elo": 1705.94
+    },
+    {
+      "name": "Tamiyo, Collector of Tales",
+      "queue_id": 12,
+      "normalized_elo": 1638.62
+    },
+    {
+      "name": "Tamiyo, Compleated Sage",
+      "queue_id": 17,
+      "normalized_elo": 1692.77
+    },
+    {
+      "name": "Tamiyo, Inquisitive Student // Tamiyo, Seasoned Scholar",
+      "queue_id": 9,
+      "normalized_elo": 1666.37
+    },
+    {
+      "name": "Tangled Florahedron // Tangled Vale",
+      "queue_id": 15,
+      "normalized_elo": 1657.14
+    },
+    {
+      "name": "Tannuk, Steadfast Second",
+      "queue_id": 17,
+      "normalized_elo": 1680.12
+    },
+    {
+      "name": "Tasha, the Witch Queen",
+      "queue_id": 13,
+      "normalized_elo": 1638.3
+    },
+    {
+      "name": "Tatyova, Benthic Druid",
+      "queue_id": 12,
+      "normalized_elo": 1699.36
+    },
+    {
+      "name": "Teferi's Ageless Insight",
+      "queue_id": 12,
+      "normalized_elo": 1668.57
+    },
+    {
+      "name": "Teferi, Hero of Dominaria",
+      "queue_id": 16,
+      "normalized_elo": 1680.53
+    },
+    {
+      "name": "Teferi, Master of Time",
+      "queue_id": 12,
+      "normalized_elo": 1631.6
+    },
+    {
+      "name": "Teferi, Temporal Pilgrim",
+      "queue_id": 17,
+      "normalized_elo": 1638.45
+    },
+    {
+      "name": "Teferi, Time Raveler",
+      "queue_id": 7,
+      "normalized_elo": 1718.9
+    },
+    {
+      "name": "Teferi, Who Slows the Sunset",
+      "queue_id": 15,
+      "normalized_elo": 1626.42
+    },
+    {
+      "name": "Tegwyll, Duke of Splendor",
+      "queue_id": 12,
+      "normalized_elo": 1666.99
+    },
+    {
+      "name": "Tekuthal, Inquiry Dominus",
+      "queue_id": 2,
+      "normalized_elo": 1645.96
+    },
+    {
+      "name": "Teleportation Circle",
+      "queue_id": 17,
+      "normalized_elo": 1659.88
+    },
+    {
+      "name": "Temporary Lockdown",
+      "queue_id": 14,
+      "normalized_elo": 1664.15
+    },
+    {
+      "name": "Temur Battlecrier",
+      "queue_id": 12,
+      "normalized_elo": 1626.78
+    },
+    {
+      "name": "Tenacious Underdog",
+      "queue_id": 17,
+      "normalized_elo": 1701.04
+    },
+    {
+      "name": "Tendershoot Dryad",
+      "queue_id": 11,
+      "normalized_elo": 1667.4
+    },
+    {
+      "name": "Terrasymbiosis",
+      "queue_id": 16,
+      "normalized_elo": 1647.41
+    },
+    {
+      "name": "Terror of the Peaks",
+      "queue_id": 13,
+      "normalized_elo": 1741.65
+    },
+    {
+      "name": "Teshar, Ancestor's Apostle",
+      "queue_id": 14,
+      "normalized_elo": 1658.42
+    },
+    {
+      "name": "Tetsuko Umezawa, Fugitive",
+      "queue_id": 9,
+      "normalized_elo": 1644.11
+    },
+    {
+      "name": "Tetzin, Gnome Champion // The Golden-Gear Colossus",
+      "queue_id": 7,
+      "normalized_elo": 1635.0
+    },
+    {
+      "name": "Teval, Arbiter of Virtue",
+      "queue_id": 3,
+      "normalized_elo": 1707.9
+    },
+    {
+      "name": "Teval, the Balanced Scale",
+      "queue_id": 17,
+      "normalized_elo": 1632.22
+    },
+    {
+      "name": "Teysa Karlov",
+      "queue_id": 15,
+      "normalized_elo": 1746.81
+    },
+    {
+      "name": "Teysa, Opulent Oligarch",
+      "queue_id": 5,
+      "normalized_elo": 1640.26
+    },
+    {
+      "name": "Tezzeret, Artifice Master",
+      "queue_id": 13,
+      "normalized_elo": 1660.12
+    },
+    {
+      "name": "Tezzeret, Cruel Captain",
+      "queue_id": 8,
+      "normalized_elo": 1695.89
+    },
+    {
+      "name": "Tezzeret, Master of the Bridge",
+      "queue_id": 17,
+      "normalized_elo": 1697.36
+    },
+    {
+      "name": "Thalia and The Gitrog Monster",
+      "queue_id": 5,
+      "normalized_elo": 1708.87
+    },
+    {
+      "name": "Thassa, Deep-Dwelling",
+      "queue_id": 16,
+      "normalized_elo": 1790.06
+    },
+    {
+      "name": "The Aetherspark",
+      "queue_id": 15,
+      "normalized_elo": 1631.92
+    },
+    {
+      "name": "The Cruelty of Gix",
+      "queue_id": 8,
+      "normalized_elo": 1667.21
+    },
+    {
+      "name": "The Eldest Reborn",
+      "queue_id": 7,
+      "normalized_elo": 1703.95
+    },
+    {
+      "name": "The End",
+      "queue_id": 4,
+      "normalized_elo": 1630.63
+    },
+    {
+      "name": "The Endstone",
+      "queue_id": 15,
+      "normalized_elo": 1646.05
+    },
+    {
+      "name": "The Enigma Jewel // Locus of Enlightenment",
+      "queue_id": 13,
+      "normalized_elo": 1621.9
+    },
+    {
+      "name": "The Eternal Wanderer",
+      "queue_id": 16,
+      "normalized_elo": 1691.33
+    },
+    {
+      "name": "The First Sliver",
+      "queue_id": 10,
+      "normalized_elo": 1714.53
+    },
+    {
+      "name": "The Goose Mother",
+      "queue_id": 15,
+      "normalized_elo": 1774.26
+    },
+    {
+      "name": "The Great Henge",
+      "queue_id": 6,
+      "normalized_elo": 1686.08
+    },
+    {
+      "name": "The Immortal Sun",
+      "queue_id": 8,
+      "normalized_elo": 1694.29
+    },
+    {
+      "name": "The Infamous Cruelclaw",
+      "queue_id": 9,
+      "normalized_elo": 1724.68
+    },
+    {
+      "name": "The Jolly Balloon Man",
+      "queue_id": 17,
+      "normalized_elo": 1631.34
+    },
+    {
+      "name": "The Kami War // O-Kagachi Made Manifest",
+      "queue_id": 13,
+      "normalized_elo": 1644.3
+    },
+    {
+      "name": "The Locust God",
+      "queue_id": 17,
+      "normalized_elo": 1774.53
+    },
+    {
+      "name": "The Master of Keys",
+      "queue_id": 15,
+      "normalized_elo": 1617.86
+    },
+    {
+      "name": "The Meathook Massacre",
+      "queue_id": 16,
+      "normalized_elo": 1724.08
+    },
+    {
+      "name": "The Mightstone and Weakstone",
+      "queue_id": 15,
+      "normalized_elo": 1672.84
+    },
+    {
+      "name": "The Millennium Calendar",
+      "queue_id": 17,
+      "normalized_elo": 1649.37
+    },
+    {
+      "name": "The Mindskinner",
+      "queue_id": 2,
+      "normalized_elo": 1688.75
+    },
+    {
+      "name": "The Mirari Conjecture",
+      "queue_id": 17,
+      "normalized_elo": 1630.38
+    },
+    {
+      "name": "The Mycotyrant",
+      "queue_id": 17,
+      "normalized_elo": 1659.22
+    },
+    {
+      "name": "The One Ring",
+      "queue_id": 5,
+      "normalized_elo": 1655.23
+    },
+    {
+      "name": "The Ozolith",
+      "queue_id": 17,
+      "normalized_elo": 1716.98
+    },
+    {
+      "name": "The Reality Chip",
+      "queue_id": 7,
+      "normalized_elo": 1720.47
+    },
+    {
+      "name": "The Royal Scions",
+      "queue_id": 16,
+      "normalized_elo": 1637.67
+    },
+    {
+      "name": "The Scarab God",
+      "queue_id": 5,
+      "normalized_elo": 1744.25
+    },
+    {
+      "name": "The Scorpion God",
+      "queue_id": 4,
+      "normalized_elo": 1643.33
+    },
+    {
+      "name": "The Sibsig Ceremony",
+      "queue_id": 8,
+      "normalized_elo": 1674.28
+    },
+    {
+      "name": "The Speed Demon",
+      "queue_id": 12,
+      "normalized_elo": 1640.83
+    },
+    {
+      "name": "The Wandering Emperor",
+      "queue_id": 3,
+      "normalized_elo": 1784.43
+    },
+    {
+      "name": "The Wandering Rescuer",
+      "queue_id": 7,
+      "normalized_elo": 1641.03
+    },
+    {
+      "name": "The World Tree",
+      "queue_id": 9,
+      "normalized_elo": 1634.71
+    },
+    {
+      "name": "Thief of Sanity",
+      "queue_id": 5,
+      "normalized_elo": 1656.86
+    },
+    {
+      "name": "Thieves' Guild Enforcer",
+      "queue_id": 17,
+      "normalized_elo": 1673.56
+    },
+    {
+      "name": "Thieving Skydiver",
+      "queue_id": 16,
+      "normalized_elo": 1704.73
+    },
+    {
+      "name": "Third Path Iconoclast",
+      "queue_id": 7,
+      "normalized_elo": 1722.04
+    },
+    {
+      "name": "Thirst for Discovery",
+      "queue_id": 11,
+      "normalized_elo": 1627.54
+    },
+    {
+      "name": "Thornspire Verge",
+      "queue_id": 16,
+      "normalized_elo": 1666.59
+    },
+    {
+      "name": "Thought Monitor",
+      "queue_id": 12,
+      "normalized_elo": 1768.84
+    },
+    {
+      "name": "Thousand Moons Smithy // Barracks of the Thousand",
+      "queue_id": 7,
+      "normalized_elo": 1645.23
+    },
+    {
+      "name": "Thousand-Faced Shadow",
+      "queue_id": 13,
+      "normalized_elo": 1631.62
+    },
+    {
+      "name": "Thousand-Year Storm",
+      "queue_id": 9,
+      "normalized_elo": 1699.93
+    },
+    {
+      "name": "Thraben Charm",
+      "queue_id": 17,
+      "normalized_elo": 1628.55
+    },
+    {
+      "name": "Thrashing Brontodon",
+      "queue_id": 16,
+      "normalized_elo": 1636.18
+    },
+    {
+      "name": "Three Steps Ahead",
+      "queue_id": 8,
+      "normalized_elo": 1676.2
+    },
+    {
+      "name": "Three Tree City",
+      "queue_id": 10,
+      "normalized_elo": 1697.94
+    },
+    {
+      "name": "Throne of Eldraine",
+      "queue_id": 9,
+      "normalized_elo": 1627.26
+    },
+    {
+      "name": "Throne of the God-Pharaoh",
+      "queue_id": 5,
+      "normalized_elo": 1638.51
+    },
+    {
+      "name": "Thrun, Breaker of Silence",
+      "queue_id": 8,
+      "normalized_elo": 1674.06
+    },
+    {
+      "name": "Thryx, the Sudden Storm",
+      "queue_id": 16,
+      "normalized_elo": 1640.38
+    },
+    {
+      "name": "Thundering Falls",
+      "queue_id": 2,
+      "normalized_elo": 1723.89
+    },
+    {
+      "name": "Thundering Raiju",
+      "queue_id": 14,
+      "normalized_elo": 1635.72
+    },
+    {
+      "name": "Tiamat",
+      "queue_id": 17,
+      "normalized_elo": 1658.52
+    },
+    {
+      "name": "Tibalt's Trickery",
+      "queue_id": 9,
+      "normalized_elo": 1634.21
+    },
+    {
+      "name": "Time Wipe",
+      "queue_id": 10,
+      "normalized_elo": 1673.34
+    },
+    {
+      "name": "Timeless Dragon",
+      "queue_id": 6,
+      "normalized_elo": 1630.48
+    },
+    {
+      "name": "Timeless Witness",
+      "queue_id": 10,
+      "normalized_elo": 1706.39
+    },
+    {
+      "name": "Timestream Navigator",
+      "queue_id": 16,
+      "normalized_elo": 1639.99
+    },
+    {
+      "name": "Tinybones, Bauble Burglar",
+      "queue_id": 12,
+      "normalized_elo": 1639.85
+    },
+    {
+      "name": "Tinybones, Trinket Thief",
+      "queue_id": 9,
+      "normalized_elo": 1653.09
+    },
+    {
+      "name": "Tireless Provisioner",
+      "queue_id": 12,
+      "normalized_elo": 1770.85
+    },
+    {
+      "name": "Tishana's Tidebinder",
+      "queue_id": 11,
+      "normalized_elo": 1707.81
+    },
+    {
+      "name": "Titan of Industry",
+      "queue_id": 12,
+      "normalized_elo": 1700.85
+    },
+    {
+      "name": "Titania's Command",
+      "queue_id": 9,
+      "normalized_elo": 1649.51
+    },
+    {
+      "name": "Titania, Gaea Incarnate",
+      "queue_id": 6,
+      "normalized_elo": 1652.37
+    },
+    {
+      "name": "Titania, Voice of Gaea",
+      "queue_id": 4,
+      "normalized_elo": 1635.62
+    },
+    {
+      "name": "Tolarian Terror",
+      "queue_id": 12,
+      "normalized_elo": 1734.14
+    },
+    {
+      "name": "Topiary Stomper",
+      "queue_id": 15,
+      "normalized_elo": 1648.84
+    },
+    {
+      "name": "Torbran, Thane of Red Fell",
+      "queue_id": 3,
+      "normalized_elo": 1722.4
+    },
+    {
+      "name": "Torgaar, Famine Incarnate",
+      "queue_id": 15,
+      "normalized_elo": 1637.71
+    },
+    {
+      "name": "Torment of Hailfire",
+      "queue_id": 16,
+      "normalized_elo": 1682.76
+    },
+    {
+      "name": "Toski, Bearer of Secrets",
+      "queue_id": 14,
+      "normalized_elo": 1676.23
+    },
+    {
+      "name": "Touch the Spirit Realm",
+      "queue_id": 8,
+      "normalized_elo": 1659.02
+    },
+    {
+      "name": "Tourach, Dread Cantor",
+      "queue_id": 17,
+      "normalized_elo": 1661.3
+    },
+    {
+      "name": "Toxrill, the Corrosive",
+      "queue_id": 17,
+      "normalized_elo": 1632.73
+    },
+    {
+      "name": "Traxos, Scourge of Kroog",
+      "queue_id": 8,
+      "normalized_elo": 1640.68
+    },
+    {
+      "name": "Tribute to the World Tree",
+      "queue_id": 5,
+      "normalized_elo": 1715.99
+    },
+    {
+      "name": "Triskaidekaphile",
+      "queue_id": 17,
+      "normalized_elo": 1630.09
+    },
+    {
+      "name": "Troll of Khazad-dûm",
+      "queue_id": 15,
+      "normalized_elo": 1647.58
+    },
+    {
+      "name": "Trophy Mage",
+      "queue_id": 16,
+      "normalized_elo": 1621.98
+    },
+    {
+      "name": "Trostani Discordant",
+      "queue_id": 9,
+      "normalized_elo": 1628.38
+    },
+    {
+      "name": "Trumpeting Carnosaur",
+      "queue_id": 10,
+      "normalized_elo": 1684.99
+    },
+    {
+      "name": "Trystan's Command",
+      "queue_id": 16,
+      "normalized_elo": 1653.16
+    },
+    {
+      "name": "Turntimber Symbiosis // Turntimber, Serpentine Wood",
+      "queue_id": 7,
+      "normalized_elo": 1635.18
+    },
+    {
+      "name": "Twenty-Toed Toad",
+      "queue_id": 5,
+      "normalized_elo": 1625.16
+    },
+    {
+      "name": "Twilight Diviner",
+      "queue_id": 16,
+      "normalized_elo": 1639.76
+    },
+    {
+      "name": "Twilight Prophet",
+      "queue_id": 13,
+      "normalized_elo": 1738.0
+    },
+    {
+      "name": "Twinflame Tyrant",
+      "queue_id": 15,
+      "normalized_elo": 1641.16
+    },
+    {
+      "name": "Twining Twins // Swift Spiral",
+      "queue_id": 16,
+      "normalized_elo": 1646.04
+    },
+    {
+      "name": "Twinmaw Stormbrood // Charring Bite",
+      "queue_id": 17,
+      "normalized_elo": 1640.19
+    },
+    {
+      "name": "Twitching Doll",
+      "queue_id": 15,
+      "normalized_elo": 1615.82
+    },
+    {
+      "name": "Tyrant's Scorn",
+      "queue_id": 13,
+      "normalized_elo": 1625.72
+    },
+    {
+      "name": "Tyrranax Rex",
+      "queue_id": 14,
+      "normalized_elo": 1632.01
+    },
+    {
+      "name": "Tyvar, Jubilant Brawler",
+      "queue_id": 13,
+      "normalized_elo": 1638.4
+    },
+    {
+      "name": "Ugin's Labyrinth",
+      "queue_id": 17,
+      "normalized_elo": 1660.59
+    },
+    {
+      "name": "Ugin, Eye of the Storms",
+      "queue_id": 17,
+      "normalized_elo": 1724.8
+    },
+    {
+      "name": "Ugin, the Ineffable",
+      "queue_id": 11,
+      "normalized_elo": 1697.47
+    },
+    {
+      "name": "Ulamog, the Defiler",
+      "queue_id": 13,
+      "normalized_elo": 1655.74
+    },
+    {
+      "name": "Umbral Collar Zealot",
+      "queue_id": 8,
+      "normalized_elo": 1638.32
+    },
+    {
+      "name": "Umbris, Fear Manifest",
+      "queue_id": 8,
+      "normalized_elo": 1621.38
+    },
+    {
+      "name": "Umori, the Collector",
+      "queue_id": 11,
+      "normalized_elo": 1624.58
+    },
+    {
+      "name": "Unbreakable Formation",
+      "queue_id": 14,
+      "normalized_elo": 1643.57
+    },
+    {
+      "name": "Undercity Sewers",
+      "queue_id": 3,
+      "normalized_elo": 1717.72
+    },
+    {
+      "name": "Underground Mortuary",
+      "queue_id": 8,
+      "normalized_elo": 1659.76
+    },
+    {
+      "name": "Underrealm Lich",
+      "queue_id": 16,
+      "normalized_elo": 1672.45
+    },
+    {
+      "name": "Underworld Breach",
+      "queue_id": 13,
+      "normalized_elo": 1703.78
+    },
+    {
+      "name": "Unexpected Windfall",
+      "queue_id": 15,
+      "normalized_elo": 1655.15
+    },
+    {
+      "name": "Unnatural Growth",
+      "queue_id": 15,
+      "normalized_elo": 1678.97
+    },
+    {
+      "name": "Unpredictable Cyclone",
+      "queue_id": 6,
+      "normalized_elo": 1662.19
+    },
+    {
+      "name": "Unstoppable Slasher",
+      "queue_id": 6,
+      "normalized_elo": 1632.26
+    },
+    {
+      "name": "Unwind",
+      "queue_id": 2,
+      "normalized_elo": 1641.44
+    },
+    {
+      "name": "Up the Beanstalk",
+      "queue_id": 16,
+      "normalized_elo": 1722.54
+    },
+    {
+      "name": "Urabrask // The Great Work",
+      "queue_id": 10,
+      "normalized_elo": 1716.92
+    },
+    {
+      "name": "Urabrask's Forge",
+      "queue_id": 5,
+      "normalized_elo": 1627.84
+    },
+    {
+      "name": "Urabrask, Heretic Praetor",
+      "queue_id": 8,
+      "normalized_elo": 1647.75
+    },
+    {
+      "name": "Uro, Titan of Nature's Wrath",
+      "queue_id": 16,
+      "normalized_elo": 1719.85
+    },
+    {
+      "name": "Urza's Ruinous Blast",
+      "queue_id": 17,
+      "normalized_elo": 1666.35
+    },
+    {
+      "name": "Urza's Saga",
+      "queue_id": 12,
+      "normalized_elo": 1747.11
+    },
+    {
+      "name": "Urza, Lord High Artificer",
+      "queue_id": 2,
+      "normalized_elo": 1715.15
+    },
+    {
+      "name": "Urza, Lord Protector",
+      "queue_id": 4,
+      "normalized_elo": 1659.34
+    },
+    {
+      "name": "Vadrok, Apex of Thunder",
+      "queue_id": 4,
+      "normalized_elo": 1635.48
+    },
+    {
+      "name": "Vaevictis Asmadi, the Dire",
+      "queue_id": 15,
+      "normalized_elo": 1619.85
+    },
+    {
+      "name": "Valakut Awakening // Valakut Stoneforge",
+      "queue_id": 5,
+      "normalized_elo": 1694.61
+    },
+    {
+      "name": "Valgavoth, Terror Eater",
+      "queue_id": 6,
+      "normalized_elo": 1736.54
+    },
+    {
+      "name": "Valki, God of Lies // Tibalt, Cosmic Impostor",
+      "queue_id": 7,
+      "normalized_elo": 1679.68
+    },
+    {
+      "name": "Valley Floodcaller",
+      "queue_id": 13,
+      "normalized_elo": 1680.9
+    },
+    {
+      "name": "Valley Rotcaller",
+      "queue_id": 17,
+      "normalized_elo": 1649.21
+    },
+    {
+      "name": "Vanishing Verse",
+      "queue_id": 4,
+      "normalized_elo": 1642.02
+    },
+    {
+      "name": "Vanquish the Horde",
+      "queue_id": 13,
+      "normalized_elo": 1658.61
+    },
+    {
+      "name": "Vault of Champions",
+      "queue_id": 10,
+      "normalized_elo": 1632.63
+    },
+    {
+      "name": "Vaultborn Tyrant",
+      "queue_id": 13,
+      "normalized_elo": 1664.75
+    },
+    {
+      "name": "Vega, the Watcher",
+      "queue_id": 9,
+      "normalized_elo": 1631.04
+    },
+    {
+      "name": "Veil of Summer",
+      "queue_id": 2,
+      "normalized_elo": 1686.57
+    },
+    {
+      "name": "Vein Ripper",
+      "queue_id": 14,
+      "normalized_elo": 1672.38
+    },
+    {
+      "name": "Velomachus Lorehold",
+      "queue_id": 4,
+      "normalized_elo": 1677.2
+    },
+    {
+      "name": "Venerated Loxodon",
+      "queue_id": 16,
+      "normalized_elo": 1628.94
+    },
+    {
+      "name": "Venerated Rotpriest",
+      "queue_id": 7,
+      "normalized_elo": 1676.66
+    },
+    {
+      "name": "Vengeful Bloodwitch",
+      "queue_id": 16,
+      "normalized_elo": 1628.88
+    },
+    {
+      "name": "Vesuvan Duplimancy",
+      "queue_id": 17,
+      "normalized_elo": 1632.79
+    },
+    {
+      "name": "Veyran, Voice of Duality",
+      "queue_id": 8,
+      "normalized_elo": 1628.5
+    },
+    {
+      "name": "Vibrance",
+      "queue_id": 6,
+      "normalized_elo": 1706.45
+    },
+    {
+      "name": "Vile Entomber",
+      "queue_id": 16,
+      "normalized_elo": 1691.56
+    },
+    {
+      "name": "Vilis, Broker of Blood",
+      "queue_id": 6,
+      "normalized_elo": 1690.95
+    },
+    {
+      "name": "Village Rites",
+      "queue_id": 13,
+      "normalized_elo": 1630.47
+    },
+    {
+      "name": "Virtue of Courage // Embereth Blaze",
+      "queue_id": 7,
+      "normalized_elo": 1650.56
+    },
+    {
+      "name": "Virtue of Knowledge // Vantress Visions",
+      "queue_id": 13,
+      "normalized_elo": 1639.29
+    },
+    {
+      "name": "Virtue of Loyalty // Ardenvale Fealty",
+      "queue_id": 13,
+      "normalized_elo": 1659.0
+    },
+    {
+      "name": "Virtue of Persistence // Locthwain Scorn",
+      "queue_id": 14,
+      "normalized_elo": 1706.67
+    },
+    {
+      "name": "Virtue of Strength // Garenbrig Growth",
+      "queue_id": 9,
+      "normalized_elo": 1635.67
+    },
+    {
+      "name": "Virus Beetle",
+      "queue_id": 16,
+      "normalized_elo": 1623.78
+    },
+    {
+      "name": "Vito, Thorn of the Dusk Rose",
+      "queue_id": 16,
+      "normalized_elo": 1691.99
+    },
+    {
+      "name": "Vivien Reid",
+      "queue_id": 9,
+      "normalized_elo": 1677.51
+    },
+    {
+      "name": "Vivien, Champion of the Wilds",
+      "queue_id": 17,
+      "normalized_elo": 1637.1
+    },
+    {
+      "name": "Vivien, Monsters' Advocate",
+      "queue_id": 5,
+      "normalized_elo": 1700.79
+    },
+    {
+      "name": "Vizier of Many Faces",
+      "queue_id": 13,
+      "normalized_elo": 1657.17
+    },
+    {
+      "name": "Vizier of the Menagerie",
+      "queue_id": 10,
+      "normalized_elo": 1634.52
+    },
+    {
+      "name": "Voice of Victory",
+      "queue_id": 17,
+      "normalized_elo": 1659.1
+    },
+    {
+      "name": "Void Rend",
+      "queue_id": 5,
+      "normalized_elo": 1713.59
+    },
+    {
+      "name": "Volatile Stormdrake",
+      "queue_id": 2,
+      "normalized_elo": 1712.46
+    },
+    {
+      "name": "Volcanic Spite",
+      "queue_id": 4,
+      "normalized_elo": 1635.1
+    },
+    {
+      "name": "Voldaren Epicure",
+      "queue_id": 15,
+      "normalized_elo": 1635.07
+    },
+    {
+      "name": "Voracious Bibliophile",
+      "queue_id": 9,
+      "normalized_elo": 1625.17
+    },
+    {
+      "name": "Voracious Greatshark",
+      "queue_id": 17,
+      "normalized_elo": 1638.91
+    },
+    {
+      "name": "Vorinclex // The Grand Evolution",
+      "queue_id": 14,
+      "normalized_elo": 1680.05
+    },
+    {
+      "name": "Vorinclex, Monstrous Raider",
+      "queue_id": 17,
+      "normalized_elo": 1736.35
+    },
+    {
+      "name": "Voyage Home",
+      "queue_id": 16,
+      "normalized_elo": 1642.39
+    },
+    {
+      "name": "Vraska, Betrayal's Sting",
+      "queue_id": 10,
+      "normalized_elo": 1655.68
+    },
+    {
+      "name": "Vraska, Golgari Queen",
+      "queue_id": 12,
+      "normalized_elo": 1670.43
+    },
+    {
+      "name": "Vraska, Relic Seeker",
+      "queue_id": 15,
+      "normalized_elo": 1658.74
+    },
+    {
+      "name": "Walk-In Closet // Forgotten Cellar",
+      "queue_id": 12,
+      "normalized_elo": 1651.54
+    },
+    {
+      "name": "Walking Ballista",
+      "queue_id": 8,
+      "normalized_elo": 1769.06
+    },
+    {
+      "name": "Waltz of Rage",
+      "queue_id": 17,
+      "normalized_elo": 1628.29
+    },
+    {
+      "name": "Wan Shi Tong, Librarian",
+      "queue_id": 14,
+      "normalized_elo": 1683.49
+    },
+    {
+      "name": "Wandering Archaic // Explore the Vastlands",
+      "queue_id": 12,
+      "normalized_elo": 1707.36
+    },
+    {
+      "name": "Warden of the Grove",
+      "queue_id": 17,
+      "normalized_elo": 1629.67
+    },
+    {
+      "name": "Warleader's Call",
+      "queue_id": 7,
+      "normalized_elo": 1688.14
+    },
+    {
+      "name": "Warren Soultrader",
+      "queue_id": 4,
+      "normalized_elo": 1699.7
+    },
+    {
+      "name": "Wastewood Verge",
+      "queue_id": 9,
+      "normalized_elo": 1631.1
+    },
+    {
+      "name": "Waterlogged Teachings // Inundated Archive",
+      "queue_id": 17,
+      "normalized_elo": 1676.5
+    },
+    {
+      "name": "Wayward Swordtooth",
+      "queue_id": 6,
+      "normalized_elo": 1679.59
+    },
+    {
+      "name": "Weapons Manufacturing",
+      "queue_id": 10,
+      "normalized_elo": 1695.49
+    },
+    {
+      "name": "Weatherlight",
+      "queue_id": 17,
+      "normalized_elo": 1633.39
+    },
+    {
+      "name": "Wedding Announcement // Wedding Festivity",
+      "queue_id": 16,
+      "normalized_elo": 1712.86
+    },
+    {
+      "name": "Weftwalking",
+      "queue_id": 17,
+      "normalized_elo": 1646.72
+    },
+    {
+      "name": "Welcoming Vampire",
+      "queue_id": 15,
+      "normalized_elo": 1732.13
+    },
+    {
+      "name": "Werefox Bodyguard",
+      "queue_id": 3,
+      "normalized_elo": 1643.94
+    },
+    {
+      "name": "Whir of Invention",
+      "queue_id": 17,
+      "normalized_elo": 1658.9
+    },
+    {
+      "name": "Whirlwind of Thought",
+      "queue_id": 12,
+      "normalized_elo": 1653.57
+    },
+    {
+      "name": "White Orchid Phantom",
+      "queue_id": 12,
+      "normalized_elo": 1636.21
+    },
+    {
+      "name": "White Plume Adventurer",
+      "queue_id": 14,
+      "normalized_elo": 1632.12
+    },
+    {
+      "name": "Wick, the Whorled Mind",
+      "queue_id": 7,
+      "normalized_elo": 1636.86
+    },
+    {
+      "name": "Wight of the Reliquary",
+      "queue_id": 17,
+      "normalized_elo": 1688.73
+    },
+    {
+      "name": "Wilderness Reclamation",
+      "queue_id": 17,
+      "normalized_elo": 1687.26
+    },
+    {
+      "name": "Wilson, Refined Grizzly",
+      "queue_id": 14,
+      "normalized_elo": 1636.99
+    },
+    {
+      "name": "Winding Constrictor",
+      "queue_id": 9,
+      "normalized_elo": 1710.98
+    },
+    {
+      "name": "Winds of Abandon",
+      "queue_id": 15,
+      "normalized_elo": 1659.3
+    },
+    {
+      "name": "Winota, Joiner of Forces",
+      "queue_id": 14,
+      "normalized_elo": 1629.37
+    },
+    {
+      "name": "Winternight Stories",
+      "queue_id": 17,
+      "normalized_elo": 1630.35
+    },
+    {
+      "name": "Wishclaw Talisman",
+      "queue_id": 14,
+      "normalized_elo": 1702.07
+    },
+    {
+      "name": "Wistfulness",
+      "queue_id": 6,
+      "normalized_elo": 1738.42
+    },
+    {
+      "name": "Witch Enchanter // Witch-Blessed Meadow",
+      "queue_id": 15,
+      "normalized_elo": 1757.46
+    },
+    {
+      "name": "Witch's Cottage",
+      "queue_id": 12,
+      "normalized_elo": 1643.09
+    },
+    {
+      "name": "Witch's Oven",
+      "queue_id": 9,
+      "normalized_elo": 1644.99
+    },
+    {
+      "name": "Witherbloom Apprentice",
+      "queue_id": 10,
+      "normalized_elo": 1635.08
+    },
+    {
+      "name": "Witherbloom Command",
+      "queue_id": 17,
+      "normalized_elo": 1676.55
+    },
+    {
+      "name": "Withering Torment",
+      "queue_id": 7,
+      "normalized_elo": 1640.48
+    },
+    {
+      "name": "Wizard's Lightning",
+      "queue_id": 2,
+      "normalized_elo": 1626.39
+    },
+    {
+      "name": "Woe Strider",
+      "queue_id": 16,
+      "normalized_elo": 1647.96
+    },
+    {
+      "name": "World Shaper",
+      "queue_id": 14,
+      "normalized_elo": 1680.84
+    },
+    {
+      "name": "Worldsoul's Rage",
+      "queue_id": 15,
+      "normalized_elo": 1642.48
+    },
+    {
+      "name": "Wrenn and Realmbreaker",
+      "queue_id": 16,
+      "normalized_elo": 1646.92
+    },
+    {
+      "name": "Wrenn and Seven",
+      "queue_id": 11,
+      "normalized_elo": 1656.49
+    },
+    {
+      "name": "Wrenn and Six",
+      "queue_id": 6,
+      "normalized_elo": 1752.55
+    },
+    {
+      "name": "Wrenn's Resolve",
+      "queue_id": 16,
+      "normalized_elo": 1623.47
+    },
+    {
+      "name": "Xander's Lounge",
+      "queue_id": 10,
+      "normalized_elo": 1707.11
+    },
+    {
+      "name": "Xantcha, Sleeper Agent",
+      "queue_id": 12,
+      "normalized_elo": 1713.12
+    },
+    {
+      "name": "Xorn",
+      "queue_id": 11,
+      "normalized_elo": 1626.84
+    },
+    {
+      "name": "Xu-Ifit, Osteoharmonist",
+      "queue_id": 11,
+      "normalized_elo": 1633.0
+    },
+    {
+      "name": "Yahenni's Expertise",
+      "queue_id": 8,
+      "normalized_elo": 1624.27
+    },
+    {
+      "name": "Yahenni, Undying Partisan",
+      "queue_id": 16,
+      "normalized_elo": 1707.44
+    },
+    {
+      "name": "Yargle and Multani",
+      "queue_id": 13,
+      "normalized_elo": 1698.35
+    },
+    {
+      "name": "Yarok, the Desecrated",
+      "queue_id": 12,
+      "normalized_elo": 1668.55
+    },
+    {
+      "name": "Yasharn, Implacable Earth",
+      "queue_id": 16,
+      "normalized_elo": 1703.16
+    },
+    {
+      "name": "Yavimaya, Cradle of Growth",
+      "queue_id": 9,
+      "normalized_elo": 1705.22
+    },
+    {
+      "name": "Yawgmoth's Vile Offering",
+      "queue_id": 11,
+      "normalized_elo": 1655.17
+    },
+    {
+      "name": "Yawgmoth, Thran Physician",
+      "queue_id": 3,
+      "normalized_elo": 1748.75
+    },
+    {
+      "name": "Yenna, Redtooth Regent",
+      "queue_id": 16,
+      "normalized_elo": 1619.32
+    },
+    {
+      "name": "Ygra, Eater of All",
+      "queue_id": 4,
+      "normalized_elo": 1719.29
+    },
+    {
+      "name": "Yorion, Sky Nomad",
+      "queue_id": 10,
+      "normalized_elo": 1749.62
+    },
+    {
+      "name": "Yoshimaru, Ever Faithful",
+      "queue_id": 15,
+      "normalized_elo": 1681.95
+    },
+    {
+      "name": "Yurlok of Scorch Thrash",
+      "queue_id": 15,
+      "normalized_elo": 1657.38
+    },
+    {
+      "name": "Zabaz, the Glimmerwasp",
+      "queue_id": 9,
+      "normalized_elo": 1631.39
+    },
+    {
+      "name": "Zacama, Primal Calamity",
+      "queue_id": 6,
+      "normalized_elo": 1664.75
+    },
+    {
+      "name": "Zagoth Triome",
+      "queue_id": 17,
+      "normalized_elo": 1721.01
+    },
+    {
+      "name": "Zask, Skittering Swarmlord",
+      "queue_id": 16,
+      "normalized_elo": 1659.72
+    },
+    {
+      "name": "Zetalpa, Primal Dawn",
+      "queue_id": 14,
+      "normalized_elo": 1665.49
+    },
+    {
+      "name": "Ziatora's Proving Ground",
+      "queue_id": 8,
+      "normalized_elo": 1652.01
+    },
+    {
+      "name": "Ziatora, the Incinerator",
+      "queue_id": 7,
+      "normalized_elo": 1677.42
+    },
+    {
+      "name": "Zimone and Dina",
+      "queue_id": 9,
+      "normalized_elo": 1647.32
+    },
+    {
+      "name": "Zinnia, Valley's Voice",
+      "queue_id": 6,
+      "normalized_elo": 1640.46
+    },
+    {
+      "name": "Zirda, the Dawnwaker",
+      "queue_id": 13,
+      "normalized_elo": 1700.36
+    },
+    {
+      "name": "Zoraline, Cosmos Caller",
+      "queue_id": 13,
+      "normalized_elo": 1648.45
+    },
+    {
+      "name": "Zurgo Stormrender",
+      "queue_id": 16,
+      "normalized_elo": 1627.6
+    }
+  ]
+}

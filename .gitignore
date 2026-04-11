@@ -35,3 +35,4 @@ map_*.json
 
 # exception for queues
 !queues.json
+!top_10_queue.json
