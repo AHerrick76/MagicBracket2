@@ -12,6 +12,7 @@ Safe to re-run: existing rows are overwritten, not duplicated.
 """
 
 import argparse
+import json
 import os
 import sys
 from dotenv import load_dotenv
@@ -67,9 +68,19 @@ if not votes:
 
 # ── Replay ─────────────────────────────────────────────────────────────────────
 
-ratings = {}   # card_name → float rating
 wins    = {}   # card_name → int
 losses  = {}   # card_name → int
+
+# Seed starting ratings: top10 uses normalized Elos from top_10_queue.json,
+# not a flat 1500 starting value.
+if _args.phase == 'top10':
+    _top10_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'top_10_queue.json')
+    with open(_top10_path, encoding='utf-8') as _f:
+        _top10_data = json.load(_f)
+    ratings = {entry['name']: entry['normalized_elo'] for entry in _top10_data['cards']}
+    print(f'Seeded {len(ratings)} starting Elos from top_10_queue.json.')
+else:
+    ratings = {}   # card_name → float rating
 
 def get_rating(name):
     return ratings.get(name, INITIAL_ELO)
