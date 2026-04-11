@@ -147,6 +147,16 @@ def init_db():
                 last_updated TEXT
             )
         ''')
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS page_views (
+                id          SERIAL  PRIMARY KEY,
+                timestamp   TEXT    NOT NULL,
+                page        TEXT    NOT NULL,
+                ip_address  TEXT,
+                session_id  TEXT,
+                device      TEXT
+            )
+        ''')
 
 
 def init_elo_ratings(card_entries):
@@ -252,6 +262,31 @@ def log_vote(ip, session_id, card_a, card_b, chosen, config_name, device=None):
             'VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
             (ts, ip, session_id, card_a, card_b, chosen, config_name, device),
         )
+
+
+def _detect_device(user_agent: str) -> str:
+    ua = (user_agent or '').lower()
+    if any(t in ua for t in ('mobile', 'android', 'iphone', 'ipad', 'ipod')):
+        return 'mobile'
+    return 'desktop'
+
+
+def log_page_view(page: str):
+    '''Record a page view. Called from route handlers; silently swallows errors.'''
+    try:
+        ts  = datetime.now(timezone.utc).isoformat()
+        ip  = request.headers.get('X-Forwarded-For', request.remote_addr)
+        sid = session.get('session_id')
+        dev = _detect_device(request.headers.get('User-Agent', ''))
+        with _get_db() as conn:
+            cur = conn.cursor()
+            cur.execute(
+                'INSERT INTO page_views (timestamp, page, ip_address, session_id, device) '
+                'VALUES (%s, %s, %s, %s, %s)',
+                (ts, page, ip, sid, dev),
+            )
+    except Exception:
+        pass
 
 
 # ── Card data (loaded once at startup) ────────────────────────────────────────
@@ -462,11 +497,14 @@ def _ensure_session():
 @app.route('/')
 def index():
     _ensure_session()
+    log_page_view('main')
     return render_template('index.html')
 
 
 @app.route('/faq')
 def faq():
+    _ensure_session()
+    log_page_view('faq')
     return render_template('faq.html')
 
 
@@ -477,6 +515,8 @@ def share():
 
 @app.route('/universe')
 def universe():
+    _ensure_session()
+    log_page_view('universe')
     return render_template('universe.html')
 
 
