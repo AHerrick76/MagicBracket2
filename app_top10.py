@@ -482,7 +482,9 @@ def stats(token):
         _queues_data = json.load(_f)
     _queue_sizes = {q['id']: len(q['cards']) for q in _queues_data['queues']}
 
-    with _get_db() as conn:
+    # Fresh connection — bypasses the pool to avoid stale-connection errors on a low-traffic route
+    conn = psycopg2.connect(DATABASE_URL)
+    try:
         cur = conn.cursor()
 
         # Top-10% phase total
@@ -514,6 +516,9 @@ def stats(token):
             ORDER BY 1
         ''')
         hourly_rows = cur.fetchall()
+
+    finally:
+        conn.close()
 
     # Per-queue table
     vote_count_map = {qid: total for qid, total in queue_rows}
