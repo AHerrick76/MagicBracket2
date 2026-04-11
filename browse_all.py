@@ -4,7 +4,7 @@ browse_all.py — Generate a standalone HTML gallery of every queued card.
 Displays all cards across all queues in a filterable, sortable grid.
 
 Filters: queue, card name, set name, rarity, color, card type, DFC-only,
-         min votes, min/max Elo, intra-queue rank percentile.
+         top-10% only, min votes, min/max Elo, intra-queue rank percentile.
 
 Usage:
     DATABASE_URL=postgresql://... python browse_all.py
@@ -27,8 +27,9 @@ load_dotenv()
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from parse_data import load_processed_cards
 
-DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
-QUEUES_PATH  = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'queues.json')
+DATABASE_URL    = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
+QUEUES_PATH     = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'queues.json')
+TOP10_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'top_10_queue.json')
 
 parser = argparse.ArgumentParser(description='Generate a browsable HTML gallery of all queue cards.')
 parser.add_argument('--out',   type=str,            default=None,  help='Output HTML path (default: all_queues_gallery.html)')
@@ -48,6 +49,16 @@ for q in queues_data['queues']:
 
 queued_cards = set(card_to_queue)
 print(f'{len(queued_cards)} cards across {len(queues_data["queues"])} queues.')
+
+# Load top-10% card set (for checkbox filter)
+top10_cards = set()
+if os.path.exists(TOP10_JSON_PATH):
+    with open(TOP10_JSON_PATH, encoding='utf-8') as f:
+        top10_data = json.load(f)
+    top10_cards = {e['name'] for e in top10_data['cards']}
+    print(f'{len(top10_cards)} cards in top-10% pool.')
+else:
+    print('top_10_queue.json not found; top-10% filter will be unavailable.')
 
 # ── Load card metadata ────────────────────────────────────────────────────────
 
@@ -90,6 +101,8 @@ print('Loading Elo ratings...')
 INITIAL_ELO = 1500.0
 elo_map = {}   # card_name → (rating, wins, losses)
 
+elo_top10_map = {}  # card_name → float (reweighted Elo from top-10% phase)
+
 if DATABASE_URL:
     try:
         conn   = psycopg2.connect(DATABASE_URL)
@@ -97,10 +110,20 @@ if DATABASE_URL:
             'SELECT card_name, rating, wins, losses FROM elo_ratings WHERE card_name = ANY(%s)',
             conn, params=(list(queued_cards),)
         )
-        conn.close()
         for _, r in elo_df.iterrows():
             elo_map[r['card_name']] = (float(r['rating']), int(r['wins']), int(r['losses']))
         print(f'Elo loaded for {len(elo_map):,} / {len(queued_cards):,} cards.')
+
+        if top10_cards:
+            t10_df = pd.read_sql(
+                'SELECT card_name, rating FROM elo_ratings_top10 WHERE card_name = ANY(%s)',
+                conn, params=(list(top10_cards),)
+            )
+            for _, r in t10_df.iterrows():
+                elo_top10_map[r['card_name']] = float(r['rating'])
+            print(f'Top-10% Elo loaded for {len(elo_top10_map):,} cards.')
+
+        conn.close()
     except Exception as e:
         print(f'Warning: could not load Elo ({e}); ratings omitted.')
 else:
@@ -158,6 +181,8 @@ for _, row in df.iterrows():
         'games':       games,
         'iq_rank':     iq_rank_map.get(name, 0),
         'iq_pct':      iq_pct_map.get(name, 50.0),
+        'top10':       name in top10_cards,
+        'elo_top10':   round(elo_top10_map[name], 1) if name in elo_top10_map else None,
     })
 
 # Default sort: released_at → color_sort → cmc → name (queue shown as label, not used for grouping)
@@ -349,6 +374,12 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
     <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
       <input type="checkbox" id="dfc-only"> DFC only
     </label>
+    <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
+      <input type="checkbox" id="top10-only"> In Top 10%
+    </label>
+    <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
+      <input type="checkbox" id="reweighted-elo"> Reweighted Elo
+    </label>
   </div>
   <!-- Row 3: Text search · Thresholds -->
   <div class="filter-row">
@@ -478,11 +509,18 @@ let setTimer = null;
 document.getElementById('set-filter').addEventListener('input', () => {
   clearTimeout(setTimer); setTimer = setTimeout(applyFilters, 200);
 });
-['min-votes','max-votes','min-elo','max-elo','iq-filter','sort-select','group-by-set','dfc-only']
+['min-votes','max-votes','min-elo','max-elo','iq-filter','sort-select','group-by-set','dfc-only','top10-only','reweighted-elo']
   .forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
 ['min-votes','max-votes','min-elo','max-elo'].forEach(id =>
   document.getElementById(id).addEventListener('input', applyFilters)
 );
+
+// ── Elo display helper ────────────────────────────────────────────────────────
+function displayElo(card) {
+  const useRw = document.getElementById('reweighted-elo').checked;
+  if (useRw && card.elo_top10 !== null) return card.elo_top10;
+  return card.elo;
+}
 
 // ── Color key helper ──────────────────────────────────────────────────────────
 function colorKey(card) {
@@ -503,7 +541,8 @@ function applyFilters() {
   const maxElo   = parseFloat(document.getElementById('max-elo').value) || null;
   const iqVal    = document.getElementById('iq-filter').value;
   const sortBy   = document.getElementById('sort-select').value;
-  const dfcOnly  = document.getElementById('dfc-only').checked;
+  const dfcOnly   = document.getElementById('dfc-only').checked;
+  const top10Only = document.getElementById('top10-only').checked;
 
   visibleCards = CARDS.filter(c => {
     if (!activeQueues.has(c.queue))                           return false;
@@ -517,7 +556,8 @@ function applyFilters() {
     if (maxVotes !== null && c.games > maxVotes)             return false;
     if (minElo !== null && (c.elo === null || c.elo < minElo)) return false;
     if (maxElo !== null && (c.elo === null || c.elo > maxElo)) return false;
-    if (dfcOnly && !c.back)                                  return false;
+    if (dfcOnly   && !c.back)                                return false;
+    if (top10Only && !c.top10)                               return false;
     if (iqVal === 'unvoted' && c.games > 0)                  return false;
     if (iqVal === 'voted'   && c.games === 0)                return false;
     if (iqVal === 'top10'  && c.iq_pct < 90)                 return false;
@@ -532,12 +572,12 @@ function applyFilters() {
     visibleCards.sort((a, b) =>
       a.released_at.localeCompare(b.released_at) ||
       a.set_name.localeCompare(b.set_name) ||
-      (b.elo || 0) - (a.elo || 0) ||
+      (displayElo(b) || 0) - (displayElo(a) || 0) ||
       a.name.localeCompare(b.name)
     );
   } else if (sortBy !== 'set') {
     visibleCards.sort((a, b) => {
-      if (sortBy === 'elo')    return (b.elo || 0) - (a.elo || 0);
+      if (sortBy === 'elo')    return (displayElo(b) || 0) - (displayElo(a) || 0);
       if (sortBy === 'votes')  return b.games - a.games;
       if (sortBy === 'iq_pct') return b.iq_pct - a.iq_pct;
       if (sortBy === 'name')   return a.name.localeCompare(b.name);
@@ -612,8 +652,9 @@ function renderPage(reset) {
       img.addEventListener('mouseleave', () => preview.classList.remove('visible'));
     }
 
-    const eloStr  = c.elo != null
-      ? '<span class="elo-val">' + Math.round(c.elo) + '</span>'
+    const elo     = displayElo(c);
+    const eloStr  = elo != null
+      ? '<span class="elo-val">' + Math.round(elo) + '</span>'
       : '<span style="color:#444">—</span>';
     const rcls    = RARITY_CLS[c.rarity] || '';
     const rlbl    = RARITY_LBL[c.rarity] || c.rarity;
@@ -622,8 +663,8 @@ function renderPage(reset) {
     const label = document.createElement('div');
     label.className = 'card-label';
     if (PROMO_MODE) {
-      const eloPromo = c.elo != null
-        ? '<span class="elo-val" style="font-size:0.78rem;font-weight:700">' + Math.round(c.elo) + '</span>'
+      const eloPromo = elo != null
+        ? '<span class="elo-val" style="font-size:0.78rem;font-weight:700">' + Math.round(elo) + '</span>'
         : '<span style="color:#444">—</span>';
       label.innerHTML =
         eloPromo + '<br>' +

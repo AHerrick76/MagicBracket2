@@ -290,11 +290,44 @@ HTML = '''<!DOCTYPE html>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
 
+/* ── Page header ── */
+#page-header {
+  background: #111; padding: 10px 14px 8px;
+  border-bottom: 1px solid #2a2a2a;
+  display: flex; align-items: baseline; gap: 1rem;
+}
+#page-header h1 { font-size: 1rem; color: #c9a84c; letter-spacing: 0.04em; }
+#page-header p  { font-size: 0.75rem; color: #666; }
+
+/* ── Filter bar — sticky, collapses on scroll ── */
 #filter-bar {
   position: sticky; top: 0; z-index: 100;
   background: #222; border-bottom: 1px solid #3a3a3a;
-  padding: 8px 14px 6px;
+  overflow: hidden;
+  transition: max-height 0.28s ease, padding 0.28s ease;
+  max-height: 600px; /* enough for any expanded state */
 }
+#filter-bar.collapsed {
+  max-height: 36px;
+}
+#filter-bar-handle {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 14px; min-height: 36px; cursor: pointer;
+  user-select: none;
+}
+#filter-bar-handle .handle-left {
+  font-size: 0.7rem; color: #888; display: flex; align-items: center; gap: 8px;
+}
+#filter-bar-handle .handle-left em {
+  color: #c9a84c; font-style: normal; font-weight: 600;
+}
+#filter-toggle-btn {
+  font-size: 0.68rem; padding: 2px 8px;
+  background: #333; border: 1px solid #555; border-radius: 4px;
+  color: #999; cursor: pointer; white-space: nowrap;
+}
+#filter-bar-inner { padding: 0 14px 8px; }
+
 .filter-row {
   display: flex; flex-wrap: wrap; gap: 6px 12px;
   align-items: center; margin-bottom: 5px;
@@ -307,8 +340,8 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
   color: #ddd; font-size: 0.83rem; padding: 3px 9px;
 }
 .filter-input:focus { outline: none; border-color: #c9a84c; }
-#name-filter { width: 170px; }
-#set-filter  { width: 140px; }
+#name-filter { width: 150px; }
+#set-filter  { width: 120px; }
 
 .pill {
   cursor: pointer; border: 1px solid #555; border-radius: 11px;
@@ -348,26 +381,45 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
 }
 .mini-btn:hover { border-color: #888; color: #ddd; }
 
+/* ── Cols segmented control (mobile only) ── */
+.cols-control {
+  display: flex; border: 1px solid #555; border-radius: 4px; overflow: hidden;
+}
+.cols-btn {
+  font-size: 0.7rem; padding: 2px 8px;
+  background: #2e2e2e; border: none; border-right: 1px solid #555;
+  color: #888; cursor: pointer;
+}
+.cols-btn:last-child { border-right: none; }
+.cols-btn.active { background: #444; color: #ddd; font-weight: 600; }
+
+/* ── Stats bar ── */
 #stats-bar {
   padding: 5px 14px; font-size: 0.78rem; color: #777;
   background: #1d1d1d; border-bottom: 1px solid #2a2a2a;
 }
 #stats-bar em { color: #c9a84c; font-style: normal; }
 
+/* ── Grid — CSS grid, columns driven by --cols var ── */
 #grid-container { padding: 12px 14px; }
 
 .set-header {
-  width: 100%; padding: 10px 2px 5px;
+  grid-column: 1 / -1;
+  padding: 10px 2px 5px;
   font-size: 0.78rem; color: #c9a84c;
-  border-bottom: 1px solid #333; margin-bottom: 8px;
+  border-bottom: 1px solid #333; margin-bottom: 4px;
   letter-spacing: 0.02em;
 }
 .set-header .year { color: #555; }
 
-#grid { display: flex; flex-wrap: wrap; gap: 8px; }
+#grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 2), 1fr);
+  gap: 8px;
+}
 
-.card-wrap { display: flex; flex-direction: column; align-items: center; width: 270px; }
-.card-wrap img { width: 270px; border-radius: 6px; display: block; }
+.card-wrap { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.card-wrap img { width: 100%; border-radius: 6px; display: block; }
 .card-wrap img.dfc { cursor: crosshair; outline: 2px solid #c9a84c; outline-offset: 2px; }
 
 .card-label {
@@ -382,6 +434,7 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
 }
 .rc { color: #999; } .ru { color: #6aacdf; } .rr { color: #d4b040; } .rm { color: #d06020; }
 
+/* ── DFC hover preview ── */
 #preview {
   display: none; position: fixed; top: 50%; left: 50%;
   transform: translate(-50%, -50%); gap: 12px;
@@ -392,7 +445,7 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
 #preview img { width: 280px; border-radius: 10px; }
 
 #no-results {
-  display: none; width: 100%; text-align: center;
+  display: none; grid-column: 1 / -1; text-align: center;
   padding: 60px; color: #555; font-size: 1rem;
 }
 #load-more-wrap { text-align: center; padding: 20px; }
@@ -402,66 +455,90 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
 }
 #load-more:hover { border-color: #c9a84c; color: #c9a84c; }
 
-#page-header {
-  background: #111; padding: 10px 14px 8px;
-  border-bottom: 1px solid #2a2a2a;
-  display: flex; align-items: baseline; gap: 1rem;
+/* ── Desktop: fixed-width cards, always-visible filter bar ── */
+@media (min-width: 769px) {
+  #filter-bar { max-height: none !important; overflow: visible; }
+  #filter-bar-handle { display: none; }
+  #filter-bar-inner { padding-top: 8px; }
+  .cols-control, .cols-label { display: none; }
+  #grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
 }
-#page-header h1 { font-size: 1rem; color: #c9a84c; letter-spacing: 0.04em; }
-#page-header p  { font-size: 0.75rem; color: #666; }
+
+/* ── Mobile: collapsible bar, variable columns ── */
+@media (max-width: 768px) {
+  #filter-bar-inner { padding-top: 0; }
+  #name-filter { width: 120px; }
+  #set-filter  { width: 100px; }
+}
 </style>
 </head>
 <body>
 
 <div id="page-header">
   <h1>Top 10% Universe</h1>
-  <p>The __TOTAL__ cards competing in the final bracket &mdash; one card per set per colour group. Static snapshot.</p>
+  <p>__TOTAL__ cards &mdash; static snapshot</p>
 </div>
 
 <div id="filter-bar">
-  <div class="filter-row">
-    <span class="filter-label">Queue</span>
-    <div id="queue-pills" style="display:flex;flex-wrap:wrap;gap:4px"></div>
-    <button class="mini-btn" id="all-queues">All</button>
-    <button class="mini-btn" id="no-queues">None</button>
+  <!-- Always-visible handle row -->
+  <div id="filter-bar-handle">
+    <span class="handle-left">
+      Showing <em id="stats-shown">&hellip;</em> of __TOTAL__
+    </span>
+    <button id="filter-toggle-btn">Filters ▲</button>
   </div>
-  <div class="filter-row">
-    <span class="filter-label">Rarity</span>
-    <span class="pill active" data-rarity="common">C</span>
-    <span class="pill active" data-rarity="uncommon">U</span>
-    <span class="pill active" data-rarity="rare">R</span>
-    <span class="pill active" data-rarity="mythic">M</span>
-    <span class="filter-label" style="margin-left:6px">Color</span>
-    <span class="pill c-W active" data-color="W">W</span>
-    <span class="pill c-U active" data-color="U">U</span>
-    <span class="pill c-B active" data-color="B">B</span>
-    <span class="pill c-R active" data-color="R">R</span>
-    <span class="pill c-G active" data-color="G">G</span>
-    <span class="pill c-M active" data-color="M">Multi</span>
-    <span class="pill c-X active" data-color="X">Colorless</span>
-    <span class="pill c-L active" data-color="L">Land</span>
-    <span class="filter-label" style="margin-left:6px">Type</span>
-    <div id="type-pills" style="display:flex;flex-wrap:wrap;gap:4px"></div>
-    <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
-      <input type="checkbox" id="group-by-set" checked> Group by set
-    </label>
-    <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
-      <input type="checkbox" id="dfc-only"> DFC only
-    </label>
-  </div>
-  <div class="filter-row">
-    <input class="filter-input" id="name-filter" type="text" placeholder="Card name&hellip;">
-    <input class="filter-input" id="set-filter"  type="text" placeholder="Set name&hellip;">
-  </div>
-</div>
 
-<div id="stats-bar">
-  Showing <em id="stats-shown">&hellip;</em> of <em>__TOTAL__</em> cards &nbsp;&middot;&nbsp; <em>__NQUEUES__</em> queues
+  <!-- Collapsible filter content -->
+  <div id="filter-bar-inner">
+    <div class="filter-row">
+      <span class="filter-label">Queue</span>
+      <div id="queue-pills" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+      <button class="mini-btn" id="all-queues">All</button>
+      <button class="mini-btn" id="no-queues">None</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Rarity</span>
+      <span class="pill active" data-rarity="common">C</span>
+      <span class="pill active" data-rarity="uncommon">U</span>
+      <span class="pill active" data-rarity="rare">R</span>
+      <span class="pill active" data-rarity="mythic">M</span>
+      <span class="filter-label" style="margin-left:6px">Color</span>
+      <span class="pill c-W active" data-color="W">W</span>
+      <span class="pill c-U active" data-color="U">U</span>
+      <span class="pill c-B active" data-color="B">B</span>
+      <span class="pill c-R active" data-color="R">R</span>
+      <span class="pill c-G active" data-color="G">G</span>
+      <span class="pill c-M active" data-color="M">Multi</span>
+      <span class="pill c-X active" data-color="X">Colorless</span>
+      <span class="pill c-L active" data-color="L">Land</span>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Type</span>
+      <div id="type-pills" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+    </div>
+    <div class="filter-row">
+      <input class="filter-input" id="name-filter" type="text" placeholder="Card name&hellip;">
+      <input class="filter-input" id="set-filter"  type="text" placeholder="Set name&hellip;">
+      <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
+        <input type="checkbox" id="group-by-set" checked> Group by set
+      </label>
+      <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
+        <input type="checkbox" id="dfc-only"> DFC only
+      </label>
+      <span class="filter-label" style="margin-left:4px">Cols</span>
+      <div class="cols-control">
+        <button class="cols-btn" data-cols="1">1</button>
+        <button class="cols-btn active" data-cols="2">2</button>
+        <button class="cols-btn" data-cols="3">3</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="grid-container">
-  <div id="grid"></div>
-  <div id="no-results">No cards match the current filters.</div>
+  <div id="grid">
+    <div id="no-results">No cards match the current filters.</div>
+  </div>
   <div id="load-more-wrap" style="display:none">
     <button id="load-more">Load more cards</button>
     <span id="load-more-label" style="font-size:0.75rem;color:#666;margin-left:10px"></span>
@@ -487,6 +564,58 @@ const activeTypes  = new Set(['Creature','Instant','Sorcery','Enchantment',
 let visibleCards = [];
 let renderOffset = 0;
 
+// ── Columns control (mobile only — desktop uses CSS auto-fill) ────────────────
+const gridEl = document.getElementById('grid');
+gridEl.style.setProperty('--cols', '2');
+document.querySelectorAll('.cols-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cols-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    gridEl.style.setProperty('--cols', btn.dataset.cols);
+  });
+});
+
+// ── Filter bar collapse / scroll ──────────────────────────────────────────────
+const filterBar    = document.getElementById('filter-bar');
+const toggleBtn    = document.getElementById('filter-toggle-btn');
+let filterCollapsed = false;
+let lastScrollY     = window.scrollY;
+let scrollTimer     = null;
+
+function setCollapsed(collapsed) {
+  filterCollapsed = collapsed;
+  filterBar.classList.toggle('collapsed', collapsed);
+  toggleBtn.textContent = collapsed ? 'Filters ▼' : 'Filters ▲';
+}
+
+toggleBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  setCollapsed(!filterCollapsed);
+});
+
+document.getElementById('filter-bar-handle').addEventListener('click', () => {
+  if (filterCollapsed) setCollapsed(false);
+});
+
+const isMobile = () => window.innerWidth <= 768;
+
+window.addEventListener('scroll', () => {
+  if (!isMobile()) return;
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    const y = window.scrollY;
+    if (y > lastScrollY + 40 && y > 80)  setCollapsed(true);
+    if (y < lastScrollY - 20)             setCollapsed(false);
+    lastScrollY = y;
+  }, 50);
+}, { passive: true });
+
+// Re-expand if user rotates to desktop width
+window.addEventListener('resize', () => {
+  if (!isMobile()) setCollapsed(false);
+}, { passive: true });
+
+// ── Queue pills ───────────────────────────────────────────────────────────────
 const qPillsEl = document.getElementById('queue-pills');
 QUEUE_META.forEach(q => {
   const p = document.createElement('span');
@@ -510,6 +639,7 @@ document.getElementById('no-queues').addEventListener('click', () => {
   applyFilters();
 });
 
+// ── Type pills ────────────────────────────────────────────────────────────────
 const TYPE_LABELS = {Creature:'Creature',Instant:'Instant',Sorcery:'Sorcery',
   Enchantment:'Enchant',Artifact:'Artifact',Planeswalker:'PW',Land:'Land',Battle:'Battle',Other:'Other'};
 const typePillsEl = document.getElementById('type-pills');
@@ -526,6 +656,7 @@ Object.entries(TYPE_LABELS).forEach(([t, label]) => {
   typePillsEl.appendChild(p);
 });
 
+// ── Pill + input listeners ────────────────────────────────────────────────────
 document.querySelectorAll('[data-rarity]').forEach(p =>
   p.addEventListener('click', () => {
     p.classList.toggle('active');
@@ -555,6 +686,7 @@ document.getElementById('set-filter').addEventListener('input', () => {
   document.getElementById(id).addEventListener('change', applyFilters)
 );
 
+// ── Filter + sort ─────────────────────────────────────────────────────────────
 function colorKey(card) {
   if (card.color_sort === 7) return 'L';
   if (card.color_sort === 6) return 'X';
@@ -563,8 +695,8 @@ function colorKey(card) {
 }
 
 function applyFilters() {
-  const nameQ  = document.getElementById('name-filter').value.toLowerCase().trim();
-  const setQ   = document.getElementById('set-filter').value.toLowerCase().trim();
+  const nameQ   = document.getElementById('name-filter').value.toLowerCase().trim();
+  const setQ    = document.getElementById('set-filter').value.toLowerCase().trim();
   const dfcOnly = document.getElementById('dfc-only').checked;
 
   visibleCards = CARDS.filter(c => {
@@ -584,9 +716,9 @@ function applyFilters() {
   renderPage(true);
 }
 
+// ── Render ────────────────────────────────────────────────────────────────────
 const RARITY_CLS = {common:'rc', uncommon:'ru', rare:'rr', mythic:'rm'};
 const RARITY_LBL = {common:'C', uncommon:'U', rare:'R', mythic:'M', special:'S'};
-const grid         = document.getElementById('grid');
 const noResults    = document.getElementById('no-results');
 const loadMoreWrap = document.getElementById('load-more-wrap');
 const loadMoreBtn  = document.getElementById('load-more');
@@ -597,7 +729,8 @@ const prevB        = document.getElementById('prev-back');
 
 function renderPage(reset) {
   if (reset) {
-    grid.innerHTML = '';
+    // Remove all children except #no-results
+    Array.from(gridEl.children).forEach(el => { if (el.id !== 'no-results') el.remove(); });
     noResults.style.display = 'none';
   }
   if (visibleCards.length === 0) {
@@ -609,7 +742,7 @@ function renderPage(reset) {
   const groupBySet = document.getElementById('group-by-set').checked;
   const slice      = visibleCards.slice(renderOffset, renderOffset + PAGE_SIZE);
   const frag       = document.createDocumentFragment();
-  let lastKey      = reset ? null : grid.dataset.lastKey;
+  let lastKey      = reset ? null : gridEl.dataset.lastKey;
 
   slice.forEach(c => {
     if (groupBySet) {
@@ -617,7 +750,6 @@ function renderPage(reset) {
       if (key !== lastKey) {
         const hdr = document.createElement('div');
         hdr.className = 'set-header';
-        hdr.style.flexBasis = '100%';
         hdr.innerHTML = c.set_name + ' <span class="year">(' + c.released_at.slice(0,4) + ')</span>';
         frag.appendChild(hdr);
         lastKey = key;
@@ -656,8 +788,8 @@ function renderPage(reset) {
     frag.appendChild(wrap);
   });
 
-  grid.dataset.lastKey = lastKey;
-  grid.appendChild(frag);
+  gridEl.dataset.lastKey = lastKey;
+  gridEl.appendChild(frag);
   renderOffset += slice.length;
 
   const remaining = visibleCards.length - renderOffset;

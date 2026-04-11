@@ -520,7 +520,19 @@ def stats(token):
     finally:
         conn.close()
 
-    # Per-queue table
+    # Top-10% summary row
+    top10_pool = len(_card_names)
+    top10_avg  = round(top10_total * 2 / top10_pool, 2) if top10_pool else 0
+    top10_row  = (
+        f'<tr style="color:#c9a84c;font-weight:600">'
+        f'<td>Top 10%</td>'
+        f'<td style="text-align:right">{top10_pool:,}</td>'
+        f'<td style="text-align:right">{top10_total:,}</td>'
+        f'<td style="text-align:right">{top10_avg:,}</td></tr>\n'
+        f'<tr><td colspan="4" style="color:#555;font-size:0.78rem;padding:6px 8px 2px">Full phase</td></tr>\n'
+    )
+
+    # Per-queue table rows
     vote_count_map = {qid: total for qid, total in queue_rows}
     all_qids = sorted(set(list(_queue_sizes.keys()) + [qid for qid, _ in queue_rows]))
     queue_table = ''
@@ -561,13 +573,10 @@ td {{ padding:4px 8px; border-bottom:1px solid #2a2a2a; }}
 </style>
 </head>
 <body>
-<h2>Top-10% bracket</h2>
-<p class="total">{top10_total:,} votes</p>
-
-<h2>Vote totals by queue (full phase)</h2>
+<h2>Vote totals by queue</h2>
 <table>
 <tr><th>Queue</th><th style="text-align:right">Size</th><th style="text-align:right">Votes</th><th style="text-align:right">Avg/card</th></tr>
-{queue_table}
+{top10_row}{queue_table}
 </table>
 <p class="total">Full-phase total: {full_total:,} votes</p>
 
