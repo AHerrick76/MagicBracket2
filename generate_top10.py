@@ -40,6 +40,8 @@ from parse_data import load_processed_cards
 parser = argparse.ArgumentParser()
 parser.add_argument('--dry-run', action='store_true',
                     help='Print plan without writing to disk or DB')
+parser.add_argument('--html-only', action='store_true',
+                    help='Regenerate universe.html without touching top_10_queue.json or the DB')
 parser.add_argument('--out-json', default='top_10_queue.json',
                     help='Output path for the queue JSON (default: top_10_queue.json)')
 parser.add_argument('--out-html', default=None,
@@ -54,93 +56,95 @@ INITIAL_ELO  = 1500.0
 
 DATABASE_URL = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://', 1)
 
-# ── Load queues ────────────────────────────────────────────────────────────────
+# ── Load queues (skipped in --html-only mode) ─────────────────────────────────
 
-print('Loading queues...')
-with open(QUEUES_PATH, encoding='utf-8') as f:
-    queues_data = json.load(f)
-
-queue_map = {q['id']: q['cards'] for q in queues_data['queues']}
-card_to_queue = {}
-for qid, cards in queue_map.items():
-    for name in cards:
-        card_to_queue[name] = qid
-
-all_queued = set(card_to_queue)
-print(f'{len(all_queued)} cards across {len(queue_map)} queues.')
-
-# ── Load Elo ratings from DB ───────────────────────────────────────────────────
-
-print('Loading Elo ratings...')
-elo_map = {}  # card_name → float
-
-if DATABASE_URL:
-    conn = psycopg2.connect(DATABASE_URL)
-    elo_df = pd.read_sql(
-        'SELECT card_name, rating FROM elo_ratings WHERE card_name = ANY(%s)',
-        conn, params=(list(all_queued),)
-    )
-    conn.close()
-    elo_map = dict(zip(elo_df['card_name'], elo_df['rating'].astype(float)))
-    print(f'Loaded Elos for {len(elo_map):,} / {len(all_queued):,} cards.')
+if args.html_only:
+    print(f'Loading card list from {JSON_OUT}...')
+    with open(JSON_OUT, encoding='utf-8') as f:
+        _existing = json.load(f)
+    card_records = _existing['cards']
+    grand_mean   = _existing.get('grand_mean_elo', INITIAL_ELO)
+    print(f'{len(card_records)} cards loaded.')
 else:
-    print('Warning: DATABASE_URL not set — using INITIAL_ELO for all cards.')
+    print('Loading queues...')
+    with open(QUEUES_PATH, encoding='utf-8') as f:
+        queues_data = json.load(f)
+
+    queue_map = {q['id']: q['cards'] for q in queues_data['queues']}
+    card_to_queue = {}
+    for qid, cards in queue_map.items():
+        for name in cards:
+            card_to_queue[name] = qid
+
+    all_queued = set(card_to_queue)
+    print(f'{len(all_queued)} cards across {len(queue_map)} queues.')
+
+    # ── Load Elo ratings from DB ───────────────────────────────────────────────
+
+    print('Loading Elo ratings...')
+    elo_map = {}  # card_name → float
+
+    if DATABASE_URL:
+        conn = psycopg2.connect(DATABASE_URL)
+        elo_df = pd.read_sql(
+            'SELECT card_name, rating FROM elo_ratings WHERE card_name = ANY(%s)',
+            conn, params=(list(all_queued),)
+        )
+        conn.close()
+        elo_map = dict(zip(elo_df['card_name'], elo_df['rating'].astype(float)))
+        print(f'Loaded Elos for {len(elo_map):,} / {len(all_queued):,} cards.')
+    else:
+        print('Warning: DATABASE_URL not set — using INITIAL_ELO for all cards.')
 
 def get_elo(name):
     return elo_map.get(name, INITIAL_ELO)
 
-# ── Select top 10% per queue ───────────────────────────────────────────────────
+if not args.html_only:
+    # ── Select top 10% per queue ───────────────────────────────────────────────
 
-print('\nSelecting top 10% per queue...')
-selected_by_queue = {}  # qid → [(name, elo), ...]
+    print('\nSelecting top 10% per queue...')
+    selected_by_queue = {}  # qid → [(name, elo), ...]
 
-for qid, cards in queue_map.items():
-    if qid == 1:
-        # Q1 was a test queue — skip
-        continue
-    cutoff = math.ceil(len(cards) * 0.10)
-    ranked = sorted(cards, key=lambda c: get_elo(c), reverse=True)
-    top_cards = [(name, get_elo(name)) for name in ranked[:cutoff]]
-    selected_by_queue[qid] = top_cards
-    print(f'  Q{qid}: {len(cards)} cards → top {cutoff} '
-          f'(Elo range {top_cards[-1][1]:.0f}–{top_cards[0][1]:.0f})')
+    for qid, cards in queue_map.items():
+        if qid == 1:
+            continue
+        cutoff = math.ceil(len(cards) * 0.10)
+        ranked = sorted(cards, key=lambda c: get_elo(c), reverse=True)
+        top_cards = [(name, get_elo(name)) for name in ranked[:cutoff]]
+        selected_by_queue[qid] = top_cards
+        print(f'  Q{qid}: {len(cards)} cards → top {cutoff} '
+              f'(Elo range {top_cards[-1][1]:.0f}–{top_cards[0][1]:.0f})')
 
-total_selected = sum(len(v) for v in selected_by_queue.values())
-print(f'\nTotal selected: {total_selected:,} cards')
+    total_selected = sum(len(v) for v in selected_by_queue.values())
+    print(f'\nTotal selected: {total_selected:,} cards')
 
-# ── Normalise Elos across queues ───────────────────────────────────────────────
+    # ── Normalise Elos across queues ───────────────────────────────────────────
 
-# Grand mean: average Elo of all selected cards before normalisation
-all_raw_elos = [elo for cards in selected_by_queue.values() for _, elo in cards]
-grand_mean   = sum(all_raw_elos) / len(all_raw_elos)
-print(f'\nGrand mean Elo (pre-normalisation): {grand_mean:.1f}')
+    all_raw_elos = [elo for cards in selected_by_queue.values() for _, elo in cards]
+    grand_mean   = sum(all_raw_elos) / len(all_raw_elos)
+    print(f'\nGrand mean Elo (pre-normalisation): {grand_mean:.1f}')
 
-print('\nPer-queue normalisation shifts:')
-normalised_by_queue = {}  # qid → [(name, normalised_elo), ...]
-for qid, cards in selected_by_queue.items():
-    queue_mean = sum(elo for _, elo in cards) / len(cards)
-    shift      = grand_mean - queue_mean
-    normalised = [(name, round(elo + shift, 2)) for name, elo in cards]
-    normalised_by_queue[qid] = normalised
-    print(f'  Q{qid}: queue mean {queue_mean:.1f} → shift {shift:+.1f}  '
-          f'(normalised range {normalised[-1][1]:.0f}–{normalised[0][1]:.0f})')
+    print('\nPer-queue normalisation shifts:')
+    normalised_by_queue = {}
+    for qid, cards in selected_by_queue.items():
+        queue_mean = sum(elo for _, elo in cards) / len(cards)
+        shift      = grand_mean - queue_mean
+        normalised = [(name, round(elo + shift, 2)) for name, elo in cards]
+        normalised_by_queue[qid] = normalised
+        print(f'  Q{qid}: queue mean {queue_mean:.1f} → shift {shift:+.1f}  '
+              f'(normalised range {normalised[-1][1]:.0f}–{normalised[0][1]:.0f})')
 
-# ── Build flat card list ───────────────────────────────────────────────────────
+    # ── Build flat card list ───────────────────────────────────────────────────
 
-card_records = []
-for qid, cards in normalised_by_queue.items():
-    for name, norm_elo in cards:
-        card_records.append({
-            'name':             name,
-            'queue_id':         qid,
-            'normalized_elo':   norm_elo,
-        })
+    card_records = []
+    for qid, cards in normalised_by_queue.items():
+        for name, norm_elo in cards:
+            card_records.append({'name': name, 'queue_id': qid, 'normalized_elo': norm_elo})
 
-card_records.sort(key=lambda c: c['name'])
+    card_records.sort(key=lambda c: c['name'])
 
-# Verify grand mean preserved (should be ~grand_mean ± floating-point noise)
-check_mean = sum(r['normalized_elo'] for r in card_records) / len(card_records)
-print(f'\nPost-normalisation grand mean: {check_mean:.1f}  (target {grand_mean:.1f})')
+    check_mean = sum(r['normalized_elo'] for r in card_records) / len(card_records)
+    print(f'\nPost-normalisation grand mean: {check_mean:.1f}  (target {grand_mean:.1f})')
 
 # ── Write top_10_queue.json ────────────────────────────────────────────────────
 
@@ -151,8 +155,8 @@ output = {
     'cards':          card_records,
 }
 
-if args.dry_run:
-    print(f'\n[dry-run] Would write {len(card_records)} cards to {JSON_OUT}')
+if args.dry_run or args.html_only:
+    print(f'\n[{"dry-run" if args.dry_run else "html-only"}] Skipping {JSON_OUT}')
 else:
     with open(JSON_OUT, 'w', encoding='utf-8') as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
@@ -160,8 +164,8 @@ else:
 
 # ── Init DB tables and seed starting Elos ─────────────────────────────────────
 
-if args.dry_run:
-    print('[dry-run] Would create votes_top10 and elo_ratings_top10 tables and seed Elos.')
+if args.dry_run or args.html_only:
+    print(f'[{"dry-run" if args.dry_run else "html-only"}] Skipping DB init.')
 elif DATABASE_URL:
     print('\nInitialising DB tables...')
     conn = psycopg2.connect(DATABASE_URL)
@@ -215,6 +219,14 @@ name_to_queue  = {r['name']: r['queue_id'] for r in card_records}
 df = load_processed_cards()
 df = df[df['name'].isin(selected_names)].copy()
 df['queue_id'] = df['name'].map(name_to_queue)
+
+# Override promo/deficient images with preferred printings
+_IMAGE_OVERRIDES = {
+    'Sothera, the Supervoid':  'https://cards.scryfall.io/large/front/e/9/e99d6fc0-dcf2-4b25-81c2-02c230a36246.jpg',
+    'The Wandering Emperor':   'https://cards.scryfall.io/large/front/f/a/fab2d8a9-ab4c-4225-a570-22636293c17d.jpg',
+}
+for _n, _url in _IMAGE_OVERRIDES.items():
+    df.loc[df['name'] == _n, 'img_front'] = _url
 
 ALL_TYPES = ['Creature', 'Instant', 'Sorcery', 'Enchantment',
              'Artifact', 'Planeswalker', 'Land', 'Battle']
@@ -579,10 +591,12 @@ document.querySelectorAll('.cols-btn').forEach(btn => {
 const filterBar    = document.getElementById('filter-bar');
 const toggleBtn    = document.getElementById('filter-toggle-btn');
 let filterCollapsed = false;
+let _manualClosed   = false;  // true when user explicitly closed via button
 let lastScrollY     = window.scrollY;
 let scrollTimer     = null;
 
-function setCollapsed(collapsed) {
+function setCollapsed(collapsed, fromScroll = false) {
+  if (fromScroll && collapsed === false && _manualClosed) return; // button close overrides scroll-up
   filterCollapsed = collapsed;
   filterBar.classList.toggle('collapsed', collapsed);
   toggleBtn.textContent = collapsed ? 'Filters ▼' : 'Filters ▲';
@@ -590,11 +604,13 @@ function setCollapsed(collapsed) {
 
 toggleBtn.addEventListener('click', e => {
   e.stopPropagation();
-  setCollapsed(!filterCollapsed);
+  const closing = !filterCollapsed;
+  _manualClosed = closing;
+  setCollapsed(closing);
 });
 
 document.getElementById('filter-bar-handle').addEventListener('click', () => {
-  if (filterCollapsed) setCollapsed(false);
+  if (filterCollapsed) { _manualClosed = false; setCollapsed(false); }
 });
 
 const isMobile = () => window.innerWidth <= 768;
@@ -604,8 +620,8 @@ window.addEventListener('scroll', () => {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(() => {
     const y = window.scrollY;
-    if (y > lastScrollY + 40 && y > 80)  setCollapsed(true);
-    if (y < lastScrollY - 20)             setCollapsed(false);
+    if (y > lastScrollY + 40 && y > 80)  setCollapsed(true,  true);
+    if (y < lastScrollY - 20)             setCollapsed(false, true);
     lastScrollY = y;
   }, 50);
 }, { passive: true });

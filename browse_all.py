@@ -67,6 +67,14 @@ df = load_processed_cards()
 df = df[df['name'].isin(queued_cards)].copy()
 df['queue_id'] = df['name'].map(card_to_queue)
 
+# Override promo/deficient images with preferred printings
+_IMAGE_OVERRIDES = {
+    'Sothera, the Supervoid':  'https://cards.scryfall.io/large/front/e/9/e99d6fc0-dcf2-4b25-81c2-02c230a36246.jpg',
+    'The Wandering Emperor':   'https://cards.scryfall.io/large/front/f/a/fab2d8a9-ab4c-4225-a570-22636293c17d.jpg',
+}
+for _n, _url in _IMAGE_OVERRIDES.items():
+    df.loc[df['name'] == _n, 'img_front'] = _url
+
 ALL_TYPES = ['Creature', 'Instant', 'Sorcery', 'Enchantment',
              'Artifact', 'Planeswalker', 'Land', 'Battle']
 

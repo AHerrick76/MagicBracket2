@@ -286,6 +286,15 @@ _name_to_year         = {n: pd.to_datetime(_meta_get(n, 'released_at', pd.NaT)).
                           for n in _card_names}
 _name_to_img_front    = {n: _meta_get(n, 'img_front') or None for n in _card_names}
 _name_to_img_back     = {n: _meta_get(n, 'img_back')  or None for n in _card_names}
+
+# Override promo/deficient images with preferred printings
+_IMAGE_OVERRIDES = {
+    'Sothera, the Supervoid':  'https://cards.scryfall.io/large/front/e/9/e99d6fc0-dcf2-4b25-81c2-02c230a36246.jpg',
+    'The Wandering Emperor':   'https://cards.scryfall.io/large/front/f/a/fab2d8a9-ab4c-4225-a570-22636293c17d.jpg',
+}
+for _n, _url in _IMAGE_OVERRIDES.items():
+    if _n in _name_to_img_front:
+        _name_to_img_front[_n] = _url
 _name_to_vintage_legal = {n: _meta_get(n, 'legal_vintage', 'not_legal') for n in _card_names}
 
 print('Initialising database and Elo ratings...')
