@@ -80,7 +80,7 @@ _ELO_PCT_XP = [0.00, 0.10, 0.50, 0.90, 1.00]
 _ELO_PCT_FP = [0.10, 0.20, 1.00, 10.00, 10.00]
 
 # card_b soft draw — inverse-linear decay by Elo distance
-CARD_B_ELO_SCALE = 250.0  # probability halves every 250 Elo points
+CARD_B_ELO_SCALE = 100.0  # probability halves every 250 Elo points
 
 # Seen-pair reroll probability
 SEEN_REROLL_PROB = 0.90
