@@ -75,12 +75,12 @@ ELO_K               = 32
 ELO_K_DECAY         = 250    # K halves after 250 games (vs 30 in full-queue phase)
 ELO_DIFF_CAP        = 241.0  # clamp implied Elo diff at ±241 (≈ 80/20 max odds)
 
-# card_a weighted shuffle — Elo-percentile multipliers (5:1 ratio, top-heavy)
+# card_a weighted shuffle — Elo-percentile multipliers (1.5:1 ratio, symmetric)
 _ELO_PCT_XP = [0.00, 0.10, 0.50, 0.90, 1.00]
-_ELO_PCT_FP = [0.10, 0.20, 1.00, 10.00, 10.00]
+_ELO_PCT_FP = [0.80, 0.80, 1.00, 1.20, 1.20]
 
 # card_b soft draw — inverse-linear decay by Elo distance
-CARD_B_ELO_SCALE = 100.0  # probability halves every 250 Elo points
+CARD_B_ELO_SCALE = 250.0  # probability halves every 250 Elo points
 
 # Seen-pair reroll probability
 SEEN_REROLL_PROB = 0.90
