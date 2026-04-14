@@ -32,8 +32,9 @@ QUEUES_PATH     = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'queu
 TOP10_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'top_10_queue.json')
 
 parser = argparse.ArgumentParser(description='Generate a browsable HTML gallery of all queue cards.')
-parser.add_argument('--out',   type=str,            default=None,  help='Output HTML path (default: all_queues_gallery.html)')
-parser.add_argument('--promo', action='store_true',                help='Promo layout: show Elo prominently, hide queue/rarity/votes/rank')
+parser.add_argument('--out',       type=str,            default=None,  help='Output HTML path (default: all_queues_gallery.html)')
+parser.add_argument('--promo',     action='store_true',                help='Promo layout: show Elo prominently, hide queue/rarity/votes/rank')
+parser.add_argument('--top10-only', action='store_true',               help='Show only top-10%% cards with tournament Elos and vote counts')
 args = parser.parse_args()
 
 # ── Load queues ───────────────────────────────────────────────────────────────
@@ -107,9 +108,9 @@ df['primary_types'] = df['type_line'].apply(get_primary_types)
 
 print('Loading Elo ratings...')
 INITIAL_ELO = 1500.0
-elo_map = {}   # card_name → (rating, wins, losses)
-
-elo_top10_map = {}  # card_name → float (reweighted Elo from top-10% phase)
+elo_map = {}            # card_name → (rating, wins, losses)
+elo_top10_map = {}      # card_name → float (tournament Elo from top-10% phase)
+elo_top10_games_map = {}  # card_name → (wins, losses)
 
 if DATABASE_URL:
     try:
@@ -124,11 +125,15 @@ if DATABASE_URL:
 
         if top10_cards:
             t10_df = pd.read_sql(
-                'SELECT card_name, rating FROM elo_ratings_top10 WHERE card_name = ANY(%s)',
+                'SELECT card_name, rating, wins, losses FROM elo_ratings_top10 WHERE card_name = ANY(%s)',
                 conn, params=(list(top10_cards),)
             )
             for _, r in t10_df.iterrows():
                 elo_top10_map[r['card_name']] = float(r['rating'])
+            elo_top10_games_map = {
+                r['card_name']: (int(r['wins']), int(r['losses']))
+                for _, r in t10_df.iterrows()
+            }
             print(f'Top-10% Elo loaded for {len(elo_top10_map):,} cards.')
 
         conn.close()
@@ -191,10 +196,22 @@ for _, row in df.iterrows():
         'iq_pct':      iq_pct_map.get(name, 50.0),
         'top10':       name in top10_cards,
         'elo_top10':   round(elo_top10_map[name], 1) if name in elo_top10_map else None,
+        'games_top10': sum(elo_top10_games_map[name]) if name in elo_top10_games_map else 0,
     })
 
 # Default sort: released_at → color_sort → cmc → name (queue shown as label, not used for grouping)
 cards_list.sort(key=lambda c: (c['released_at'], c['set_name'], c['color_sort'], c['cmc'], c['name']))
+
+if args.top10_only:
+    cards_list = [c for c in cards_list if c['top10']]
+    print(f'Filtered to {len(cards_list):,} top-10% cards.')
+    # Recompute rank as a single global pool ordered by tournament Elo
+    _sorted = sorted(cards_list, key=lambda c: (-(c['elo_top10'] or 0), c['name']))
+    _n = len(_sorted)
+    for _rank_0, _card in enumerate(_sorted):
+        _rank = _rank_0 + 1
+        _card['iq_rank'] = _rank
+        _card['iq_pct']  = round((_n - _rank) / max(_n - 1, 1) * 100, 1)
 
 cards_json_str  = json.dumps(cards_list, ensure_ascii=False)
 queue_meta_json = json.dumps([{'id': q['id'], 'size': len(q['cards'])} for q in queues_data['queues']])
@@ -210,7 +227,7 @@ HTML = '''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>All Queues Gallery</title>
+<title>__PAGE_TITLE__</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
@@ -438,6 +455,7 @@ const CARDS      = __CARDS_JSON__;
 const QUEUE_META = __QUEUE_META_JSON__;
 const PAGE_SIZE  = 400;
 const PROMO_MODE = __PROMO_MODE__;
+const TOP10_MODE = __TOP10_MODE__;
 
 // ── State ────────────────────────────────────────────────────────────────────
 const activeQueues = new Set(QUEUE_META.map(q => q.id));
@@ -525,9 +543,14 @@ document.getElementById('set-filter').addEventListener('input', () => {
 
 // ── Elo display helper ────────────────────────────────────────────────────────
 function displayElo(card) {
+  if (TOP10_MODE) return card.elo_top10 !== null ? card.elo_top10 : card.elo;
   const useRw = document.getElementById('reweighted-elo').checked;
   if (useRw && card.elo_top10 !== null) return card.elo_top10;
   return card.elo;
+}
+
+function displayGames(card) {
+  return TOP10_MODE ? card.games_top10 : card.games;
 }
 
 // ── Color key helper ──────────────────────────────────────────────────────────
@@ -683,7 +706,7 @@ function renderPage(reset) {
         '<span class="q-tag">Q' + c.queue + '</span> <span class="' + rcls + '">' + rlbl + '</span><br>' +
         '<strong>' + c.name + '</strong>' +
         '<span class="set-line">' + c.set_name + '</span><br>' +
-        eloStr + ' &nbsp;' + c.games + 'v &nbsp;<span style="color:#666">' + rankStr + '</span>';
+        eloStr + ' &nbsp;' + displayGames(c) + 'v &nbsp;<span style="color:#666">' + rankStr + '</span>';
     }
 
     wrap.appendChild(img);
@@ -712,17 +735,26 @@ applyFilters();
 </body>
 </html>'''
 
+page_title = 'Top 10% Tournament' if args.top10_only else 'All Queues Gallery'
+
 html = (HTML
     .replace('__CARDS_JSON__',     cards_json_str)
     .replace('__QUEUE_META_JSON__', queue_meta_json)
     .replace('__TOTAL__',          str(total_cards))
     .replace('__NQUEUES__',        str(n_queues))
     .replace('__PROMO_MODE__',     'true' if args.promo else 'false')
+    .replace('__TOP10_MODE__',     'true' if args.top10_only else 'false')
+    .replace('__PAGE_TITLE__',     page_title)
 )
 
 # ── Write output ──────────────────────────────────────────────────────────────
 
-default_name = 'all_queues_promo.html' if args.promo else 'all_queues_gallery.html'
+if args.top10_only:
+    default_name = 'top10_gallery.html'
+elif args.promo:
+    default_name = 'all_queues_promo.html'
+else:
+    default_name = 'all_queues_gallery.html'
 out_path = args.out or os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     default_name

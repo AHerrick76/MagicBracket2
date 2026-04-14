@@ -25,7 +25,12 @@ from parse_data import load_processed_cards
 _parser = argparse.ArgumentParser()
 _parser.add_argument('--phase', choices=['full', 'top10'], default='full',
                      help='Which phase to inspect: full (default) or top10')
+_parser.add_argument('--fix-ips', action='store_true',
+                     help='(top10 only) Trim double-IP X-Forwarded-For values to first IP in votes_top10 and page_views')
 _args = _parser.parse_args()
+
+if _args.fix_ips and _args.phase != 'top10':
+    _parser.error('--fix-ips only applies to --phase top10')
 
 VOTES_TABLE = 'votes_top10'   if _args.phase == 'top10' else 'votes'
 ELO_TABLE   = 'elo_ratings_top10' if _args.phase == 'top10' else 'elo_ratings'
@@ -38,8 +43,25 @@ if not DATABASE_URL:
 
 conn = psycopg2.connect(DATABASE_URL)
 
+if _args.fix_ips:
+    cur = conn.cursor()
+    for table in ('votes_top10', 'page_views'):
+        cur.execute(f'''
+            UPDATE {table}
+            SET ip_address = trim(split_part(ip_address, ',', 1))
+            WHERE ip_address LIKE '%,%'
+        ''')
+        print(f'Fixed {cur.rowcount} rows in {table}.')
+    conn.commit()
+    cur.close()
+
 votes      = pd.read_sql(f'SELECT * FROM {VOTES_TABLE} ORDER BY id',          conn)
 elo        = pd.read_sql(f'SELECT * FROM {ELO_TABLE}   ORDER BY rating DESC', conn)
+
+if _args.phase == 'top10':
+    site_visits = pd.read_sql('SELECT * FROM page_views ORDER BY id', conn)
+else:
+    site_visits = None
 
 conn.close()
 
@@ -81,6 +103,8 @@ elo = elo.merge(_cards[_meta_cols], left_on='card_name', right_on='name', how='l
 
 print(f'Votes:       {len(votes)} rows')
 print(f'Elo ratings: {len(elo)} rows')
+if site_visits is not None:
+    print(f'Site visits: {len(site_visits)} rows')
 print()
 
 # if len(votes):

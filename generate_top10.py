@@ -216,6 +216,17 @@ print('\nGenerating universe.html...')
 selected_names = set(r['name'] for r in card_records)
 name_to_queue  = {r['name']: r['queue_id'] for r in card_records}
 
+# Load bracket card names if bracket.json exists
+_bracket_json = os.path.join(BASE_DIR, 'bracket.json')
+if os.path.exists(_bracket_json):
+    with open(_bracket_json, encoding='utf-8') as _bf:
+        _bracket_data = json.load(_bf)
+    bracket_names = {c['name'] for c in _bracket_data.get('cards', [])}
+    print(f'  {len(bracket_names)} bracket cards loaded from bracket.json')
+else:
+    bracket_names = set()
+    print('  bracket.json not found — bracket filter will show no cards')
+
 df = load_processed_cards()
 df = df[df['name'].isin(selected_names)].copy()
 df['queue_id'] = df['name'].map(name_to_queue)
@@ -278,6 +289,7 @@ for _, row in df.iterrows():
         'front':       str(row.get('img_front', '') or ''),
         'back':        str(row.get('img_back', '') or '') or None,
         'queue':       int(row['queue_id']),
+        'bracket':     name in bracket_names,
     })
 
 # Sort: released_at → set_name → color_sort → cmc → name
@@ -549,6 +561,9 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
       <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
         <input type="checkbox" id="dfc-only"> DFC only
       </label>
+      <label style="font-size:0.72rem;color:#c9a84c;cursor:pointer;display:flex;align-items:center;gap:4px">
+        <input type="checkbox" id="bracket-only"> Top 64 Bracket
+      </label>
       <span class="filter-label" style="margin-left:4px">Cols</span>
       <div class="cols-control">
         <button class="cols-btn" data-cols="1">1</button>
@@ -710,7 +725,7 @@ let setTimer = null;
 document.getElementById('set-filter').addEventListener('input', () => {
   clearTimeout(setTimer); setTimer = setTimeout(applyFilters, 200);
 });
-['group-by-set','dfc-only'].forEach(id =>
+['group-by-set','dfc-only','bracket-only'].forEach(id =>
   document.getElementById(id).addEventListener('change', applyFilters)
 );
 
@@ -723,9 +738,10 @@ function colorKey(card) {
 }
 
 function applyFilters() {
-  const nameQ   = document.getElementById('name-filter').value.toLowerCase().trim();
-  const setQ    = document.getElementById('set-filter').value.toLowerCase().trim();
-  const dfcOnly = document.getElementById('dfc-only').checked;
+  const nameQ       = document.getElementById('name-filter').value.toLowerCase().trim();
+  const setQ        = document.getElementById('set-filter').value.toLowerCase().trim();
+  const dfcOnly     = document.getElementById('dfc-only').checked;
+  const bracketOnly = document.getElementById('bracket-only').checked;
 
   visibleCards = CARDS.filter(c => {
     if (!activeQueues.has(c.queue))                           return false;
@@ -735,7 +751,8 @@ function applyFilters() {
     if (nameQ && !c.name.toLowerCase().includes(nameQ))      return false;
     if (setQ  && !c.set_name.toLowerCase().includes(setQ)
               && !c.set.toLowerCase().includes(setQ))        return false;
-    if (dfcOnly && !c.back)                                  return false;
+    if (dfcOnly     && !c.back)                              return false;
+    if (bracketOnly && !c.bracket)                           return false;
     return true;
   });
 

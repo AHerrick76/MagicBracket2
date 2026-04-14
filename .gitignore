@@ -36,3 +36,7 @@ map_*.json
 # exception for queues
 !queues.json
 !top_10_queue.json
+
+# exception for bracket
+!bracket.json
+!top_64_candidates.json

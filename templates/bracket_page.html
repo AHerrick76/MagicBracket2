@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Bracket — Full Bracket</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: Georgia, serif;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0.75rem 1rem;
+            background: #13132a;
+            border-bottom: 1px solid #2a2a4a;
+            flex-wrap: wrap;
+        }
+        nav a { color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }
+        nav a:hover { text-decoration: underline; }
+
+        .page-header {
+            text-align: center;
+            padding: 1.8rem 1rem 1rem;
+        }
+        .page-header h1 { font-size: 1.5rem; letter-spacing: 0.06em; color: #c8a96e; }
+        .page-header p  { font-size: 0.82rem; color: #666; margin-top: 0.3rem; }
+
+        .scroll-hint {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #444;
+            padding: 0.4rem 1rem 0.8rem;
+        }
+
+        .bracket-scroll {
+            overflow-x: auto;
+            padding: 0.5rem 2rem 4rem;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            justify-content: center;
+        }
+
+        .bracket-outer {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            min-width: max-content;
+        }
+
+        .bracket-half {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        .bracket-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .round-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Bracket line colour ─────────────────────────────────────────── */
+        :root { --line: #3a3a60; }
+
+        /* ── Matchup cell ────────────────────────────────────────────────── */
+        /*
+         * CELL_BASE = 80px.  No round labels, text-only cells.
+         * Total bracket height per side = 16 × 80 = 1280px.
+         * Connector lines are drawn via ::after (outgoing arm) and
+         * ::before (incoming arm) pseudo-elements.
+         */
+        .matchup-cell {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4px 8px;
+            position: relative;
+        }
+
+        /* ── Right-side connectors (left half of bracket) ────────────────── */
+        /* pair-top: horizontal arm + vertical line going DOWN */
+        .has-right-connector.pair-top::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 50%; bottom: 0;
+            width: 8px;
+            border-top:   1px solid var(--line);
+            border-right: 1px solid var(--line);
+        }
+        /* pair-bottom: vertical line going UP + horizontal arm */
+        .has-right-connector.pair-bottom::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 0; bottom: 50%;
+            width: 8px;
+            border-bottom: 1px solid var(--line);
+            border-right:  1px solid var(--line);
+        }
+        /* single (SF, 1 matchup): straight arm to final */
+        .has-right-connector.single::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 50%;
+            transform: translateY(-0.5px);
+            width: 8px; height: 1px;
+            background: var(--line);
+        }
+
+        /* ── Left-side connectors (right half of bracket) ────────────────── */
+        .has-left-connector.pair-top::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%; bottom: 0;
+            width: 8px;
+            border-top:  1px solid var(--line);
+            border-left: 1px solid var(--line);
+        }
+        .has-left-connector.pair-bottom::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 50%;
+            width: 8px;
+            border-bottom: 1px solid var(--line);
+            border-left:   1px solid var(--line);
+        }
+        .has-left-connector.single::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            transform: translateY(-0.5px);
+            width: 8px; height: 1px;
+            background: var(--line);
+        }
+
+        /* ── Incoming arms (R2+ cells) ───────────────────────────────────── */
+        .has-incoming-left::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            transform: translateY(-0.5px);
+            width: 8px; height: 1px;
+            background: var(--line);
+        }
+        .has-incoming-right::before {
+            content: '';
+            position: absolute;
+            right: 0; top: 50%;
+            transform: translateY(-0.5px);
+            width: 8px; height: 1px;
+            background: var(--line);
+        }
+
+        /* ── Final cell ──────────────────────────────────────────────────── */
+        .final-cell {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4px 8px;
+            position: relative;
+        }
+        /* incoming arm from left (left-half SF) */
+        .final-cell::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            transform: translateY(-0.5px);
+            width: 8px; height: 1px;
+            background: var(--line);
+        }
+        /* incoming arm from right (right-half SF) */
+        .final-cell::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 50%;
+            transform: translateY(-0.5px);
+            width: 8px; height: 1px;
+            background: var(--line);
+        }
+
+        /* ── Card cell inner box ─────────────────────────────────────────── */
+        .cell-inner {
+            border: 1px solid #252545;
+            border-radius: 3px;
+            background: #1e1e38;
+            overflow: hidden;
+            width: 130px;
+        }
+
+        /* ── Card row ────────────────────────────────────────────────────── */
+        .card-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.25rem;
+            padding: 4px 6px;
+            font-size: 0.62rem;
+            line-height: 1.3;
+            border-bottom: 1px solid #252545;
+        }
+        .card-row:last-child { border-bottom: none; }
+        .card-row.has-img    { cursor: pointer; }
+
+        .card-row.winner {
+            background: rgba(200, 169, 110, 0.12);
+            color: #c8a96e;
+            font-weight: bold;
+        }
+        .card-row.loser { color: #38385a; }
+        .card-row.tbd   { color: #2e2e50; font-style: italic; padding: 5px 6px; }
+
+        .card-name {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            word-break: break-word;
+        }
+        .card-row.has-img:hover .card-name {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .card-pct {
+            font-size: 0.55rem;
+            color: #555;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .card-row.winner .card-pct { color: #907030; }
+        .card-row.loser  .card-pct { color: #2e2e50; }
+
+        /* ── Card image popup ────────────────────────────────────────────── */
+        #card-popup {
+            display: none;
+            position: fixed;
+            z-index: 300;
+            pointer-events: none;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        #card-popup img {
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 6px 28px rgba(0,0,0,0.85);
+            display: block;
+        }
+        #popup-img-back { display: none; }
+        @media (max-width: 600px) {
+            #card-popup img { width: 200px; }
+            .bracket-scroll { justify-content: flex-start; }
+        }
+        #popup-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 299;
+        }
+        #card-popup.centered {
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%);
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Vote</a>
+    <a href="/universe">Top 10% Cards</a>
+    <a href="/faq">FAQ</a>
+    <a href="/share">Share</a>
+</nav>
+
+<div class="page-header">
+    <h1>Magic Bracket</h1>
+    <p>Hover a card name to preview · Completed rounds show vote percentages</p>
+</div>
+
+<p class="scroll-hint">← scroll horizontally to see all rounds →</p>
+
+<div class="bracket-scroll">
+<div class="bracket-outer">
+
+{% macro card_row_html(name, img, img_back, pct, is_winner, is_loser) %}
+{% if not name or name == 'TBD' %}
+<div class="card-row tbd">TBD</div>
+{% else %}
+<div class="card-row{% if img %} has-img{% endif %}{% if is_winner %} winner{% elif is_loser %} loser{% endif %}"
+     {% if img %}data-img="{{ img }}"{% if img_back %} data-img-back="{{ img_back }}"{% endif %}
+     onmouseenter="showNearCursor(this)"
+     onmouseleave="scheduleHide()"
+     onclick="handleClick(this)"{% endif %}>
+    <span class="card-name">{{ name }}</span>
+    {% if pct is not none %}<span class="card-pct">{{ pct }}%</span>{% endif %}
+</div>
+{% endif %}
+{% endmacro %}
+
+{% set CELL_BASE = 80 %}
+{% set num_rounds = rounds|length %}
+{% set side_rounds = num_rounds - 1 %}
+
+{# ── Left half: R1 (leftmost) → SF (rightmost, closest to center) ─── #}
+<div class="bracket-half">
+{% for round_idx in range(side_rounds) %}
+{% set round_matchups = rounds[round_idx] %}
+{% set half_n = (round_matchups|length) // 2 %}
+{% set left_matchups = round_matchups[:half_n] %}
+{% set cell_height = (2 ** round_idx) * CELL_BASE %}
+{% set is_sf = (round_idx == side_rounds - 1) %}
+
+<div class="round-col">
+{% for m in left_matchups %}
+{% if is_sf %}{% set pair_class = 'single' %}
+{% elif loop.index0 % 2 == 0 %}{% set pair_class = 'pair-top' %}
+{% else %}{% set pair_class = 'pair-bottom' %}{% endif %}
+<div class="matchup-cell has-right-connector {{ pair_class }}{% if round_idx > 0 %} has-incoming-left{% endif %}"
+     style="height: {{ cell_height }}px; min-height: {{ cell_height }}px;">
+    <div class="cell-inner">
+        {{ card_row_html(m.left_name, m.left_img_front, m.left_img_back, m.pct_left, m.left_wins, m.right_wins) }}
+        {{ card_row_html(m.right_name, m.right_img_front, m.right_img_back, m.pct_right, m.right_wins, m.left_wins) }}
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endfor %}
+</div>
+
+{# ── Final (center) ────────────────────────────────────────────────── #}
+{% set final_m = rounds[num_rounds - 1][0] %}
+{% set final_height = (2 ** (side_rounds - 1)) * CELL_BASE %}
+<div class="bracket-center">
+    <div class="final-cell"
+         style="height: {{ final_height }}px; min-height: {{ final_height }}px;">
+        <div class="cell-inner">
+            {{ card_row_html(final_m.left_name, final_m.left_img_front, final_m.pct_left, final_m.left_wins, final_m.right_wins) }}
+            {{ card_row_html(final_m.right_name, final_m.right_img_front, final_m.pct_right, final_m.right_wins, final_m.left_wins) }}
+        </div>
+    </div>
+</div>
+
+{# ── Right half: SF (leftmost) → R1 (rightmost) ───────────────────── #}
+<div class="bracket-half">
+{% for round_idx in range(side_rounds - 1, -1, -1) %}
+{% set round_matchups = rounds[round_idx] %}
+{% set half_n = (round_matchups|length) // 2 %}
+{% set right_matchups = round_matchups[half_n:] %}
+{% set cell_height = (2 ** round_idx) * CELL_BASE %}
+{% set is_sf = (round_idx == side_rounds - 1) %}
+
+<div class="round-col">
+{% for m in right_matchups %}
+{% if is_sf %}{% set pair_class = 'single' %}
+{% elif loop.index0 % 2 == 0 %}{% set pair_class = 'pair-top' %}
+{% else %}{% set pair_class = 'pair-bottom' %}{% endif %}
+<div class="matchup-cell has-left-connector {{ pair_class }}{% if round_idx > 0 %} has-incoming-right{% endif %}"
+     style="height: {{ cell_height }}px; min-height: {{ cell_height }}px;">
+    <div class="cell-inner">
+        {{ card_row_html(m.left_name, m.left_img_front, m.left_img_back, m.pct_left, m.left_wins, m.right_wins) }}
+        {{ card_row_html(m.right_name, m.right_img_front, m.right_img_back, m.pct_right, m.right_wins, m.left_wins) }}
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endfor %}
+</div>
+
+</div><!-- .bracket-outer -->
+</div><!-- .bracket-scroll -->
+
+<div id="popup-overlay" onclick="hidePopup()"></div>
+<div id="card-popup"><img id="popup-img" src="" alt=""><img id="popup-img-back" src="" alt="Back face"></div>
+
+<script>
+const _popup        = document.getElementById('card-popup');
+const _popupImg     = document.getElementById('popup-img');
+const _popupImgBack = document.getElementById('popup-img-back');
+const _overlay      = document.getElementById('popup-overlay');
+
+let _hideTimer  = null;
+let _showTimer  = null;
+let _cx = 0, _cy = 0;
+let _isMobile   = window.matchMedia('(pointer: coarse)').matches;
+let _mobileOpen = false;
+
+document.addEventListener('mousemove', function (e) {
+    _cx = e.clientX;
+    _cy = e.clientY;
+    if (!_isMobile && _popup.style.display === 'flex') _positionNearCursor();
+});
+
+function _popupWidth() {
+    const single = _isMobile ? 200 : 300;
+    const hasDfc = _popupImgBack.style.display !== 'none';
+    return hasDfc ? single * 2 + 10 : single;
+}
+
+function _positionNearCursor() {
+    const W = _popupWidth(), H = _isMobile ? 280 : 420, M = 16;
+    let x = _cx + M;
+    let y = _cy - H / 2;
+    if (x + W > window.innerWidth  - M) x = _cx - W - M;
+    if (y < M)                          y = M;
+    if (y + H > window.innerHeight - M) y = window.innerHeight - H - M;
+    _popup.style.left = x + 'px';
+    _popup.style.top  = y + 'px';
+    _popup.classList.remove('centered');
+}
+
+function _loadPopup(el) {
+    _popupImg.src = el.dataset.img;
+    const back = el.dataset.imgBack;
+    if (back) {
+        _popupImgBack.src = back;
+        _popupImgBack.style.display = 'block';
+    } else {
+        _popupImgBack.style.display = 'none';
+    }
+}
+
+function showNearCursor(el) {
+    if (_isMobile) return;
+    const src = el.dataset.img;
+    if (!src) return;
+    clearTimeout(_hideTimer);
+    clearTimeout(_showTimer);
+    _showTimer = setTimeout(function () {
+        _loadPopup(el);
+        _positionNearCursor();
+        _popup.style.display = 'flex';
+    }, 100);
+}
+
+function scheduleHide() {
+    if (_isMobile) return;
+    clearTimeout(_showTimer);
+    _hideTimer = setTimeout(hidePopup, 160);
+}
+
+function handleClick(el) {
+    if (!_isMobile) return;
+    const src = el.dataset.img;
+    if (!src) return;
+    if (_mobileOpen) {
+        hidePopup();
+    } else {
+        _loadPopup(el);
+        _popup.classList.add('centered');
+        _popup.style.display = 'flex';
+        _overlay.style.display = 'block';
+        _mobileOpen = true;
+    }
+}
+
+function hidePopup() {
+    clearTimeout(_showTimer);
+    clearTimeout(_hideTimer);
+    _popup.style.display   = 'none';
+    _overlay.style.display = 'none';
+    _popup.classList.remove('centered');
+    _mobileOpen = false;
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') hidePopup();
+});
+</script>
+
+</body>
+</html>

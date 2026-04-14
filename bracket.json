@@ -1,0 +1,1027 @@
+{
+  "generated_at": "2026-04-14T00:37:05.395646+00:00",
+  "num_cards": 64,
+  "num_rounds": 6,
+  "display_shuffle_seed": 1995497791,
+  "cards": [
+    {
+      "name": "Urza's Saga",
+      "seed": 1,
+      "img_front": "https://cards.scryfall.io/large/front/c/1/c1e0f201-42cb-46a1-901a-65bb4fc18f6c.jpg?1667318301",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Sheoldred, the Apocalypse",
+      "seed": 2,
+      "img_front": "https://cards.scryfall.io/large/front/d/6/d67be074-cdd4-41d9-ac89-0a0456c4e4b2.jpg?1674057568",
+      "img_back": null,
+      "set_name": "Dominaria United",
+      "year": 2022
+    },
+    {
+      "name": "Boseiju, Who Endures",
+      "seed": 3,
+      "img_front": "https://cards.scryfall.io/large/front/2/1/2135ac5a-187b-4dc9-8f82-34e8d1603416.jpg?1654568912",
+      "img_back": null,
+      "set_name": "Kamigawa: Neon Dynasty",
+      "year": 2022
+    },
+    {
+      "name": "Underworld Breach",
+      "seed": 4,
+      "img_front": "https://cards.scryfall.io/large/front/0/e/0e51d796-7279-4c06-87f0-37adbdaa41df.jpg?1753711955",
+      "img_back": null,
+      "set_name": "Theros Beyond Death",
+      "year": 2020
+    },
+    {
+      "name": "Oko, Thief of Crowns",
+      "seed": 5,
+      "img_front": "https://cards.scryfall.io/large/front/3/4/3462a3d0-5552-49fa-9eb7-100960c55891.jpg?1763472871",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Lurrus of the Dream-Den",
+      "seed": 6,
+      "img_front": "https://cards.scryfall.io/large/front/5/a/5ad36fb2-c44e-4085-ba0d-54277841ad3a.jpg?1764801075",
+      "img_back": null,
+      "set_name": "Ikoria: Lair of Behemoths",
+      "year": 2020
+    },
+    {
+      "name": "Fatal Push",
+      "seed": 7,
+      "img_front": "https://cards.scryfall.io/large/front/b/5/b5e81649-9954-424c-89d1-f87d73b66047.jpg?1595869185",
+      "img_back": null,
+      "set_name": "Aether Revolt",
+      "year": 2017
+    },
+    {
+      "name": "Uro, Titan of Nature's Wrath",
+      "seed": 8,
+      "img_front": "https://cards.scryfall.io/large/front/a/0/a0b6a71e-56cb-4d25-8f2b-7a4f1b60900d.jpg?1650599829",
+      "img_back": null,
+      "set_name": "Theros Beyond Death",
+      "year": 2020
+    },
+    {
+      "name": "Bolas's Citadel",
+      "seed": 9,
+      "img_front": "https://cards.scryfall.io/large/front/d/2/d2124603-d20e-40eb-97f0-a66323397ac2.jpg?1591205069",
+      "img_back": null,
+      "set_name": "War of the Spark",
+      "year": 2019
+    },
+    {
+      "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "seed": 10,
+      "img_front": "https://cards.scryfall.io/large/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg?1691108103",
+      "img_back": "https://cards.scryfall.io/large/back/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg?1691108103",
+      "set_name": "Kamigawa: Neon Dynasty",
+      "year": 2022
+    },
+    {
+      "name": "Ragavan, Nimble Pilferer",
+      "seed": 11,
+      "img_front": "https://cards.scryfall.io/large/front/a/9/a9738cda-adb1-47fb-9f4c-ecd930228c4d.jpg?1681963138",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Urza, Lord High Artificer",
+      "seed": 12,
+      "img_front": "https://cards.scryfall.io/large/front/9/e/9e7fb3c0-5159-4d1f-8490-ce4c9a60f567.jpg?1764758729",
+      "img_back": null,
+      "set_name": "Modern Horizons",
+      "year": 2019
+    },
+    {
+      "name": "Assassin's Trophy",
+      "seed": 13,
+      "img_front": "https://cards.scryfall.io/large/front/9/0/906b6e99-128f-4c11-8daf-16099d35b0d4.jpg?1572893498",
+      "img_back": null,
+      "set_name": "Guilds of Ravnica",
+      "year": 2018
+    },
+    {
+      "name": "Psychic Frog",
+      "seed": 14,
+      "img_front": "https://cards.scryfall.io/large/front/4/9/495d344f-5659-400e-8b8f-ad293ccf6308.jpg?1738521620",
+      "img_back": null,
+      "set_name": "Modern Horizons 3",
+      "year": 2024
+    },
+    {
+      "name": "The Meathook Massacre",
+      "seed": 15,
+      "img_front": "https://cards.scryfall.io/large/front/0/8/08950015-eee5-4327-888c-82dfd13bb9ad.jpg?1667629608",
+      "img_back": null,
+      "set_name": "Innistrad: Midnight Hunt",
+      "year": 2021
+    },
+    {
+      "name": "Ephemerate",
+      "seed": 16,
+      "img_front": "https://cards.scryfall.io/large/front/2/d/2da5f3f8-5eef-498f-ba2c-2f3fbc3745aa.jpg?1562201088",
+      "img_back": null,
+      "set_name": "Modern Horizons",
+      "year": 2019
+    },
+    {
+      "name": "Esper Sentinel",
+      "seed": 17,
+      "img_front": "https://cards.scryfall.io/large/front/f/3/f3537373-ef54-4578-9d05-6216420ee349.jpg?1626093502",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Teferi, Time Raveler",
+      "seed": 18,
+      "img_front": "https://cards.scryfall.io/large/front/5/c/5cb76266-ae50-4bbc-8f96-d98f309b02d3.jpg?1681130129",
+      "img_back": null,
+      "set_name": "War of the Spark",
+      "year": 2019
+    },
+    {
+      "name": "Force of Negation",
+      "seed": 19,
+      "img_front": "https://cards.scryfall.io/large/front/e/9/e9be371c-c688-44ad-ab71-bd4c9f242d58.jpg?1764758768",
+      "img_back": null,
+      "set_name": "Modern Horizons",
+      "year": 2019
+    },
+    {
+      "name": "Emry, Lurker of the Loch",
+      "seed": 20,
+      "img_front": "https://cards.scryfall.io/large/front/b/f/bf4b9a8a-b42a-46fb-b0d0-9cf800f63c8a.jpg?1574767844",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Icetill Explorer",
+      "seed": 21,
+      "img_front": "https://cards.scryfall.io/large/front/d/9/d9482aab-6ddf-48e1-84fa-b13d5ff81e69.jpg?1752947338",
+      "img_back": null,
+      "set_name": "Edge of Eternities",
+      "year": 2025
+    },
+    {
+      "name": "Shadowspear",
+      "seed": 22,
+      "img_front": "https://cards.scryfall.io/large/front/9/3/939c6e19-4b27-4023-bb9c-ae440f91e21c.jpg?1581481207",
+      "img_back": null,
+      "set_name": "Theros Beyond Death",
+      "year": 2020
+    },
+    {
+      "name": "Expressive Iteration",
+      "seed": 23,
+      "img_front": "https://cards.scryfall.io/large/front/3/1/31b770cc-09e7-4c0b-b2a4-462ab4f7200d.jpg?1678110681",
+      "img_back": null,
+      "set_name": "Strixhaven: School of Mages",
+      "year": 2021
+    },
+    {
+      "name": "Abhorrent Oculus",
+      "seed": 24,
+      "img_front": "https://cards.scryfall.io/large/front/d/2/d2705b43-a94a-44c0-8740-82e0b296820c.jpg?1726286015",
+      "img_back": null,
+      "set_name": "Duskmourn: House of Horror",
+      "year": 2024
+    },
+    {
+      "name": "Hullbreaker Horror",
+      "seed": 25,
+      "img_front": "https://cards.scryfall.io/large/front/4/b/4b546bcf-2e86-42af-bf32-81c7fd36ef8c.jpg?1643587961",
+      "img_back": null,
+      "set_name": "Innistrad: Crimson Vow",
+      "year": 2021
+    },
+    {
+      "name": "Yawgmoth, Thran Physician",
+      "seed": 26,
+      "img_front": "https://cards.scryfall.io/large/front/8/6/8690cbcc-f8fd-41f7-9e28-e61c12b04014.jpg?1665611812",
+      "img_back": null,
+      "set_name": "Modern Horizons",
+      "year": 2019
+    },
+    {
+      "name": "Questing Beast",
+      "seed": 27,
+      "img_front": "https://cards.scryfall.io/large/front/e/4/e41cf82d-3213-47ce-a015-6e51a8b07e4f.jpg?1572490640",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Ledger Shredder",
+      "seed": 28,
+      "img_front": "https://cards.scryfall.io/large/front/7/e/7ea4b5bc-18a4-45db-a56a-ab3f8bd2fb0d.jpg?1664410287",
+      "img_back": null,
+      "set_name": "Streets of New Capenna",
+      "year": 2022
+    },
+    {
+      "name": "Stock Up",
+      "seed": 29,
+      "img_front": "https://cards.scryfall.io/large/front/0/a/0a786855-6eb4-42c0-a528-4842db46809d.jpg?1738356263",
+      "img_back": null,
+      "set_name": "Aetherdrift",
+      "year": 2025
+    },
+    {
+      "name": "Brazen Borrower // Petty Theft",
+      "seed": 30,
+      "img_front": "https://cards.scryfall.io/large/front/c/2/c2089ec9-0665-448f-bfe9-d181de127814.jpg?1616182088",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Cori-Steel Cutter",
+      "seed": 31,
+      "img_front": "https://cards.scryfall.io/large/front/4/9/490eb213-9ae2-4b45-abec-6f1dfc83792a.jpg?1752091352",
+      "img_back": null,
+      "set_name": "Tarkir: Dragonstorm",
+      "year": 2025
+    },
+    {
+      "name": "Field of the Dead",
+      "seed": 32,
+      "img_front": "https://cards.scryfall.io/large/front/4/7/470ca3f4-29aa-4c4c-8ff2-8cdd70c69943.jpg?1756125065",
+      "img_back": null,
+      "set_name": "Core Set 2020",
+      "year": 2019
+    },
+    {
+      "name": "Walking Ballista",
+      "seed": 33,
+      "img_front": "https://cards.scryfall.io/large/front/3/2/329a8738-3e17-403a-857a-0ba529ce8cd1.jpg?1576382470",
+      "img_back": null,
+      "set_name": "Aether Revolt",
+      "year": 2017
+    },
+    {
+      "name": "Up the Beanstalk",
+      "seed": 34,
+      "img_front": "https://cards.scryfall.io/large/front/2/d/2d5e991f-23b2-4db0-a452-7755125b1fd2.jpg?1752091355",
+      "img_back": null,
+      "set_name": "Wilds of Eldraine",
+      "year": 2023
+    },
+    {
+      "name": "Solitude",
+      "seed": 35,
+      "img_front": "https://cards.scryfall.io/large/front/4/7/47a6234f-309f-4e03-9263-66da48b57153.jpg?1763472875",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Etali, Primal Conqueror // Etali, Primal Sickness",
+      "seed": 36,
+      "img_front": "https://cards.scryfall.io/large/front/9/5/95c14c4d-6c16-4826-8d93-d89ad04aee09.jpg?1739657577",
+      "img_back": "https://cards.scryfall.io/large/back/9/5/95c14c4d-6c16-4826-8d93-d89ad04aee09.jpg?1739657577",
+      "set_name": "March of the Machine",
+      "year": 2023
+    },
+    {
+      "name": "Agatha's Soul Cauldron",
+      "seed": 37,
+      "img_front": "https://cards.scryfall.io/large/front/0/1/019b51b0-e5c6-4208-922b-7736686dddcd.jpg?1692939838",
+      "img_back": null,
+      "set_name": "Wilds of Eldraine",
+      "year": 2023
+    },
+    {
+      "name": "The One Ring",
+      "seed": 38,
+      "img_front": "https://cards.scryfall.io/large/front/d/5/d5806e68-1054-458e-866d-1f2470f682b2.jpg?1763472900",
+      "img_back": null,
+      "set_name": "The Lord of the Rings: Tales of Middle-earth",
+      "year": 2023
+    },
+    {
+      "name": "Wrenn and Six",
+      "seed": 39,
+      "img_front": "https://cards.scryfall.io/large/front/4/a/4a706ecf-3277-40e3-871c-4ba4ead16e20.jpg?1582053605",
+      "img_back": null,
+      "set_name": "Modern Horizons",
+      "year": 2019
+    },
+    {
+      "name": "Atraxa, Grand Unifier",
+      "seed": 40,
+      "img_front": "https://cards.scryfall.io/large/front/4/a/4a1f905f-1d55-4d02-9d24-e58070793d3f.jpg?1717951088",
+      "img_back": null,
+      "set_name": "Phyrexia: All Will Be One",
+      "year": 2023
+    },
+    {
+      "name": "Dauthi Voidwalker",
+      "seed": 41,
+      "img_front": "https://cards.scryfall.io/large/front/7/d/7d54f0dd-5d27-483b-8af9-92a1c5a785f2.jpg?1626102848",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Displacer Kitten",
+      "seed": 42,
+      "img_front": "https://cards.scryfall.io/large/front/c/7/c7a401b8-29fb-46ef-a663-427f66724d5c.jpg?1674135465",
+      "img_back": null,
+      "set_name": "Commander Legends: Battle for Baldur's Gate",
+      "year": 2022
+    },
+    {
+      "name": "Narset, Parter of Veils",
+      "seed": 43,
+      "img_front": "https://cards.scryfall.io/large/front/8/c/8c39f9b4-02b9-4d44-b8d6-4fd02ebbb0c5.jpg?1574294103",
+      "img_back": null,
+      "set_name": "War of the Spark",
+      "year": 2019
+    },
+    {
+      "name": "Bonecrusher Giant // Stomp",
+      "seed": 44,
+      "img_front": "https://cards.scryfall.io/large/front/0/9/09fd2d9c-1793-4beb-a3fb-7a869f660cd4.jpg?1616182066",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "The Great Henge",
+      "seed": 45,
+      "img_front": "https://cards.scryfall.io/large/front/a/f/af915ed2-1f34-43f6-85f5-2430325b720f.jpg?1572490580",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Hogaak, Arisen Necropolis",
+      "seed": 46,
+      "img_front": "https://cards.scryfall.io/large/front/0/0/0049e68d-0caf-474f-9523-dad343f1250a.jpg?1748271676",
+      "img_back": null,
+      "set_name": "Modern Horizons",
+      "year": 2019
+    },
+    {
+      "name": "Otawara, Soaring City",
+      "seed": 47,
+      "img_front": "https://cards.scryfall.io/large/front/4/8/486d7edc-d983-41f0-8b78-c99aecd72996.jpg?1654568960",
+      "img_back": null,
+      "set_name": "Kamigawa: Neon Dynasty",
+      "year": 2022
+    },
+    {
+      "name": "Gilded Goose",
+      "seed": 48,
+      "img_front": "https://cards.scryfall.io/large/front/3/0/30377bf0-d9b1-4c14-8dde-f74b1e02d604.jpg?1572490572",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Tamiyo, Inquisitive Student // Tamiyo, Seasoned Scholar",
+      "seed": 49,
+      "img_front": "https://cards.scryfall.io/large/front/2/a/2a717b98-cdac-416d-bf6c-f6b6638e65d1.jpg?1748260594",
+      "img_back": "https://cards.scryfall.io/large/back/2/a/2a717b98-cdac-416d-bf6c-f6b6638e65d1.jpg?1748260594",
+      "set_name": "Modern Horizons 3",
+      "year": 2024
+    },
+    {
+      "name": "Stitcher's Supplier",
+      "seed": 50,
+      "img_front": "https://cards.scryfall.io/large/front/2/b/2b737126-50b5-4678-91bf-197b64086fe4.jpg?1562301182",
+      "img_back": null,
+      "set_name": "Core Set 2019",
+      "year": 2018
+    },
+    {
+      "name": "Yorion, Sky Nomad",
+      "seed": 51,
+      "img_front": "https://cards.scryfall.io/large/front/2/7/275426c4-c14e-47d0-a9d4-24da7f6f6911.jpg?1665402560",
+      "img_back": null,
+      "set_name": "Ikoria: Lair of Behemoths",
+      "year": 2020
+    },
+    {
+      "name": "Grist, the Hunger Tide",
+      "seed": 52,
+      "img_front": "https://cards.scryfall.io/large/front/6/9/69af2825-18c2-4463-b6ba-42eaa070ccc1.jpg?1626098484",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Abrade",
+      "seed": 53,
+      "img_front": "https://cards.scryfall.io/large/front/8/4/84319dfb-eaf7-4b98-8c4f-30f5e779591b.jpg?1562805721",
+      "img_back": null,
+      "set_name": "Hour of Devastation",
+      "year": 2017
+    },
+    {
+      "name": "Archon of Cruelty",
+      "seed": 54,
+      "img_front": "https://cards.scryfall.io/large/front/1/b/1be9d9a4-d7ee-4854-abc2-85cabf993ec9.jpg?1626095274",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Teferi, Hero of Dominaria",
+      "seed": 55,
+      "img_front": "https://cards.scryfall.io/large/front/5/d/5d10b752-d9cb-419d-a5c4-d4ee1acb655e.jpg?1562736365",
+      "img_back": null,
+      "set_name": "Dominaria",
+      "year": 2018
+    },
+    {
+      "name": "Embercleave",
+      "seed": 56,
+      "img_front": "https://cards.scryfall.io/large/front/a/a/aaae15dd-11b6-4421-99e9-365c7fe4a5d6.jpg?1572490333",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Fabled Passage",
+      "seed": 57,
+      "img_front": "https://cards.scryfall.io/large/front/b/8/b841bfa8-7c17-4df2-8466-780ab9a4a53a.jpg?1572491204",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Once Upon a Time",
+      "seed": 58,
+      "img_front": "https://cards.scryfall.io/large/front/4/0/4034e5ba-9974-43e3-bde7-8d9b4586c3a4.jpg?1650599715",
+      "img_back": null,
+      "set_name": "Throne of Eldraine",
+      "year": 2019
+    },
+    {
+      "name": "Shark Typhoon",
+      "seed": 59,
+      "img_front": "https://cards.scryfall.io/large/front/1/d/1da4d4f3-b3cb-4b61-81b8-06ae441c41bf.jpg?1591226502",
+      "img_back": null,
+      "set_name": "Ikoria: Lair of Behemoths",
+      "year": 2020
+    },
+    {
+      "name": "Dragon's Rage Channeler",
+      "seed": 60,
+      "img_front": "https://cards.scryfall.io/large/front/4/c/4ced112a-e775-4f97-97b3-74877e9dce12.jpg?1626096503",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Academy Manufactor",
+      "seed": 61,
+      "img_front": "https://cards.scryfall.io/large/front/9/0/90744c2c-6dd7-4623-8cbf-b138b83ee88f.jpg?1626098902",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Grief",
+      "seed": 62,
+      "img_front": "https://cards.scryfall.io/large/front/e/6/e6befbc4-1320-4f26-bd9f-b1814fedda10.jpg?1724699966",
+      "img_back": null,
+      "set_name": "Modern Horizons 2",
+      "year": 2021
+    },
+    {
+      "name": "Arclight Phoenix",
+      "seed": 63,
+      "img_front": "https://cards.scryfall.io/large/front/7/8/787de9ce-02c5-4a17-a88b-d38e83dbeb0b.jpg?1572893092",
+      "img_back": null,
+      "set_name": "Guilds of Ravnica",
+      "year": 2018
+    },
+    {
+      "name": "Settle the Wreckage",
+      "seed": 64,
+      "img_front": "https://cards.scryfall.io/large/front/9/c/9cbd346e-098a-4cf6-a72f-468376fd2e8f.jpg?1562560853",
+      "img_back": null,
+      "set_name": "Ixalan",
+      "year": 2017
+    }
+  ],
+  "matchups": [
+    {
+      "id": 1,
+      "round": 1,
+      "day": 1,
+      "seed_a": 1,
+      "seed_b": 64,
+      "name_a": "Urza's Saga",
+      "name_b": "Settle the Wreckage"
+    },
+    {
+      "id": 2,
+      "round": 1,
+      "day": 1,
+      "seed_a": 32,
+      "seed_b": 33,
+      "name_a": "Field of the Dead",
+      "name_b": "Walking Ballista"
+    },
+    {
+      "id": 3,
+      "round": 1,
+      "day": 1,
+      "seed_a": 16,
+      "seed_b": 49,
+      "name_a": "Ephemerate",
+      "name_b": "Tamiyo, Inquisitive Student // Tamiyo, Seasoned Scholar"
+    },
+    {
+      "id": 4,
+      "round": 1,
+      "day": 1,
+      "seed_a": 17,
+      "seed_b": 48,
+      "name_a": "Esper Sentinel",
+      "name_b": "Gilded Goose"
+    },
+    {
+      "id": 5,
+      "round": 1,
+      "day": 1,
+      "seed_a": 8,
+      "seed_b": 57,
+      "name_a": "Uro, Titan of Nature's Wrath",
+      "name_b": "Fabled Passage"
+    },
+    {
+      "id": 6,
+      "round": 1,
+      "day": 1,
+      "seed_a": 25,
+      "seed_b": 40,
+      "name_a": "Hullbreaker Horror",
+      "name_b": "Atraxa, Grand Unifier"
+    },
+    {
+      "id": 7,
+      "round": 1,
+      "day": 1,
+      "seed_a": 9,
+      "seed_b": 56,
+      "name_a": "Bolas's Citadel",
+      "name_b": "Embercleave"
+    },
+    {
+      "id": 8,
+      "round": 1,
+      "day": 1,
+      "seed_a": 24,
+      "seed_b": 41,
+      "name_a": "Abhorrent Oculus",
+      "name_b": "Dauthi Voidwalker"
+    },
+    {
+      "id": 9,
+      "round": 1,
+      "day": 1,
+      "seed_a": 4,
+      "seed_b": 61,
+      "name_a": "Underworld Breach",
+      "name_b": "Academy Manufactor"
+    },
+    {
+      "id": 10,
+      "round": 1,
+      "day": 1,
+      "seed_a": 29,
+      "seed_b": 36,
+      "name_a": "Stock Up",
+      "name_b": "Etali, Primal Conqueror // Etali, Primal Sickness"
+    },
+    {
+      "id": 11,
+      "round": 1,
+      "day": 1,
+      "seed_a": 13,
+      "seed_b": 52,
+      "name_a": "Assassin's Trophy",
+      "name_b": "Grist, the Hunger Tide"
+    },
+    {
+      "id": 12,
+      "round": 1,
+      "day": 1,
+      "seed_a": 20,
+      "seed_b": 45,
+      "name_a": "Emry, Lurker of the Loch",
+      "name_b": "The Great Henge"
+    },
+    {
+      "id": 13,
+      "round": 1,
+      "day": 1,
+      "seed_a": 5,
+      "seed_b": 60,
+      "name_a": "Oko, Thief of Crowns",
+      "name_b": "Dragon's Rage Channeler"
+    },
+    {
+      "id": 14,
+      "round": 1,
+      "day": 1,
+      "seed_a": 28,
+      "seed_b": 37,
+      "name_a": "Ledger Shredder",
+      "name_b": "Agatha's Soul Cauldron"
+    },
+    {
+      "id": 15,
+      "round": 1,
+      "day": 1,
+      "seed_a": 12,
+      "seed_b": 53,
+      "name_a": "Urza, Lord High Artificer",
+      "name_b": "Abrade"
+    },
+    {
+      "id": 16,
+      "round": 1,
+      "day": 1,
+      "seed_a": 21,
+      "seed_b": 44,
+      "name_a": "Icetill Explorer",
+      "name_b": "Bonecrusher Giant // Stomp"
+    },
+    {
+      "id": 17,
+      "round": 1,
+      "day": 2,
+      "seed_a": 2,
+      "seed_b": 63,
+      "name_a": "Sheoldred, the Apocalypse",
+      "name_b": "Arclight Phoenix"
+    },
+    {
+      "id": 18,
+      "round": 1,
+      "day": 2,
+      "seed_a": 31,
+      "seed_b": 34,
+      "name_a": "Cori-Steel Cutter",
+      "name_b": "Up the Beanstalk"
+    },
+    {
+      "id": 19,
+      "round": 1,
+      "day": 2,
+      "seed_a": 15,
+      "seed_b": 50,
+      "name_a": "The Meathook Massacre",
+      "name_b": "Stitcher's Supplier"
+    },
+    {
+      "id": 20,
+      "round": 1,
+      "day": 2,
+      "seed_a": 18,
+      "seed_b": 47,
+      "name_a": "Teferi, Time Raveler",
+      "name_b": "Otawara, Soaring City"
+    },
+    {
+      "id": 21,
+      "round": 1,
+      "day": 2,
+      "seed_a": 7,
+      "seed_b": 58,
+      "name_a": "Fatal Push",
+      "name_b": "Once Upon a Time"
+    },
+    {
+      "id": 22,
+      "round": 1,
+      "day": 2,
+      "seed_a": 26,
+      "seed_b": 39,
+      "name_a": "Yawgmoth, Thran Physician",
+      "name_b": "Wrenn and Six"
+    },
+    {
+      "id": 23,
+      "round": 1,
+      "day": 2,
+      "seed_a": 10,
+      "seed_b": 55,
+      "name_a": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "name_b": "Teferi, Hero of Dominaria"
+    },
+    {
+      "id": 24,
+      "round": 1,
+      "day": 2,
+      "seed_a": 23,
+      "seed_b": 42,
+      "name_a": "Expressive Iteration",
+      "name_b": "Displacer Kitten"
+    },
+    {
+      "id": 25,
+      "round": 1,
+      "day": 2,
+      "seed_a": 3,
+      "seed_b": 62,
+      "name_a": "Boseiju, Who Endures",
+      "name_b": "Grief"
+    },
+    {
+      "id": 26,
+      "round": 1,
+      "day": 2,
+      "seed_a": 30,
+      "seed_b": 35,
+      "name_a": "Brazen Borrower // Petty Theft",
+      "name_b": "Solitude"
+    },
+    {
+      "id": 27,
+      "round": 1,
+      "day": 2,
+      "seed_a": 14,
+      "seed_b": 51,
+      "name_a": "Psychic Frog",
+      "name_b": "Yorion, Sky Nomad"
+    },
+    {
+      "id": 28,
+      "round": 1,
+      "day": 2,
+      "seed_a": 19,
+      "seed_b": 46,
+      "name_a": "Force of Negation",
+      "name_b": "Hogaak, Arisen Necropolis"
+    },
+    {
+      "id": 29,
+      "round": 1,
+      "day": 2,
+      "seed_a": 6,
+      "seed_b": 59,
+      "name_a": "Lurrus of the Dream-Den",
+      "name_b": "Shark Typhoon"
+    },
+    {
+      "id": 30,
+      "round": 1,
+      "day": 2,
+      "seed_a": 27,
+      "seed_b": 38,
+      "name_a": "Questing Beast",
+      "name_b": "The One Ring"
+    },
+    {
+      "id": 31,
+      "round": 1,
+      "day": 2,
+      "seed_a": 11,
+      "seed_b": 54,
+      "name_a": "Ragavan, Nimble Pilferer",
+      "name_b": "Archon of Cruelty"
+    },
+    {
+      "id": 32,
+      "round": 1,
+      "day": 2,
+      "seed_a": 22,
+      "seed_b": 43,
+      "name_a": "Shadowspear",
+      "name_b": "Narset, Parter of Veils"
+    },
+    {
+      "id": 33,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 1,
+      "feeder_b": 2
+    },
+    {
+      "id": 34,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 3,
+      "feeder_b": 4
+    },
+    {
+      "id": 35,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 5,
+      "feeder_b": 6
+    },
+    {
+      "id": 36,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 7,
+      "feeder_b": 8
+    },
+    {
+      "id": 37,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 9,
+      "feeder_b": 10
+    },
+    {
+      "id": 38,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 11,
+      "feeder_b": 12
+    },
+    {
+      "id": 39,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 13,
+      "feeder_b": 14
+    },
+    {
+      "id": 40,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 15,
+      "feeder_b": 16
+    },
+    {
+      "id": 41,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 17,
+      "feeder_b": 18
+    },
+    {
+      "id": 42,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 19,
+      "feeder_b": 20
+    },
+    {
+      "id": 43,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 21,
+      "feeder_b": 22
+    },
+    {
+      "id": 44,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 23,
+      "feeder_b": 24
+    },
+    {
+      "id": 45,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 25,
+      "feeder_b": 26
+    },
+    {
+      "id": 46,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 27,
+      "feeder_b": 28
+    },
+    {
+      "id": 47,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 29,
+      "feeder_b": 30
+    },
+    {
+      "id": 48,
+      "round": 2,
+      "day": 3,
+      "feeder_a": 31,
+      "feeder_b": 32
+    },
+    {
+      "id": 49,
+      "round": 3,
+      "day": 4,
+      "feeder_a": 33,
+      "feeder_b": 34
+    },
+    {
+      "id": 50,
+      "round": 3,
+      "day": 4,
+      "feeder_a": 35,
+      "feeder_b": 36
+    },
+    {
+      "id": 51,
+      "round": 3,
+      "day": 4,
+      "feeder_a": 37,
+      "feeder_b": 38
+    },
+    {
+      "id": 52,
+      "round": 3,
+      "day": 4,
+      "feeder_a": 39,
+      "feeder_b": 40
+    },
+    {
+      "id": 53,
+      "round": 3,
+      "day": 4,
+      "feeder_a": 41,
+      "feeder_b": 42
+    },
+    {
+      "id": 54,
+      "round": 3,
+      "day": 4,
+      "feeder_a": 43,
+      "feeder_b": 44
+    },
+    {
+      "id": 55,
+      "round": 3,
+      "day": 4,
+      "feeder_a": 45,
+      "feeder_b": 46
+    },
+    {
+      "id": 56,
+      "round": 3,
+      "day": 4,
+      "feeder_a": 47,
+      "feeder_b": 48
+    },
+    {
+      "id": 57,
+      "round": 4,
+      "day": 5,
+      "feeder_a": 49,
+      "feeder_b": 50
+    },
+    {
+      "id": 58,
+      "round": 4,
+      "day": 5,
+      "feeder_a": 51,
+      "feeder_b": 52
+    },
+    {
+      "id": 59,
+      "round": 4,
+      "day": 5,
+      "feeder_a": 53,
+      "feeder_b": 54
+    },
+    {
+      "id": 60,
+      "round": 4,
+      "day": 5,
+      "feeder_a": 55,
+      "feeder_b": 56
+    },
+    {
+      "id": 61,
+      "round": 5,
+      "day": 6,
+      "feeder_a": 57,
+      "feeder_b": 58
+    },
+    {
+      "id": 62,
+      "round": 5,
+      "day": 6,
+      "feeder_a": 59,
+      "feeder_b": 60
+    },
+    {
+      "id": 63,
+      "round": 6,
+      "day": 7,
+      "feeder_a": 61,
+      "feeder_b": 62
+    }
+  ]
+}

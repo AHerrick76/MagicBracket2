@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Bracket — Vote</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: Georgia, serif;
+            min-height: 100vh;
+        }
+
+        /* ── Nav ──────────────────────────────────────────────────────────── */
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0.75rem 1rem;
+            background: #13132a;
+            border-bottom: 1px solid #2a2a4a;
+            flex-wrap: wrap;
+        }
+        nav a { color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }
+        nav a:hover { text-decoration: underline; }
+
+        /* ── Page header ─────────────────────────────────────────────────── */
+
+        .page-header {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+        }
+        .page-header h1 { font-size: 1.6rem; letter-spacing: 0.06em; color: #c8a96e; margin-bottom: 0.4rem; }
+        .page-header p  { font-size: 0.85rem; color: #888; }
+
+        /* ── Matchup list ────────────────────────────────────────────────── */
+
+        .matchup-list {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 1rem 1rem 0.5rem;
+        }
+
+        .matchup-block {
+            margin-bottom: 3rem;
+        }
+
+        .card-pair {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .vs-divider {
+            align-self: center;
+            font-size: 0.85rem;
+            color: #444;
+            flex-shrink: 0;
+            padding-top: 0.5rem;
+        }
+
+        /* ── Card slot ───────────────────────────────────────────────────── */
+
+        .card-slot {
+            cursor: pointer;
+            border: 5px solid transparent;
+            border-radius: 12px;
+            padding: 5px;
+            transition: border-color 0.12s ease, filter 0.12s ease;
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .card-slot:hover { border-color: #3a3a5a; }
+
+        .card-slot.selected { border-color: #27a85a; }
+        .card-slot.selected .card-frame { filter: brightness(1.05) saturate(1.1); }
+        .card-slot.selected .card-tint  { background: rgba(39, 168, 90, 0.38); }
+
+        .card-slot.rejected { border-color: #a83227; }
+        .card-slot.rejected .card-frame { filter: brightness(0.65) saturate(0.50); }
+        .card-slot.rejected .card-tint  { background: rgba(168, 50, 39, 0.42); }
+
+        /* ── Card frame ─────────────────────────────────────────────────── */
+
+        .card-frame {
+            position: relative;
+            width: 300px;
+            transition: filter 0.12s ease;
+        }
+
+        .card-tint {
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            pointer-events: none;
+            transition: background 0.12s ease;
+        }
+
+        .card-frame img {
+            width: 300px;
+            border-radius: 10px;
+            display: block;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.55);
+        }
+
+        /* Sideways (Battle / Room / split) */
+        .card-frame.sideways {
+            width: 215px;    /* 300 × (63/88) ≈ rotated width */
+            height: 300px;
+            overflow: hidden;
+        }
+        .card-frame.sideways img {
+            width: 300px;
+            transform: rotate(90deg) translateX(-50%);
+            transform-origin: top left;
+            position: absolute;
+            top: 0;
+            left: 100%;
+        }
+
+        /* ── Card info ───────────────────────────────────────────────────── */
+
+        .card-info {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            max-width: 300px;
+        }
+        .card-name { color: #ddd; font-weight: bold; }
+        .card-set  { color: #777; font-style: italic; }
+        .dfc-hint  { font-size: 0.68rem; color: #555; margin-top: 2px; }
+
+        /* ── Submit section ──────────────────────────────────────────────── */
+
+        .submit-section {
+            text-align: center;
+            padding: 1.5rem 1rem 4rem;
+        }
+
+        .submit-btn {
+            background: #c8a96e;
+            color: #111;
+            border: none;
+            padding: 0.85rem 3.5rem;
+            font-size: 1rem;
+            font-family: Georgia, serif;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: background 0.15s;
+        }
+        .submit-btn:hover    { background: #dfc07f; }
+        .submit-btn:disabled { background: #444; color: #666; cursor: not-allowed; }
+
+        /* ── Warning modal ───────────────────────────────────────────────── */
+
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-backdrop.open { display: flex; }
+
+        .modal-box {
+            background: #22223a;
+            border: 1px solid #44446a;
+            border-radius: 12px;
+            padding: 2rem 2.2rem;
+            max-width: 380px;
+            width: calc(100% - 2rem);
+            text-align: center;
+        }
+        .modal-box h3 { color: #c8a96e; font-size: 1.1rem; margin-bottom: 0.75rem; }
+        .modal-box p  { color: #aaa; font-size: 0.88rem; line-height: 1.55; margin-bottom: 1.4rem; }
+
+        .modal-btns { display: flex; gap: 0.75rem; justify-content: center; }
+        .btn-back   { background: #333; color: #ccc; border: 1px solid #555; padding: 0.6rem 1.4rem; border-radius: 5px; cursor: pointer; font-family: Georgia, serif; }
+        .btn-anyway { background: #c8a96e; color: #111; border: none; padding: 0.6rem 1.4rem; border-radius: 5px; cursor: pointer; font-family: Georgia, serif; font-weight: bold; }
+
+        /* ── Submitted message ───────────────────────────────────────────── */
+
+        .submitted-msg {
+            display: none;
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+        .submitted-msg h2 { color: #27a85a; font-size: 1.5rem; margin-bottom: 0.75rem; }
+        .submitted-msg p  { color: #888; margin-bottom: 1.2rem; font-size: 0.9rem; }
+        .submitted-msg a  { color: #c8a96e; }
+
+        /* ── Already-voted state ─────────────────────────────────────────── */
+
+        .voted-state {
+            text-align: center;
+            padding: 6rem 1.5rem;
+        }
+        .voted-state h2 { color: #c8a96e; font-size: 1.4rem; margin-bottom: 0.75rem; }
+        .voted-state p  { color: #888; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.6; }
+        .voted-state a  { color: #c8a96e; }
+
+        /* ── DFC popup ───────────────────────────────────────────────────── */
+
+        .dfc-popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.80);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        .dfc-popup.open { display: flex; }
+        .dfc-popup img  { width: 280px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.8); }
+
+        /* ── Mobile ──────────────────────────────────────────────────────── */
+
+        @media (max-width: 540px) {
+            .card-pair { gap: 0.5rem; }
+            .card-frame         { width: 145px; }
+            .card-frame img     { width: 145px; }
+            .card-info          { max-width: 145px; font-size: 0.72rem; }
+            .card-frame.sideways {
+                width: 104px;
+                height: 145px;
+            }
+            .card-frame.sideways img { width: 145px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/bracket">Full Bracket</a>
+    <a href="/universe">Top 10% Cards</a>
+    <a href="/faq">FAQ</a>
+    <a href="/share">Share</a>
+</nav>
+
+{% if voted %}
+<!-- ── Already voted ──────────────────────────────────────────────────────── -->
+<div class="voted-state">
+    <h2>You've already voted this round.</h2>
+    <p>Results will be announced on social media and on the bracket page once voting closes.<br>
+       Check back when the next round opens.</p>
+    <p><a href="/bracket">View the bracket →</a></p>
+</div>
+
+{% elif no_matchups %}
+<!-- ── No matchups scheduled ─────────────────────────────────────────────── -->
+<div class="voted-state">
+    <h2>No matchups scheduled today.</h2>
+    <p>Check back soon.</p>
+    <p><a href="/bracket">View the bracket →</a></p>
+</div>
+
+{% else %}
+<!-- ── Voting form ────────────────────────────────────────────────────────── -->
+
+<div id="vote-form">
+    <div class="page-header">
+        <h1>Magic Bracket &mdash; Top 64</h1>
+        <p>After nearly a million votes, we&rsquo;ve found the top 64 cards of the second half of Magic. Now let&rsquo;s find the very best. Vote on one card from each pair, and submit your ballot below.</p>
+    </div>
+
+    <div class="matchup-list">
+        {% for m in matchups %}
+        <div class="matchup-block" data-matchup-id="{{ m.id }}">
+            <div class="card-pair">
+
+                {# ── Left card ── #}
+                <div class="card-slot"
+                     data-matchup-id="{{ m.id }}"
+                     data-card-name="{{ m.left_name | e }}"
+                     onclick="selectCard(this)">
+                    {% if m.left_img_front %}
+                    <div class="card-frame{% if m.left_sideways %} sideways{% endif %}"
+                         {% if m.left_img_back %}
+                         onmouseenter="showDfc({{ m.left_img_front|tojson }}, {{ m.left_img_back|tojson }})"
+                         onmouseleave="hideDfc()"
+                         {% endif %}>
+                        <img src="{{ m.left_img_front }}" alt="{{ m.left_name }}">
+                        <div class="card-tint"></div>
+                    </div>
+                    {% endif %}
+                    <div class="card-info">
+                        <div class="card-name">{{ m.left_name }}</div>
+                        <div class="card-set">{{ m.left_set }}{% if m.left_year %} · {{ m.left_year }}{% endif %}</div>
+                        {% if m.left_img_back %}<div class="dfc-hint">hover to see back</div>{% endif %}
+                    </div>
+                </div>
+
+                <div class="vs-divider">vs</div>
+
+                {# ── Right card ── #}
+                <div class="card-slot"
+                     data-matchup-id="{{ m.id }}"
+                     data-card-name="{{ m.right_name | e }}"
+                     onclick="selectCard(this)">
+                    {% if m.right_img_front %}
+                    <div class="card-frame{% if m.right_sideways %} sideways{% endif %}"
+                         {% if m.right_img_back %}
+                         onmouseenter="showDfc({{ m.right_img_front|tojson }}, {{ m.right_img_back|tojson }})"
+                         onmouseleave="hideDfc()"
+                         {% endif %}>
+                        <img src="{{ m.right_img_front }}" alt="{{ m.right_name }}">
+                        <div class="card-tint"></div>
+                    </div>
+                    {% endif %}
+                    <div class="card-info">
+                        <div class="card-name">{{ m.right_name }}</div>
+                        <div class="card-set">{{ m.right_set }}{% if m.right_year %} · {{ m.right_year }}{% endif %}</div>
+                        {% if m.right_img_back %}<div class="dfc-hint">hover to see back</div>{% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="submit-section">
+        <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Submit Votes</button>
+    </div>
+</div>
+
+<!-- ── Submitted state ──────────────────────────────────────────────────────── -->
+<div class="submitted-msg" id="submitted-msg">
+    <h2>Votes submitted!</h2>
+    <p>Results will be announced after voting closes.</p>
+    <p><a href="/bracket">View the bracket →</a></p>
+</div>
+
+<!-- ── Warning modal ────────────────────────────────────────────────────────── -->
+<div class="modal-backdrop" id="warning-modal">
+    <div class="modal-box">
+        <h3>Incomplete ballot</h3>
+        <p id="warning-text"></p>
+        <div class="modal-btns">
+            <button class="btn-back"   onclick="closeModal()">Go back</button>
+            <button class="btn-anyway" onclick="doSubmit()">Submit anyway</button>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+<!-- ── DFC popup (shared) ───────────────────────────────────────────────────── -->
+<div class="dfc-popup" id="dfc-popup" onclick="hideDfc()">
+    <img id="dfc-front" src="" alt="Front face">
+    <img id="dfc-back"  src="" alt="Back face">
+</div>
+
+<script>
+const TOTAL_MATCHUPS = {{ matchups|length if matchups is defined else 0 }};
+const selections = {};   // matchup_id (int) → card_name (str)
+
+function selectCard(clickedSlot) {
+    const matchupId = parseInt(clickedSlot.dataset.matchupId, 10);
+    const cardName  = clickedSlot.dataset.cardName;
+    const pair  = clickedSlot.closest('.card-pair');
+    const slots = pair.querySelectorAll('.card-slot');
+    slots.forEach(s => {
+        s.classList.remove('selected', 'rejected');
+        s.classList.add(s === clickedSlot ? 'selected' : 'rejected');
+    });
+    selections[matchupId] = cardName;
+}
+
+function handleSubmit() {
+    const voted   = Object.keys(selections).length;
+    const missing = TOTAL_MATCHUPS - voted;
+    if (missing > 0) {
+        document.getElementById('warning-text').textContent =
+            `You haven't voted in ${missing} matchup${missing !== 1 ? 's' : ''}. ` +
+            `You can go back and finish, or submit your partial ballot now.`;
+        document.getElementById('warning-modal').classList.add('open');
+    } else {
+        doSubmit();
+    }
+}
+
+function closeModal() {
+    document.getElementById('warning-modal').classList.remove('open');
+}
+
+async function doSubmit() {
+    closeModal();
+    const btn = document.getElementById('submit-btn');
+    if (btn) btn.disabled = true;
+
+    const votes = Object.entries(selections).map(([mid, chosen]) => ({
+        matchup_id: parseInt(mid, 10),
+        chosen,
+    }));
+
+    try {
+        const resp = await fetch('/api/bracket_submit', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ votes }),
+        });
+        if (resp.status === 409) { showSubmitted(); return; }
+        if (!resp.ok) {
+            alert('Something went wrong. Please try again.');
+            if (btn) btn.disabled = false;
+            return;
+        }
+        showSubmitted();
+    } catch {
+        alert('Network error. Please try again.');
+        if (btn) btn.disabled = false;
+    }
+}
+
+function showSubmitted() {
+    const form = document.getElementById('vote-form');
+    const msg  = document.getElementById('submitted-msg');
+    if (form) form.style.display = 'none';
+    if (msg)  msg.style.display  = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showDfc(front, back) {
+    document.getElementById('dfc-front').src = front;
+    document.getElementById('dfc-back').src  = back;
+    document.getElementById('dfc-popup').classList.add('open');
+}
+function hideDfc() {
+    document.getElementById('dfc-popup').classList.remove('open');
+}
+</script>
+
+</body>
+</html>
