@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honorable Mentions — Magic Bracket</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
+
+/* ── Nav ── */
+nav {
+  display: flex; justify-content: center; gap: 2rem;
+  padding: 0.75rem 1rem;
+  background: #13132a; border-bottom: 1px solid #2a2a4a;
+  flex-wrap: wrap;
+}
+nav a { color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }
+nav a:hover { text-decoration: underline; }
+
+/* ── Page header ── */
+.page-header {
+  background: #111; padding: 14px 20px 12px;
+  border-bottom: 1px solid #2a2a2a;
+  text-align: center;
+}
+.page-header h1 {
+  font-family: 'Georgia', serif;
+  font-size: 1.4rem; color: #c9a84c;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: normal;
+}
+.page-header p { font-size: 0.78rem; color: #888; margin-top: 6px; font-style: italic; }
+
+/* ── Grid ── */
+#grid-container { padding: 12px 14px; }
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  gap: 8px;
+}
+
+/* ── Card — matches universe.html ── */
+.card-wrap { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.card-wrap img { width: 100%; border-radius: 6px; display: block; }
+.card-wrap img.dfc { cursor: crosshair; outline: 2px solid #c9a84c; outline-offset: 2px; }
+
+.card-label {
+  font-size: 0.6rem; color: #888; text-align: center;
+  margin-top: 3px; line-height: 1.4; word-break: break-word; width: 100%;
+}
+.card-label strong    { color: #ccc; font-size: 0.63rem; display: block; }
+.card-label .set-line { color: #666; display: block; }
+.card-label .rank-val { color: #c9a84c; display: block; }
+
+/* ── DFC hover preview — matches universe.html ── */
+#dfc-preview {
+  display: none; position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); gap: 12px;
+  background: rgba(0,0,0,0.92); padding: 16px; border-radius: 14px;
+  z-index: 300; pointer-events: none;
+}
+#dfc-preview.visible { display: flex; }
+#dfc-preview img { width: 280px; border-radius: 10px; }
+
+/* Tap outside to close (mobile) */
+#dfc-backdrop {
+  display: none; position: fixed; inset: 0;
+  z-index: 299; background: transparent;
+}
+#dfc-backdrop.visible { display: block; }
+
+/* ── Desktop ── */
+@media (min-width: 769px) {
+  #grid {
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 10px;
+  }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/">Vote</a>
+  <a href="/bracket">Full Bracket</a>
+  <a href="/honorable-mentions">Honorable Mentions</a>
+  <a href="/universe">Top 10% Cards</a>
+  <a href="/faq">FAQ</a>
+  <a href="/share">Share</a>
+</nav>
+
+<div class="page-header">
+  <h1>Honorable Mentions</h1>
+  <p>65th &ndash; 128th place &mdash; ranked by Elo</p>
+</div>
+
+<div id="grid-container">
+  <div id="grid">
+    {% for card in cards %}
+    <div class="card-wrap">
+      <img
+        src="{{ card.img_front }}"
+        alt="{{ card.name }}"
+        title="{{ card.name }}"
+        loading="lazy"
+        {% if card.img_back %}
+          class="dfc"
+          data-front="{{ card.img_front }}"
+          data-back="{{ card.img_back }}"
+        {% endif %}
+      >
+      <div class="card-label">
+        <strong>{{ card.name }}</strong>
+        <span class="set-line">{{ card.set_name }}{% if card.year %} &middot; {{ card.year }}{% endif %}</span>
+        <span class="rank-val">Rank {{ card.rank }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- DFC popup -->
+<div id="dfc-backdrop"></div>
+<div id="dfc-preview">
+  <img id="dfc-front" src="" alt="Front">
+  <img id="dfc-back"  src="" alt="Back">
+</div>
+
+<script>
+const isDesktop = () => window.innerWidth >= 769;
+
+const preview  = document.getElementById('dfc-preview');
+const backdrop = document.getElementById('dfc-backdrop');
+const prevF    = document.getElementById('dfc-front');
+const prevB    = document.getElementById('dfc-back');
+
+document.querySelectorAll('img.dfc').forEach(img => {
+  const front = img.dataset.front;
+  const back  = img.dataset.back;
+
+  // Desktop: hover shows popup (pointer-events:none means popup never triggers mouseleave)
+  img.addEventListener('mouseenter', () => {
+    if (isDesktop()) { prevF.src = front; prevB.src = back; preview.classList.add('visible'); }
+  });
+  img.addEventListener('mouseleave', () => {
+    if (isDesktop()) preview.classList.remove('visible');
+  });
+
+  // Mobile: tap shows popup with backdrop-to-close
+  img.addEventListener('click', e => {
+    if (!isDesktop()) {
+      e.stopPropagation();
+      prevF.src = front; prevB.src = back;
+      preview.classList.add('visible');
+      backdrop.classList.add('visible');
+    }
+  });
+});
+
+backdrop.addEventListener('click', () => {
+  preview.classList.remove('visible');
+  backdrop.classList.remove('visible');
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { preview.classList.remove('visible'); backdrop.classList.remove('visible'); }
+});
+</script>
+</body>
+</html>

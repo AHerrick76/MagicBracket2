@@ -237,6 +237,64 @@ print('Loading card metadata...')
 _df   = load_processed_cards()
 _meta = _df[_df['name'].isin(_all_names)].drop_duplicates('name').set_index('name')
 
+# ── Honorable mentions (ranks 65–128, Grief excluded, Growth Spiral inserted at 65) ──
+_HONORABLE_MENTIONS_NAMES = [
+    'Growth Spiral','Voice of Victory','Quantum Riddler','Overlord of the Balemurk',
+    'Mox Amber',"Phlage, Titan of Fire's Fury",'Fury','Wilderness Reclamation',
+    'Goldspan Dragon','Mystic Sanctuary','Mayhem Devil','Cut Down','Scute Swarm',
+    'Murktide Regent','Faerie Mastermind','Damn','Yavimaya, Cradle of Growth',
+    'Seasoned Pyromancer',"Kroxa, Titan of Death's Hunger",'Skyclave Apparition',
+    'The Wandering Emperor','Thought Monitor','Farewell','Cauldron Familiar',
+    'Undercity Sewers',"Dovin's Veto",'Portal to Phyrexia','The Ozolith',
+    "Stormchaser's Talent",'Approach of the Second Sun','Neoform',
+    'Liliana, Dreadhorde General','Dryad of the Ilysian Grove','Haywire Mite',
+    'Wan Shi Tong, Librarian','Karn, the Great Creator','Soulherder',
+    'Veil of Summer','Prismatic Vista','Ketramose, the New Dawn','Ignoble Hierarch',
+    "Sheoldred's Edict",'Ocelot Pride','Formidable Speaker','Nissa, Who Shakes the World',
+    'Ugin, Eye of the Storms','The Scarab God','Mockingbird',
+    'Minsc & Boo, Timeless Heroes','Hydroid Krasis','Elesh Norn, Mother of Machines',
+    'Ajani, Nacatl Pariah // Ajani, Nacatl Avenger','Deep-Cavern Bat',
+    'Terror of the Peaks','Adeline, Resplendent Cathar','Overlord of the Hauntwoods',
+    'Fear of Missing Out','Hostage Taker','Raugrin Triome','Consider',
+    'Tolarian Terror','Beseech the Mirror','Leyline Binding',
+    'Murderous Rider // Swift End',
+]
+
+_HM_META = _df[_df['name'].isin(_HONORABLE_MENTIONS_NAMES)].drop_duplicates('name').set_index('name')
+
+def _hm_meta_get(name, col, default=''):
+    try:
+        v = _HM_META.at[name, col]
+        return default if (isinstance(v, float) and pd.isna(v)) else v
+    except KeyError:
+        return default
+
+def _build_honorable_mentions():
+    cards = []
+    for rank, name in enumerate(_HONORABLE_MENTIONS_NAMES, start=65):
+        img_front = IMAGE_OVERRIDES.get(name) or str(_hm_meta_get(name, 'img_front') or '')
+        img_back  = _hm_meta_get(name, 'img_back', None)
+        if isinstance(img_back, float): img_back = None
+        layout    = str(_hm_meta_get(name, 'layout', ''))
+        is_dfc    = layout in DOUBLE_FACED_LAYOUTS
+        released  = _hm_meta_get(name, 'released_at', None)
+        try:
+            year = int(pd.to_datetime(released).year) if released else None
+        except Exception:
+            year = None
+        cards.append({
+            'rank':      rank,
+            'name':      name,
+            'img_front': img_front or None,
+            'img_back':  img_back if is_dfc else None,
+            'set_name':  str(_hm_meta_get(name, 'set_name', '')),
+            'year':      year,
+        })
+    return cards
+
+_honorable_mentions_cards = _build_honorable_mentions()
+print(f'Honorable mentions: {len(_honorable_mentions_cards)} cards loaded.')
+
 
 def _meta_get(name, col, default=''):
     try:
@@ -560,6 +618,13 @@ def universe():
     _ensure_session()
     log_page_view('universe')
     return render_template('universe.html')
+
+
+@app.route('/honorable-mentions')
+def honorable_mentions():
+    _ensure_session()
+    log_page_view('honorable_mentions')
+    return render_template('honorable_mentions.html', cards=_honorable_mentions_cards)
 
 
 @app.route('/stats/<token>')

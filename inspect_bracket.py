@@ -70,6 +70,8 @@ if len(results):
                       'card_a', 'card_b', 'votes_a', 'votes_b', 'winner']]
           .to_string(index=False))
 
+# temp_results is built after the helper functions are defined (see below)
+
 
 # ── Helper functions ───────────────────────────────────────────────────────────
 
@@ -86,12 +88,12 @@ def votes_per_matchup(votes=votes):
     if votes.empty:
         return pd.DataFrame()
 
+    v = votes.copy()
+    v['is_a'] = (v['chosen'] == v['card_a']).astype(int)
+    v['is_b'] = (v['chosen'] == v['card_b']).astype(int)
     tally = (
-        votes.groupby(['matchup_id', 'round', 'day', 'card_a', 'card_b'])
-        .apply(lambda g: pd.Series({
-            'votes_a': (g['chosen'] == g['card_a']).sum(),
-            'votes_b': (g['chosen'] == g['card_b']).sum(),
-        }), include_groups=False)
+        v.groupby(['matchup_id', 'round', 'day', 'card_a', 'card_b'])
+        .agg(votes_a=('is_a', 'sum'), votes_b=('is_b', 'sum'))
         .reset_index()
     )
     tally['total_votes'] = tally['votes_a'] + tally['votes_b']
@@ -147,6 +149,75 @@ def votes_per_ip(votes=votes):
     )
 
 
+def temp_results_df(votes=votes, results=results):
+    '''
+    Return a bracket_results-shaped DataFrame for matchups that are currently
+    in progress (i.e. have votes but no finalised result yet), using the current
+    vote tallies to determine a provisional winner.
+
+    Returns
+    -------
+    pd.DataFrame
+        Same columns as bracket_results: matchup_id, round, round_label, day,
+        card_a, card_b, votes_a, votes_b, winner.  winner is None when tied.
+        card_a and card_b include the seed in parentheses, e.g. "Ragavan (11)".
+        Sorted by matchup_id.
+    '''
+    tally = votes_per_matchup(votes)
+    if tally.empty:
+        return pd.DataFrame()
+
+    concluded_ids = set(results['matchup_id']) if not results.empty else set()
+    pending = tally[~tally['matchup_id'].isin(concluded_ids)].copy()
+    if pending.empty:
+        return pd.DataFrame()
+
+    # Build name -> seed lookup from bracket.json matchups
+    _seed = {}
+    for m in _matchup_by_id.values():
+        if 'seed_a' in m:
+            _seed[m['name_a']] = m['seed_a']
+            _seed[m['name_b']] = m['seed_b']
+
+    def _with_seed(name):
+        s = _seed.get(name)
+        return f'{name} ({s})' if s is not None else name
+
+    # Attach raw seed numbers before renaming cards (needed for upset calc)
+    pending['seed_a'] = pending['card_a'].map(lambda n: _seed.get(n))
+    pending['seed_b'] = pending['card_b'].map(lambda n: _seed.get(n))
+
+    pending['card_a'] = pending['card_a'].map(_with_seed)
+    pending['card_b'] = pending['card_b'].map(_with_seed)
+
+    def _winner(row):
+        if row['votes_a'] > row['votes_b']:
+            return row['card_a']
+        if row['votes_b'] > row['votes_a']:
+            return row['card_b']
+        return None  # tied
+
+    def _upset(row):
+        if row['votes_a'] == row['votes_b']:
+            return -1  # tied
+        a_winning = row['votes_a'] > row['votes_b']
+        # lower seed number = higher seed; upset if lower seed loses
+        a_is_higher_seed = row['seed_a'] < row['seed_b']
+        higher_seed_winning = a_winning == a_is_higher_seed
+        return 0 if higher_seed_winning else 1
+
+    pending['winner']      = pending.apply(_winner, axis=1)
+    pending['upset']       = pending.apply(_upset, axis=1)
+    pending['round_label'] = pending['round'].map(ROUND_LABELS)
+
+    cols = ['matchup_id', 'round', 'round_label', 'day',
+            'card_a', 'card_b', 'votes_a', 'votes_b', 'winner', 'upset']
+    return pending[cols].sort_values('matchup_id').reset_index(drop=True)
+
+
+temp_results = temp_results_df()
+
+
 def matchup_margin(results=results):
     '''
     Return each completed matchup with its vote margin and percentage.
@@ -170,3 +241,8 @@ def matchup_margin(results=results):
     cols = ['matchup_id', 'round_label', 'card_a', 'card_b',
             'votes_a', 'votes_b', 'total', 'winner', 'margin', 'pct_winner']
     return df[cols].sort_values('pct_winner', ascending=False).reset_index(drop=True)
+
+
+if not temp_results.empty:
+    print(f'\nTemp results (current round if concluded now):\n'
+          + temp_results.to_string(index=False))
