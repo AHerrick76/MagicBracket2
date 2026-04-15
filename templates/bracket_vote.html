@@ -194,7 +194,7 @@
         .submitted-msg {
             display: none;
             text-align: center;
-            padding: 5rem 1rem;
+            padding: 3rem 1rem 1.5rem;
         }
         .submitted-msg h2 { color: #27a85a; font-size: 1.5rem; margin-bottom: 0.75rem; }
         .submitted-msg p  { color: #888; margin-bottom: 1.2rem; font-size: 0.9rem; }
@@ -204,11 +204,39 @@
 
         .voted-state {
             text-align: center;
-            padding: 6rem 1.5rem;
+            padding: 3rem 1.5rem 1.5rem;
         }
         .voted-state h2 { color: #c8a96e; font-size: 1.4rem; margin-bottom: 0.75rem; }
         .voted-state p  { color: #888; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.6; }
         .voted-state a  { color: #c8a96e; }
+
+        /* ── Ballot summary ──────────────────────────────────────────────── */
+
+        .ballot-summary {
+            max-width: 560px;
+            margin: 1.5rem auto 3rem;
+            text-align: left;
+            border: 1px solid #2a2a4a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .ballot-summary-header {
+            background: #13132a;
+            padding: 0.6rem 1rem;
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .ballot-row {
+            padding: 0.55rem 1rem;
+            font-size: 0.88rem;
+            color: #aaa;
+            border-top: 1px solid #1e1e38;
+        }
+        .ballot-row:first-of-type { border-top: none; }
+        .ballot-row strong { color: #e8e8e8; }
+        .ballot-row .skipped { color: #555; font-style: italic; }
 
         /* ── DFC popup ───────────────────────────────────────────────────── */
 
@@ -255,10 +283,26 @@
 <!-- ── Already voted ──────────────────────────────────────────────────────── -->
 <div class="voted-state">
     <h2>You've already voted this round.</h2>
-    <p>Results will be announced on social media and on the bracket page once voting closes.<br>
-       Check back when the next round opens.</p>
-    <p><a href="/bracket">View the bracket →</a></p>
+    <p>Results will be announced on social media and on the bracket page once voting closes.
+       Check back when the next round opens. &nbsp;<a href="/bracket">View the bracket →</a></p>
 </div>
+
+{% if ballot %}
+<div class="ballot-summary">
+    <div class="ballot-summary-header">Your ballot</div>
+    {% for item in ballot %}
+    <div class="ballot-row">
+        {% if item.chosen == item.card_a %}
+        <strong>{{ item.card_a }}</strong> vs {{ item.card_b }}
+        {% elif item.chosen == item.card_b %}
+        {{ item.card_a }} vs <strong>{{ item.card_b }}</strong>
+        {% else %}
+        {{ item.card_a }} vs {{ item.card_b }} <span class="skipped">(skipped)</span>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 
 {% elif no_matchups %}
 <!-- ── No matchups scheduled ─────────────────────────────────────────────── -->
@@ -341,8 +385,8 @@
 <!-- ── Submitted state ──────────────────────────────────────────────────────── -->
 <div class="submitted-msg" id="submitted-msg">
     <h2>Votes submitted!</h2>
-    <p>Results will be announced after voting closes.</p>
-    <p><a href="/bracket">View the bracket →</a></p>
+    <p>Results will be announced after voting closes. &nbsp;<a href="/bracket">View the bracket →</a></p>
+    <div id="submitted-ballot"></div>
 </div>
 
 <!-- ── Warning modal ────────────────────────────────────────────────────────── -->
@@ -427,10 +471,36 @@ async function doSubmit() {
     }
 }
 
+function buildBallotHtml() {
+    const blocks = document.querySelectorAll('#vote-form .matchup-block');
+    let rows = '';
+    blocks.forEach(block => {
+        const mid   = parseInt(block.dataset.matchupId, 10);
+        const slots = block.querySelectorAll('.card-slot');
+        const nameA = slots[0] ? slots[0].dataset.cardName : '';
+        const nameB = slots[1] ? slots[1].dataset.cardName : '';
+        const chosen = selections[mid];
+        let row;
+        if (chosen === nameA) {
+            row = `<strong>${nameA}</strong> vs ${nameB}`;
+        } else if (chosen === nameB) {
+            row = `${nameA} vs <strong>${nameB}</strong>`;
+        } else {
+            row = `${nameA} vs ${nameB} <span class="skipped">(skipped)</span>`;
+        }
+        rows += `<div class="ballot-row">${row}</div>`;
+    });
+    return rows
+        ? `<div class="ballot-summary"><div class="ballot-summary-header">Your ballot</div>${rows}</div>`
+        : '';
+}
+
 function showSubmitted() {
     const form = document.getElementById('vote-form');
     const msg  = document.getElementById('submitted-msg');
+    const ballotContainer = document.getElementById('submitted-ballot');
     if (form) form.style.display = 'none';
+    if (ballotContainer) ballotContainer.innerHTML = buildBallotHtml();
     if (msg)  msg.style.display  = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
