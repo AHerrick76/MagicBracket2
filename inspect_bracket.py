@@ -64,11 +64,11 @@ if len(votes):
     ).reset_index()
     print(f'\nVotes by day:\n{by_day.to_string(index=False)}')
 
-if len(results):
-    print(f'\nResults so far:\n'
-          + results[['matchup_id', 'round_label', 'day', 'bracket_date',
-                      'card_a', 'card_b', 'votes_a', 'votes_b', 'winner']]
-          .to_string(index=False))
+# if len(results):
+#     print(f'\nResults so far:\n'
+#           + results[['matchup_id', 'round_label', 'day', 'bracket_date',
+#                       'card_a', 'card_b', 'votes_a', 'votes_b', 'winner']]
+#           .to_string(index=False))
 
 # temp_results is built after the helper functions are defined (see below)
 
@@ -210,8 +210,15 @@ def temp_results_df(votes=votes, results=results):
     pending['upset']       = pending.apply(_upset, axis=1)
     pending['round_label'] = pending['round'].map(ROUND_LABELS)
 
+    total = pending['votes_a'] + pending['votes_b']
+    pending['winning_margin'] = (
+        (pending[['votes_a', 'votes_b']].max(axis=1) / total * 100)
+        .where(total > 0)
+        .round(1)
+    )
+
     cols = ['matchup_id', 'round', 'round_label', 'day',
-            'card_a', 'card_b', 'votes_a', 'votes_b', 'winner', 'upset']
+            'card_a', 'card_b', 'votes_a', 'votes_b', 'winner', 'upset', 'winning_margin']
     return pending[cols].sort_values('matchup_id').reset_index(drop=True)
 
 
@@ -243,6 +250,6 @@ def matchup_margin(results=results):
     return df[cols].sort_values('pct_winner', ascending=False).reset_index(drop=True)
 
 
-if not temp_results.empty:
-    print(f'\nTemp results (current round if concluded now):\n'
-          + temp_results.to_string(index=False))
+# if not temp_results.empty:
+#     print(f'\nTemp results (current round if concluded now):\n'
+#           + temp_results.to_string(index=False))

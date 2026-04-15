@@ -150,6 +150,49 @@ def _has_voted(ip, day):
         return cur.fetchone() is not None
 
 
+def _get_user_ballot(ip, day):
+    """Return the user's ballot for the given day as a list of dicts, ordered by matchup_id.
+
+    Each dict: {matchup_id, card_a, card_b, chosen}
+    chosen is None for matchups the user skipped (partial ballot).
+    """
+    with _get_db() as conn:
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT matchup_id, card_a, card_b, chosen '
+            'FROM bracket_votes WHERE ip_address = %s AND day = %s',
+            (ip, day),
+        )
+        rows = cur.fetchall()
+    voted = {mid: {'card_a': ca, 'card_b': cb, 'chosen': ch} for mid, ca, cb, ch in rows}
+
+    day_matchups    = sorted([m for m in _bracket['matchups'] if m['day'] == day], key=lambda x: x['id'])
+    results_by_id   = _get_results()
+
+    ballot = []
+    for m in day_matchups:
+        mid = m['id']
+        if mid in voted:
+            ballot.append({
+                'matchup_id': mid,
+                'card_a':     voted[mid]['card_a'],
+                'card_b':     voted[mid]['card_b'],
+                'chosen':     voted[mid]['chosen'],
+            })
+        else:
+            # Skipped matchup — resolve card names from bracket structure
+            name_a, _ = _resolve_card(m, 'a', results_by_id)
+            name_b, _ = _resolve_card(m, 'b', results_by_id)
+            ballot.append({
+                'matchup_id': mid,
+                'card_a':     name_a or '',
+                'card_b':     name_b or '',
+                'chosen':     None,
+            })
+
+    return ballot
+
+
 def _log_votes(ip, day, round_, vote_pairs, device, ballot_id):
     """vote_pairs: list of (matchup_id, chosen_name, card_a, card_b)"""
     ts = datetime.now(timezone.utc).isoformat()
@@ -523,7 +566,8 @@ def index():
     day = _get_current_day()
 
     if _has_voted(ip, day):
-        return render_template('bracket_vote.html', voted=True, day=day)
+        ballot = _get_user_ballot(ip, day)
+        return render_template('bracket_vote.html', voted=True, day=day, ballot=ballot)
 
     results    = _get_results()
     day_matchups = [m for m in _bracket['matchups'] if m['day'] == day]
