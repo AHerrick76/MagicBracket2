@@ -46,7 +46,11 @@
             -webkit-overflow-scrolling: touch;
             display: flex;
             justify-content: center;
+            cursor: grab;
+            user-select: none;
         }
+        .bracket-scroll.panning { cursor: grabbing; }
+        .card-row.has-img { cursor: pointer; }
 
         .bracket-outer {
             display: flex;
@@ -217,7 +221,6 @@
             color: #c8a96e;
             font-weight: bold;
         }
-        .card-row.loser { color: #38385a; }
         .card-row.tbd   { color: #2e2e50; font-style: italic; padding: 5px 6px; }
 
         .card-name {
@@ -241,7 +244,6 @@
             flex-shrink: 0;
         }
         .card-row.winner .card-pct { color: #907030; }
-        .card-row.loser  .card-pct { color: #2e2e50; }
 
         /* ── Card image popup ────────────────────────────────────────────── */
         #card-popup {
@@ -481,6 +483,37 @@ function hidePopup() {
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') hidePopup();
 });
+
+// ── Click-drag to pan ─────────────────────────────────────────────────────────
+(function () {
+    const scroll = document.querySelector('.bracket-scroll');
+    let panning = false, startX, startLeft;
+
+    scroll.addEventListener('mousedown', function (e) {
+        if (e.button !== 0) return;
+        if (e.target.closest('.card-row')) return;  // let card rows handle their own clicks
+        panning   = true;
+        startX    = e.clientX;
+        startLeft = scroll.scrollLeft;
+        scroll.classList.add('panning');
+        e.preventDefault();
+    });
+
+    function stopPan() {
+        if (panning) {
+            panning = false;
+            scroll.classList.remove('panning');
+        }
+    }
+
+    document.addEventListener('mouseup',    stopPan);
+    document.addEventListener('mouseleave', stopPan);
+
+    document.addEventListener('mousemove', function (e) {
+        if (!panning) return;
+        scroll.scrollLeft = startLeft - (e.clientX - startX);
+    });
+}());
 </script>
 
 </body>

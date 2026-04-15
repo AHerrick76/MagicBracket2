@@ -472,6 +472,7 @@ def _build_bracket_display(results_by_id):
     # Derive ordered matchup lists for each round from the shuffled R1 order
     r1_by_id = {m['id']: m for m in _bracket['matchups'] if m['round'] == 1}
     ordered_by_round = [[r1_by_id[mid] for mid in _display_r1_order]]
+    top_feeder_by_matchup_id = {}  # matchup_id → feeder_id displayed on top
 
     prev = ordered_by_round[0]
     for _ in range(2, _bracket['num_rounds'] + 1):
@@ -481,6 +482,7 @@ def _build_bracket_display(results_by_id):
             m   = feeder_lookup.get(key)
             if m:
                 cur_round.append(m)
+                top_feeder_by_matchup_id[m['id']] = prev[i]['id']
         ordered_by_round.append(cur_round)
         prev = cur_round
 
@@ -489,9 +491,15 @@ def _build_bracket_display(results_by_id):
     for round_matchups in ordered_by_round:
         enriched = []
         for m in round_matchups:
-            flip = _display_flips.get(m['id'], False)
             name_a, seed_a = _resolve_card(m, 'a', results_by_id)
             name_b, seed_b = _resolve_card(m, 'b', results_by_id)
+
+            if m['round'] == 1:
+                flip = _display_flips.get(m['id'], False)
+            else:
+                # Winner of the top-displayed feeder goes on top
+                top_feeder_id = top_feeder_by_matchup_id.get(m['id'])
+                flip = (m.get('feeder_b') == top_feeder_id)
             result = results_by_id.get(m['id'])
 
             if flip:
@@ -509,8 +517,8 @@ def _build_bracket_display(results_by_id):
                 if total:
                     va = result['votes_b' if flip else 'votes_a']
                     vb = result['votes_a' if flip else 'votes_b']
-                    pct_left  = round(100 * va / total)
-                    pct_right = round(100 * vb / total)
+                    pct_left  = round(100 * va / total, 1)
+                    pct_right = round(100 * vb / total, 1)
 
             left_info  = _get_card_info(left_name)  if left_name  else {}
             right_info = _get_card_info(right_name) if right_name else {}
