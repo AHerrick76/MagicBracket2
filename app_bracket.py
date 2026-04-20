@@ -118,6 +118,21 @@ def init_db():
         ''')
         cur.execute('ALTER TABLE bracket_results ADD COLUMN IF NOT EXISTS bracket_date TEXT')
 
+        # Personal favorites submitted alongside ballots
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS finals_favorite_cards (
+                id            SERIAL  PRIMARY KEY,
+                timestamp     TEXT    NOT NULL,
+                ip_address    TEXT    NOT NULL,
+                ballot_id     TEXT,
+                card_a        TEXT,
+                card_b        TEXT,
+                card_c        TEXT,
+                response_text TEXT,
+                device        TEXT
+            )
+        ''')
+
         # Single-row state table
         cur.execute('''
             CREATE TABLE IF NOT EXISTS bracket_state (
@@ -148,6 +163,24 @@ def _has_voted(ip, day):
             (ip, day),
         )
         return cur.fetchone() is not None
+
+
+def _get_user_favorites(ip, day):
+    """Return the favorites row for this IP's ballot on the given day, or None."""
+    with _get_db() as conn:
+        cur = conn.cursor()
+        cur.execute(
+            '''SELECT f.card_a, f.card_b, f.card_c, f.response_text
+               FROM finals_favorite_cards f
+               JOIN bracket_votes bv ON bv.ballot_id = f.ballot_id
+               WHERE bv.ip_address = %s AND bv.day = %s
+               LIMIT 1''',
+            (ip, day),
+        )
+        row = cur.fetchone()
+    if not row:
+        return None
+    return {'card_a': row[0], 'card_b': row[1], 'card_c': row[2], 'response_text': row[3]}
 
 
 def _get_user_ballot(ip, day):
@@ -279,6 +312,14 @@ _all_names     = set(_cards_by_name)
 print('Loading card metadata...')
 _df   = load_processed_cards()
 _meta = _df[_df['name'].isin(_all_names)].drop_duplicates('name').set_index('name')
+
+# ── Personal-pick eligible cards (past 10 years) ───────────────────────────
+_PICKS_CUTOFF = '2016-11-12'  # day after Commander 2016 (last set in original bracket)
+_eligible_pick_names = sorted(
+    _df[pd.to_datetime(_df['released_at']) >= pd.Timestamp(_PICKS_CUTOFF)]['name']
+    .dropna().unique().tolist()
+)
+print(f'Eligible personal-pick cards (post-{_PICKS_CUTOFF}): {len(_eligible_pick_names)}')
 
 # ── Honorable mentions (ranks 65–128, Grief excluded, Growth Spiral inserted at 65) ──
 _HONORABLE_MENTIONS_NAMES = [
@@ -553,6 +594,13 @@ _display_flips    = {m['id']: _display_rng.random() < 0.5 for m in _bracket['mat
 print(f'Bracket display order computed ({len(_display_r1_order)} R1 matchups).')
 
 
+# ── Template globals ───────────────────────────────────────────────────────────
+
+@app.context_processor
+def inject_pick_names():
+    return {'pick_names': _eligible_pick_names}
+
+
 # ── Session ────────────────────────────────────────────────────────────────────
 
 def _ensure_session():
@@ -574,8 +622,10 @@ def index():
     day = _get_current_day()
 
     if _has_voted(ip, day):
-        ballot = _get_user_ballot(ip, day)
-        return render_template('bracket_vote.html', voted=True, day=day, ballot=ballot)
+        ballot    = _get_user_ballot(ip, day)
+        favorites = _get_user_favorites(ip, day)
+        return render_template('bracket_vote.html', voted=True, day=day,
+                               ballot=ballot, favorites=favorites)
 
     results    = _get_results()
     day_matchups = [m for m in _bracket['matchups'] if m['day'] == day]
@@ -635,6 +685,26 @@ def api_bracket_submit():
 
     round_ = _matchup_by_id[valid_votes[0][0]]['round']
     _log_votes(ip, day, round_, valid_votes, device, ballot_id)
+
+    # Personal favorites (optional — included in same submission as the ballot)
+    pick_set = set(_eligible_pick_names)
+    picks = []
+    for i in range(1, 4):
+        p = data.get(f'pick_{i}')
+        picks.append(p if (p and p in pick_set) else None)
+    # Parameterised query handles all escaping; strip + cap length server-side as well
+    response_text = (data.get('comment') or '').strip()[:500] or None
+
+    if any(picks) or response_text:
+        ts = datetime.now(timezone.utc).isoformat()
+        with _get_db() as conn:
+            cur = conn.cursor()
+            cur.execute(
+                'INSERT INTO finals_favorite_cards '
+                '(timestamp, ip_address, ballot_id, card_a, card_b, card_c, response_text, device) '
+                'VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
+                (ts, ip, ballot_id, picks[0], picks[1], picks[2], response_text, device),
+            )
 
     return jsonify({'ok': True, 'votes_recorded': len(valid_votes)})
 

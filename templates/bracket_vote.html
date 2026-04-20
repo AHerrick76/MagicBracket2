@@ -238,6 +238,128 @@
         .ballot-row strong { color: #e8e8e8; }
         .ballot-row .skipped { color: #555; font-style: italic; }
 
+        /* ── Personal picks ─────────────────────────────────────────────────── */
+
+        .picks-section {
+            max-width: 520px;
+            margin: 0 auto 4rem;
+            padding: 2.5rem 1rem 0;
+            border-top: 1px solid #2a2a4a;
+        }
+        .picks-heading {
+            color: #c8a96e;
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+        }
+        .picks-optional {
+            color: #555;
+            font-size: 0.82rem;
+            font-style: italic;
+            font-weight: normal;
+        }
+        .picks-desc {
+            color: #777;
+            font-size: 0.83rem;
+            line-height: 1.6;
+            margin-bottom: 1.4rem;
+        }
+        .picks-slots {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+        }
+        .pick-slot { position: relative; }
+        .pick-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .pick-input {
+            flex: 1;
+            background: #16162c;
+            border: 1px solid #3a3a5a;
+            color: #e0e0e0;
+            padding: 0.52rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-family: Georgia, serif;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+        .pick-input:focus  { border-color: #c8a96e; }
+        .pick-input.locked { border-color: #27a85a; color: #b8f0d0; }
+        .pick-lock-icon {
+            color: #27a85a;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            display: none;
+        }
+        .pick-clear {
+            background: none;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: none;
+            transition: color 0.12s;
+        }
+        .pick-clear:hover { color: #aaa; }
+        .pick-dropdown {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 3px);
+            background: #1e1e38;
+            border: 1px solid #3a3a5a;
+            border-radius: 6px;
+            z-index: 100;
+            max-height: 224px;
+            overflow-y: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.55);
+        }
+        .pick-option {
+            padding: 0.48rem 0.75rem;
+            cursor: pointer;
+            font-size: 0.86rem;
+            color: #ccc;
+            border-bottom: 1px solid #252540;
+        }
+        .pick-option:last-child { border-bottom: none; }
+        .pick-option:hover { background: #2a2a4a; color: #eee; }
+        .pick-option-more {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.76rem;
+            color: #555;
+            font-style: italic;
+        }
+        .picks-comment-wrap { margin-top: 0.75rem; }
+        .picks-comment {
+            width: 100%;
+            background: #16162c;
+            border: 1px solid #3a3a5a;
+            color: #e0e0e0;
+            padding: 0.55rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.86rem;
+            font-family: Georgia, serif;
+            resize: vertical;
+            min-height: 72px;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+        .picks-comment:focus { border-color: #c8a96e; }
+        .picks-char-count {
+            text-align: right;
+            font-size: 0.75rem;
+            color: #555;
+            margin-top: 0.25rem;
+        }
+
         /* ── DFC popup ───────────────────────────────────────────────────── */
 
         .dfc-popup {
@@ -301,6 +423,20 @@
         {% endif %}
     </div>
     {% endfor %}
+</div>
+{% endif %}
+
+{% if favorites and (favorites.card_a or favorites.card_b or favorites.card_c or favorites.response_text) %}
+<div class="ballot-summary" style="margin-top: 1rem;">
+    <div class="ballot-summary-header">Your personal favorites</div>
+    {% for card in [favorites.card_a, favorites.card_b, favorites.card_c] %}
+    {% if card %}
+    <div class="ballot-row"><strong>{{ card }}</strong></div>
+    {% endif %}
+    {% endfor %}
+    {% if favorites.response_text %}
+    <div class="ballot-row" style="color: #999; font-style: italic; white-space: pre-wrap;">{{ favorites.response_text }}</div>
+    {% endif %}
 </div>
 {% endif %}
 
@@ -375,6 +511,36 @@
             </div>
         </div>
         {% endfor %}
+    </div>
+
+    <!-- ── Personal picks ───────────────────────────────────────────────── -->
+    <div class="picks-section" id="picks-section">
+        <h2 class="picks-heading">Personal Favorites <span class="picks-optional">— Optional</span></h2>
+        <p class="picks-desc">Which cards from the past ten years are the greatest to you specifically? Cards which wouldn't win any bracket, but that you have fond memories of, or just really appreciate the design of. Vote for up to 3 below.</p>
+
+        <div class="picks-slots">
+            {% for idx in [0, 1, 2] %}
+            <div class="pick-slot">
+                <div class="pick-input-wrap">
+                    <input type="text" class="pick-input" id="pick-input-{{ idx }}"
+                           placeholder="Search for a card…"
+                           oninput="updatePickDropdown({{ idx }})"
+                           onblur="schedulePickHide({{ idx }})"
+                           autocomplete="off" spellcheck="false">
+                    <span class="pick-lock-icon" id="pick-lock-{{ idx }}">&#10003;</span>
+                    <button class="pick-clear" id="pick-clear-{{ idx }}" onclick="clearPick({{ idx }})">&#10005;</button>
+                </div>
+                <div class="pick-dropdown" id="pick-dropdown-{{ idx }}"></div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="picks-comment-wrap">
+            <textarea class="picks-comment" id="picks-comment" maxlength="500"
+                      placeholder="If you'd like, explain why these cards"
+                      oninput="updatePickCharCount()"></textarea>
+            <div class="picks-char-count"><span id="picks-chars-left">500</span> characters remaining</div>
+        </div>
     </div>
 
     <div class="submit-section">
@@ -452,11 +618,20 @@ async function doSubmit() {
         chosen,
     }));
 
+    const commentEl = document.getElementById('picks-comment');
+    const body = {
+        votes,
+        pick_1:   pickedCards[0] || null,
+        pick_2:   pickedCards[1] || null,
+        pick_3:   pickedCards[2] || null,
+        comment:  commentEl ? commentEl.value.trim().slice(0, 500) || null : null,
+    };
+
     try {
         const resp = await fetch('/api/bracket_submit', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ votes }),
+            body:    JSON.stringify(body),
         });
         if (resp.status === 409) { showSubmitted(); return; }
         if (!resp.ok) {
@@ -495,12 +670,27 @@ function buildBallotHtml() {
         : '';
 }
 
+function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function buildPicksHtml() {
+    const picks   = pickedCards.filter(p => p !== null);
+    const comment = (document.getElementById('picks-comment')?.value || '').trim();
+    if (!picks.length && !comment) return '';
+    let rows = picks.map(name => `<div class="ballot-row"><strong>${escapeHtml(name)}</strong></div>`).join('');
+    if (comment) {
+        rows += `<div class="ballot-row" style="color:#999;font-style:italic;white-space:pre-wrap;">${escapeHtml(comment)}</div>`;
+    }
+    return `<div class="ballot-summary" style="margin-top:1rem;"><div class="ballot-summary-header">Your personal favorites</div>${rows}</div>`;
+}
+
 function showSubmitted() {
     const form = document.getElementById('vote-form');
     const msg  = document.getElementById('submitted-msg');
     const ballotContainer = document.getElementById('submitted-ballot');
     if (form) form.style.display = 'none';
-    if (ballotContainer) ballotContainer.innerHTML = buildBallotHtml();
+    if (ballotContainer) ballotContainer.innerHTML = buildBallotHtml() + buildPicksHtml();
     if (msg)  msg.style.display  = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -512,6 +702,94 @@ function showDfc(front, back) {
 }
 function hideDfc() {
     document.getElementById('dfc-popup').classList.remove('open');
+}
+
+// ── Personal picks ──────────────────────────────────────────────────────── //
+const PICK_NAMES       = {{ pick_names | tojson }};
+const PICK_NAMES_LOWER = PICK_NAMES.map(n => n.toLowerCase());
+const PICK_SHOW_CHARS  = 8;   // show dropdown once user has typed this many chars…
+const PICK_AUTO_MAX    = 10;  // …or if matches are already this few
+const PICK_DISPLAY_MAX = 10;  // max results shown in dropdown
+
+const pickedCards = [null, null, null];
+const hideTimers  = [null, null, null];
+
+function filterPickNames(query) {
+    const q = query.toLowerCase().trim();
+    if (!q) return [];
+    const out = [];
+    for (let i = 0; i < PICK_NAMES.length; i++) {
+        if (PICK_NAMES_LOWER[i].includes(q)) out.push(PICK_NAMES[i]);
+    }
+    return out;
+}
+
+function updatePickDropdown(idx) {
+    if (pickedCards[idx] !== null) return;  // locked — ignore keystrokes
+    const input    = document.getElementById(`pick-input-${idx}`);
+    const dropdown = document.getElementById(`pick-dropdown-${idx}`);
+    const query    = input.value;
+    const matches  = filterPickNames(query);
+
+    const shouldShow = matches.length > 0 &&
+        (matches.length <= PICK_AUTO_MAX || query.length >= PICK_SHOW_CHARS);
+
+    if (!shouldShow) { dropdown.style.display = 'none'; return; }
+
+    dropdown.innerHTML = '';
+    matches.slice(0, PICK_DISPLAY_MAX).forEach(name => {
+        const opt = document.createElement('div');
+        opt.className   = 'pick-option';
+        opt.textContent = name;
+        opt.addEventListener('mousedown', e => {
+            e.preventDefault();   // prevent blur firing before lock-in
+            lockInPick(idx, name);
+        });
+        dropdown.appendChild(opt);
+    });
+    if (matches.length > PICK_DISPLAY_MAX) {
+        const more = document.createElement('div');
+        more.className   = 'pick-option-more';
+        more.textContent = `+${matches.length - PICK_DISPLAY_MAX} more — keep typing to narrow`;
+        dropdown.appendChild(more);
+    }
+    dropdown.style.display = 'block';
+}
+
+function lockInPick(idx, name) {
+    pickedCards[idx] = name;
+    document.getElementById(`pick-input-${idx}`).value    = name;
+    document.getElementById(`pick-input-${idx}`).readOnly = true;
+    document.getElementById(`pick-input-${idx}`).classList.add('locked');
+    document.getElementById(`pick-lock-${idx}`).style.display = 'inline';
+    document.getElementById(`pick-clear-${idx}`).style.display = 'inline';
+    document.getElementById(`pick-dropdown-${idx}`).style.display = 'none';
+}
+
+function clearPick(idx) {
+    pickedCards[idx] = null;
+    const input = document.getElementById(`pick-input-${idx}`);
+    input.value    = '';
+    input.readOnly = false;
+    input.classList.remove('locked');
+    document.getElementById(`pick-lock-${idx}`).style.display  = 'none';
+    document.getElementById(`pick-clear-${idx}`).style.display = 'none';
+    document.getElementById(`pick-dropdown-${idx}`).style.display = 'none';
+    input.focus();
+}
+
+function schedulePickHide(idx) {
+    // Delay lets mousedown on a dropdown option fire before the dropdown vanishes
+    hideTimers[idx] = setTimeout(() => {
+        const dd = document.getElementById(`pick-dropdown-${idx}`);
+        if (dd) dd.style.display = 'none';
+    }, 150);
+}
+
+function updatePickCharCount() {
+    const el   = document.getElementById('picks-comment');
+    const left = document.getElementById('picks-chars-left');
+    if (el && left) left.textContent = 500 - el.value.length;
 }
 </script>
 

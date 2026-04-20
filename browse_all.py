@@ -389,8 +389,10 @@ body { background: #1a1a1a; color: #ddd; font-family: sans-serif; }
       <option value="set">Set order</option>
       <option value="set_elo">Set order (Elo &darr;)</option>
       <option value="elo">Elo &darr;</option>
+      <option value="elo_asc">Elo &uarr;</option>
       <option value="votes">Votes &darr;</option>
       <option value="iq_pct">Queue rank &darr;</option>
+      <option value="iq_pct_asc">Queue rank &uarr;</option>
       <option value="name">Name A&ndash;Z</option>
     </select>
     <label style="font-size:0.72rem;color:#888;cursor:pointer;display:flex;align-items:center;gap:4px">
@@ -608,10 +610,12 @@ function applyFilters() {
     );
   } else if (sortBy !== 'set') {
     visibleCards.sort((a, b) => {
-      if (sortBy === 'elo')    return (displayElo(b) || 0) - (displayElo(a) || 0);
-      if (sortBy === 'votes')  return b.games - a.games;
-      if (sortBy === 'iq_pct') return b.iq_pct - a.iq_pct;
-      if (sortBy === 'name')   return a.name.localeCompare(b.name);
+      if (sortBy === 'elo')         return (displayElo(b) || 0) - (displayElo(a) || 0);
+      if (sortBy === 'elo_asc')     return (displayElo(a) || 0) - (displayElo(b) || 0);
+      if (sortBy === 'votes')       return b.games - a.games;
+      if (sortBy === 'iq_pct')      return b.iq_pct - a.iq_pct;
+      if (sortBy === 'iq_pct_asc')  return a.iq_pct - b.iq_pct;
+      if (sortBy === 'name')        return a.name.localeCompare(b.name);
       return 0;
     });
   }
