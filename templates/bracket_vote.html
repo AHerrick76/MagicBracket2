@@ -618,6 +618,23 @@ async function doSubmit() {
         chosen,
     }));
 
+    // Resolve any pick slots where the user typed a name but didn't select from the dropdown.
+    // Try exact case-insensitive match first, then unique substring match.
+    for (let i = 0; i < 3; i++) {
+        if (pickedCards[i] === null) {
+            const input = document.getElementById(`pick-input-${i}`);
+            const val   = (input ? input.value : '').trim().toLowerCase();
+            if (!val) continue;
+            const exactIdx = PICK_NAMES_LOWER.indexOf(val);
+            if (exactIdx >= 0) {
+                pickedCards[i] = PICK_NAMES[exactIdx];
+            } else {
+                const matches = PICK_NAMES.filter((_, idx) => PICK_NAMES_LOWER[idx].includes(val));
+                if (matches.length === 1) pickedCards[i] = matches[0];
+            }
+        }
+    }
+
     const commentEl = document.getElementById('picks-comment');
     const body = {
         votes,
