@@ -283,9 +283,12 @@
 <body>
 
 <nav>
-    <a href="/">Vote</a>
+    <a href="/">Home</a>
+    <a href="/bracket">Full Bracket</a>
     <a href="/honorable-mentions">Honorable Mentions</a>
-    <a href="/universe">Top 10% Cards</a>
+    <a href="/community-favorites">Community Favorites</a>
+    <a href="/universe">Card Browser</a>
+    <a href="/vote-counts">Vote Counts</a>
     <a href="/faq">FAQ</a>
     <a href="/share">Share</a>
 </nav>
@@ -300,7 +303,7 @@
 <div class="bracket-scroll">
 <div class="bracket-outer">
 
-{% macro card_row_html(name, img, img_back, pct, is_winner, is_loser) %}
+{% macro card_row_html(name, img, img_back, pct, is_winner, is_loser, seed=none) %}
 {% if not name or name == 'TBD' %}
 <div class="card-row tbd">TBD</div>
 {% else %}
@@ -309,7 +312,7 @@
      onmouseenter="showNearCursor(this)"
      onmouseleave="scheduleHide()"
      onclick="handleClick(this)"{% endif %}>
-    <span class="card-name">{{ name }}</span>
+    <span class="card-name">{{ name }}{% if seed is not none %} ({{ seed }}){% endif %}</span>
     {% if pct is not none %}<span class="card-pct">{{ pct }}%</span>{% endif %}
 </div>
 {% endif %}
@@ -336,8 +339,8 @@
 <div class="matchup-cell has-right-connector {{ pair_class }}{% if round_idx > 0 %} has-incoming-left{% endif %}"
      style="height: {{ cell_height }}px; min-height: {{ cell_height }}px;">
     <div class="cell-inner">
-        {{ card_row_html(m.left_name, m.left_img_front, m.left_img_back, m.pct_left, m.left_wins, m.right_wins) }}
-        {{ card_row_html(m.right_name, m.right_img_front, m.right_img_back, m.pct_right, m.right_wins, m.left_wins) }}
+        {{ card_row_html(m.left_name, m.left_img_front, m.left_img_back, m.pct_left, m.left_wins, m.right_wins, m.left_seed) }}
+        {{ card_row_html(m.right_name, m.right_img_front, m.right_img_back, m.pct_right, m.right_wins, m.left_wins, m.right_seed) }}
     </div>
 </div>
 {% endfor %}
@@ -352,8 +355,8 @@
     <div class="final-cell"
          style="height: {{ final_height }}px; min-height: {{ final_height }}px;">
         <div class="cell-inner">
-            {{ card_row_html(final_m.left_name, final_m.left_img_front, final_m.left_img_back, final_m.pct_left, final_m.left_wins, final_m.right_wins) }}
-            {{ card_row_html(final_m.right_name, final_m.right_img_front, final_m.right_img_back, final_m.pct_right, final_m.right_wins, final_m.left_wins) }}
+            {{ card_row_html(final_m.left_name, final_m.left_img_front, final_m.left_img_back, final_m.pct_left, final_m.left_wins, final_m.right_wins, final_m.left_seed) }}
+            {{ card_row_html(final_m.right_name, final_m.right_img_front, final_m.right_img_back, final_m.pct_right, final_m.right_wins, final_m.left_wins, final_m.right_seed) }}
         </div>
     </div>
 </div>
@@ -375,8 +378,8 @@
 <div class="matchup-cell has-left-connector {{ pair_class }}{% if round_idx > 0 %} has-incoming-right{% endif %}"
      style="height: {{ cell_height }}px; min-height: {{ cell_height }}px;">
     <div class="cell-inner">
-        {{ card_row_html(m.left_name, m.left_img_front, m.left_img_back, m.pct_left, m.left_wins, m.right_wins) }}
-        {{ card_row_html(m.right_name, m.right_img_front, m.right_img_back, m.pct_right, m.right_wins, m.left_wins) }}
+        {{ card_row_html(m.left_name, m.left_img_front, m.left_img_back, m.pct_left, m.left_wins, m.right_wins, m.left_seed) }}
+        {{ card_row_html(m.right_name, m.right_img_front, m.right_img_back, m.pct_right, m.right_wins, m.left_wins, m.right_seed) }}
     </div>
 </div>
 {% endfor %}

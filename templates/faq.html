@@ -15,9 +15,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 5vh 1.5rem 4rem;
+            padding: 2rem 1.5rem 4rem;
             gap: 2rem;
         }
+
+        /* ── Nav ──────────────────────────────────────────────────────────── */
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0.75rem 1rem;
+            background: #13132a;
+            border-bottom: 1px solid #2a2a4a;
+            flex-wrap: wrap;
+            width: 100%;
+            align-self: stretch;
+            margin: -2rem -1.5rem 0;
+        }
+        nav a { color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }
+        nav a:hover { text-decoration: underline; }
 
         header {
             display: flex;
@@ -47,9 +64,7 @@
             gap: 1.6rem;
         }
 
-        .faq-item {}
-
-        .faq-q {
+.faq-q {
             font-size: 0.95rem;
             color: #c8a96e;
             margin-bottom: 0.4rem;
@@ -151,12 +166,58 @@
     </style>
 </head>
 <body>
+
+<nav>
+  <a href="/">Home</a>
+  <a href="/bracket">Full Bracket</a>
+  <a href="/honorable-mentions">Honorable Mentions</a>
+  <a href="/community-favorites">Community Favorites</a>
+  <a href="/universe">Card Browser</a>
+  <a href="/vote-counts">Vote Counts</a>
+  <a href="/faq">FAQ</a>
+  <a href="/share">Share</a>
+</nav>
+
     <header>
         <h1>Magic Ranking v2</h1>
         <span class="subtitle">Frequently Asked Questions</span>
     </header>
 
     <div id="faq-list">
+
+        <p class="faq-section-header">Post-Tournament</p>
+
+        <div class="faq-item">
+            <p class="faq-q">How was the final bracket created?</p>
+            <div class="faq-a">
+                <p>The final bracket was a seeded, single-elimination tournament among the top 64 cards by Elo from the Top 10% Tournament. As an example, the #1 seed (Urza's Saga) was paired first against the 64th seed (Settle the Wreckage).</p>
+                <p>The precise bracket order (and the pairing list within each matchup) is shuffled, although traditional seeded bracket properties are retained (e.g, the 1st and 2nd seeds can't face until the finals). This was done to disguise the seeded nature of the bracket — if voters could suss out the exact seeding, it would likely spoil early matchups, where upsets were less likely.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">Why are the Elos different between the Top 10% queue and the overall queue in the Card Browser?</p>
+            <div class="faq-a">
+                <p>The "All Cards" Elos reflect the Elos at the conclusion of the initial queues. These cards then entered the second, top 10% tournament, and the Elo on that page reflects their new Elo after that tournament.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">How were the top 10% of cards selected? What happened to their Elo from the queues?</p>
+            <div class="faq-a">
+                <p>I selected the top 10% of cards per-queue, rather than the top 10% overall. Despite my best efforts, some queues received more votes-per-card than others. A consequence of an Elo system is that over time, the distribution accumulates wider tails, which means that the top 10% of queues with a higher vote count had higher average Elo. Hence, it seemed more fair to select per-queue.</p>
+                <p>When entering the top 10%, I set each card's starting Elo to its Elo from the regular queues, but I normalized the Elos so that each queue had the same average top 10% Elo.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <p class="faq-q">What's the deal with Growth Spiral and Grief?</p>
+            <div class="faq-a">
+                <p>Minor issue for the keen-eyed observer. In the top 10% browser, you'll see that Growth Spiral is listed as the #64 card, but it wasn't in the top 64 bracket. In the hour or so between when I finalized the bracket logic and when I launched the live site, more votes continued to arrive (albeit at a slow pace), and a few votes against Grief bumped it out of the top 64. Small hiccups like this are inevitable for a tournament with 100% uptime like this one. Apologies to all fans of UG Ramp.</p>
+            </div>
+        </div>
+
+        <p class="faq-section-header">Elo Tournament</p>
 
         <div class="faq-item">
             <p class="faq-q">What is the inspiration for this project?</p>
@@ -318,7 +379,7 @@
 
     </div>
 
-    <a href="/" class="back-btn">← Back to Voting</a>
+    <a href="/" class="back-btn">← Home</a>
 
 </body>
 </html>

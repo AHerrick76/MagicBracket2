@@ -379,6 +379,37 @@ def _build_honorable_mentions():
 _honorable_mentions_cards = _build_honorable_mentions()
 print(f'Honorable mentions: {len(_honorable_mentions_cards)} cards loaded.')
 
+# Full-dataset index for community-favorites card lookups (any card, not just bracket top-64)
+_all_cards_meta = _df.drop_duplicates('name').set_index('name')
+
+
+def _fav_meta_get(name, col, default=None):
+    try:
+        v = _all_cards_meta.at[name, col]
+        return default if (isinstance(v, float) and pd.isna(v)) else v
+    except KeyError:
+        return default
+
+
+def _fav_card_info(name):
+    """Return image + metadata for any card name, falling back to full dataset if not in bracket."""
+    if name in _cards_by_name:
+        return _get_card_info(name)
+    img_front = _fav_meta_get(name, 'img_front')
+    img_back  = _fav_meta_get(name, 'img_back')
+    layout    = str(_fav_meta_get(name, 'layout', '') or '')
+    released  = _fav_meta_get(name, 'released_at')
+    try:
+        year = int(pd.to_datetime(released).year) if released else None
+    except Exception:
+        year = None
+    return {
+        'img_front': img_front if isinstance(img_front, str) and img_front else None,
+        'img_back':  img_back  if (isinstance(img_back, str) and img_back and layout in DOUBLE_FACED_LAYOUTS) else None,
+        'set_name':  str(_fav_meta_get(name, 'set_name', '') or ''),
+        'year':      year,
+    }
+
 
 def _meta_get(name, col, default=''):
     try:
@@ -545,8 +576,10 @@ def _build_bracket_display(results_by_id):
 
             if flip:
                 left_name,  right_name  = name_b,  name_a
+                left_seed,  right_seed  = seed_b,  seed_a
             else:
                 left_name,  right_name  = name_a,  name_b
+                left_seed,  right_seed  = seed_a,  seed_b
 
             winner      = result['winner'] if result else None
             left_wins   = (winner == left_name)  if winner else None
@@ -568,9 +601,11 @@ def _build_bracket_display(results_by_id):
                 'id':             m['id'],
                 'round':          m['round'],
                 'left_name':      left_name  or 'TBD',
+                'left_seed':      left_seed,
                 'left_img_front': left_info.get('img_front'),
                 'left_img_back':  left_info.get('img_back'),
                 'right_name':     right_name or 'TBD',
+                'right_seed':     right_seed,
                 'right_img_front':right_info.get('img_front'),
                 'right_img_back': right_info.get('img_back'),
                 'winner':         winner,
@@ -618,36 +653,13 @@ ROUND_LABELS = {1: 'Round of 64', 2: 'Round of 32', 3: 'Round of 16',
 def index():
     _ensure_session()
     log_page_view('bracket_vote')
-    ip  = _client_ip()
-    day = _get_current_day()
-
-    if _has_voted(ip, day):
-        ballot    = _get_user_ballot(ip, day)
-        favorites = _get_user_favorites(ip, day)
-        return render_template('bracket_vote.html', voted=True, day=day,
-                               ballot=ballot, favorites=favorites)
-
-    results    = _get_results()
-    day_matchups = [m for m in _bracket['matchups'] if m['day'] == day]
-    if not day_matchups:
-        return render_template('bracket_vote.html', voted=False, matchups=[],
-                               day=day, round_label='', no_matchups=True)
-
-    round_num   = day_matchups[0]['round']
-    round_label = ROUND_LABELS.get(round_num, f'Round {round_num}')
-
-    # Per-user shuffle: matchup order + left/right card orientation
-    sid = session.get('session_id', '')
-    rng = random.Random(f'{sid}-{day}')
-
-    matchups_ctx = [
-        _build_matchup_context(m, results, flip=rng.random() < 0.5)
-        for m in day_matchups
-    ]
-
-    return render_template('bracket_vote.html', voted=False,
-                           matchups=matchups_ctx, day=day,
-                           round_label=round_label, no_matchups=False)
+    winner_img = None
+    try:
+        info = _fav_card_info("Urza's Saga")
+        winner_img = info.get('img_front')
+    except Exception:
+        pass
+    return render_template('bracket_vote.html', winner_img=winner_img)
 
 
 @app.route('/api/bracket_submit', methods=['POST'])
@@ -747,6 +759,88 @@ def honorable_mentions():
     _ensure_session()
     log_page_view('honorable_mentions')
     return render_template('honorable_mentions.html', cards=_honorable_mentions_cards)
+
+
+@app.route('/community-favorites')
+def community_favorites():
+    _ensure_session()
+    log_page_view('community_favorites')
+
+    # Initialise per-session shuffle state
+    if 'fav_seed' not in session:
+        session['fav_seed'] = random.randint(0, 2 ** 31)
+        session['fav_pos']  = 0
+
+    # Advance position when the "see more" button is clicked
+    if request.args.get('next') == '1':
+        session['fav_pos'] = session.get('fav_pos', 0) + 1
+        session.modified = True
+
+    pos  = session.get('fav_pos', 0)
+    seed = session['fav_seed']
+
+    # Load all submitted favorites from DB
+    with _get_db() as conn:
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT id, card_a, card_b, card_c, response_text '
+            'FROM finals_favorite_cards ORDER BY id'
+        )
+        all_rows = cur.fetchall()
+
+    if not all_rows:
+        return render_template('community_favorites.html', entry=None, pos=0, total=0)
+
+    # Split: rich = has response_text AND at least one non-null card name
+    rich, sparse = [], []
+    for row in all_rows:
+        rid, ca, cb, cc, rt = row
+        has_text = bool(rt and rt.strip())
+        has_card = any(c for c in [ca, cb, cc] if c)
+        if has_text and has_card:
+            rich.append(row)
+        else:
+            sparse.append(row)
+
+    # Deterministic shuffle using per-session seed
+    rng = random.Random(seed)
+    rng.shuffle(rich)
+    rng.shuffle(sparse)
+
+    # Interleave: rich[0], sparse[0], rich[1], sparse[1], ...
+    merged = []
+    ri = si = 0
+    while ri < len(rich) or si < len(sparse):
+        if ri < len(rich):
+            merged.append(rich[ri]); ri += 1
+        if si < len(sparse):
+            merged.append(sparse[si]); si += 1
+
+    row = merged[pos % len(merged)]
+    rid, ca, cb, cc, rt = row
+
+    # Build card dicts for cards that have images
+    cards = []
+    for name in [ca, cb, cc]:
+        if not name:
+            continue
+        info = _fav_card_info(name)
+        if info.get('img_front'):
+            cards.append({
+                'name':      name,
+                'img_front': info['img_front'],
+                'img_back':  info.get('img_back'),
+                'set_name':  info.get('set_name', ''),
+                'year':      info.get('year'),
+            })
+
+    entry = {
+        'cards':         cards,
+        'response_text': rt.strip() if rt else None,
+    }
+
+    return render_template('community_favorites.html', entry=entry,
+                           pos=pos, total=len(merged))
 
 
 @app.route('/stats/<token>')
@@ -851,6 +945,188 @@ td {{ padding:4px 8px; border-bottom:1px solid #2a2a2a; }}
 <tr><th>Hour</th><th style="text-align:right">Ballots</th></tr>
 {hourly_table}
 </table>
+</body>
+</html>'''
+    return html
+
+
+@app.route('/vote-counts')
+def vote_counts():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Load queues.json for queue sizes (best-effort); exclude queue 1 (test queue)
+    queues_json_path = os.path.join(base_dir, 'queues.json')
+    try:
+        with open(queues_json_path, encoding='utf-8') as f:
+            _qdata = json.load(f)
+        queues_meta = {q['id']: q for q in _qdata.get('queues', [])
+                       if q['id'] != 1}
+    except Exception:
+        queues_meta = {}
+
+    # Load top_10_queue.json for top-10% queue size (best-effort)
+    top10_json_path = os.path.join(base_dir, 'top_10_queue.json')
+    try:
+        with open(top10_json_path, encoding='utf-8') as f:
+            _t10 = json.load(f)
+        top10_size = _t10.get('total_cards') or len(_t10.get('cards', []))
+    except Exception:
+        top10_size = None
+
+    with _get_db() as conn:
+        cur = conn.cursor()
+
+        # ── Bracket section ────────────────────────────────────────────────────
+        cur.execute('''
+            SELECT day, COUNT(*) AS total_votes, COUNT(DISTINCT ballot_id) AS ballots
+            FROM bracket_votes
+            GROUP BY day
+            ORDER BY day
+        ''')
+        day_rows = {d: {'votes': v, 'ballots': b} for d, v, b in cur.fetchall()}
+
+        # ── Regular queue section (exclude queue 1) ────────────────────────────
+        cur.execute('''
+            SELECT queue_id, COUNT(*) AS votes
+            FROM votes
+            WHERE queue_id IS NOT NULL AND queue_id != 1
+            GROUP BY queue_id
+            ORDER BY queue_id
+        ''')
+        queue_vote_rows = {qid: v for qid, v in cur.fetchall()}
+
+        # ── Top-10% section ────────────────────────────────────────────────────
+        cur.execute('SELECT COUNT(*) FROM votes_top10')
+        top10_votes = cur.fetchone()[0]
+
+    # ── Build bracket table ────────────────────────────────────────────────────
+    day_info = {}
+    for m in _bracket['matchups']:
+        d, r = m['day'], m['round']
+        if d not in day_info:
+            day_info[d] = {'round': r}
+
+    round_days = {}
+    for d, info in day_info.items():
+        round_days.setdefault(info['round'], []).append(d)
+    for r in round_days:
+        round_days[r].sort()
+
+    bracket_rows_html = ''
+    for d in sorted(day_info.keys()):
+        r = day_info[d]['round']
+        days_in_round = round_days[r]
+        if len(days_in_round) > 1:
+            day_within = days_in_round.index(d) + 1
+            label = f'{ROUND_LABELS.get(r, f"Round {r}")} \u2014 Day {day_within}'
+        else:
+            label = ROUND_LABELS.get(r, f'Round {r}')
+        data = day_rows.get(d, {'votes': 0, 'ballots': 0})
+        bracket_rows_html += (
+            f'<tr><td>{label}</td>'
+            f'<td class="num">{data["ballots"]:,}</td>'
+            f'<td class="num">{data["votes"]:,}</td></tr>\n'
+        )
+
+    total_ballots = sum(v['ballots'] for v in day_rows.values())
+    total_votes   = sum(v['votes']   for v in day_rows.values())
+
+    # ── Build queue table ──────────────────────────────────────────────────────
+    all_qids = sorted(set(list(queues_meta.keys()) + list(queue_vote_rows.keys())))
+    queue_rows_html = ''
+    for qid in all_qids:
+        votes  = queue_vote_rows.get(qid, 0)
+        q_meta = queues_meta.get(qid, {})
+        qsize  = len(q_meta.get('cards', [])) if q_meta else None
+        qsize_str = f'{qsize:,}' if qsize is not None else '—'
+        queue_rows_html += (
+            f'<tr><td>Queue {qid}</td>'
+            f'<td class="num">{qsize_str}</td>'
+            f'<td class="num">{votes:,}</td></tr>\n'
+        )
+
+    queue_total_votes = sum(queue_vote_rows.values())
+
+    top10_size_str = f'{top10_size:,}' if top10_size is not None else '—'
+
+    html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vote Counts — Magic Bracket</title>
+<style>
+* {{ box-sizing: border-box; margin: 0; padding: 0; }}
+body {{ background: #1a1a1a; color: #ddd; font-family: sans-serif; }}
+nav {{
+  display: flex; justify-content: center; gap: 2rem;
+  padding: 0.75rem 1rem;
+  background: #13132a; border-bottom: 1px solid #2a2a4a;
+  flex-wrap: wrap;
+}}
+nav a {{ color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }}
+nav a:hover {{ text-decoration: underline; }}
+.page-header {{
+  background: #111; padding: 14px 20px 12px;
+  border-bottom: 1px solid #2a2a2a;
+  text-align: center;
+}}
+.page-header h1 {{
+  font-family: Georgia, serif;
+  font-size: 1.4rem; color: #c9a84c;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: normal;
+}}
+.content {{ padding: 24px 20px; max-width: 560px; margin: 0 auto; }}
+h2 {{ color: #c9a84c; margin: 28px 0 10px; font-size: 1.05rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: normal; }}
+h2:first-child {{ margin-top: 0; }}
+table {{ width: 100%; border-collapse: collapse; font-size: 0.88rem; }}
+th {{ text-align: left; color: #888; border-bottom: 1px solid #444; padding: 5px 10px; font-weight: normal; }}
+td {{ padding: 5px 10px; border-bottom: 1px solid #222; }}
+td.num {{ text-align: right; font-variant-numeric: tabular-nums; }}
+th.num {{ text-align: right; }}
+.total {{ color: #c9a84c; font-weight: bold; margin: 8px 0 0; font-size: 0.88rem; }}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/">Home</a>
+  <a href="/bracket">Full Bracket</a>
+  <a href="/honorable-mentions">Honorable Mentions</a>
+  <a href="/community-favorites">Community Favorites</a>
+  <a href="/universe">Card Browser</a>
+  <a href="/vote-counts">Vote Counts</a>
+  <a href="/faq">FAQ</a>
+  <a href="/share">Share</a>
+</nav>
+
+<div class="page-header">
+  <h1>Vote Counts</h1>
+</div>
+
+<div class="content">
+
+<h2>Top 64 Bracket</h2>
+<table>
+  <tr><th>Round</th><th class="num">Ballots</th><th class="num">Total Votes</th></tr>
+  {bracket_rows_html}
+</table>
+<p class="total">Total: {total_ballots:,} ballots &nbsp;/&nbsp; {total_votes:,} individual votes</p>
+
+<h2>Top 10% Tournament</h2>
+<table>
+  <tr><th>Phase</th><th class="num">Cards</th><th class="num">Votes</th></tr>
+  <tr><td>Tournament</td><td class="num">{top10_size_str}</td><td class="num">{top10_votes:,}</td></tr>
+</table>
+
+<h2>Regular Queues</h2>
+<table>
+  <tr><th>Queue</th><th class="num">Cards</th><th class="num">Votes</th></tr>
+  {queue_rows_html}
+</table>
+<p class="total">Total: {queue_total_votes:,} votes</p>
+
+</div>
 </body>
 </html>'''
     return html

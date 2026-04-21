@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Community Favorites — Magic Bracket</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #1a1a1a; color: #ddd; font-family: sans-serif; min-height: 100vh; }
+
+/* ── Nav ── */
+nav {
+  display: flex; justify-content: center; gap: 2rem;
+  padding: 0.75rem 1rem;
+  background: #13132a; border-bottom: 1px solid #2a2a4a;
+  flex-wrap: wrap;
+}
+nav a { color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }
+nav a:hover { text-decoration: underline; }
+
+/* ── Page header ── */
+.page-header {
+  background: #111; padding: 14px 20px 12px;
+  border-bottom: 1px solid #2a2a2a;
+  text-align: center;
+}
+.page-header h1 {
+  font-family: 'Georgia', serif;
+  font-size: 1.4rem; color: #c9a84c;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: normal;
+}
+.page-header p { font-size: 0.78rem; color: #888; margin-top: 6px; font-style: italic; }
+
+/* ── Content ── */
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ── Cards row ── */
+.cards-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  width: 210px;
+}
+.card-wrap img {
+  width: 100%; border-radius: 8px; display: block;
+}
+.card-wrap img.dfc {
+  cursor: crosshair; outline: 2px solid #c9a84c; outline-offset: 2px;
+}
+
+.card-label {
+  font-size: 0.68rem; color: #888; text-align: center;
+  margin-top: 6px; line-height: 1.5; word-break: break-word; width: 100%;
+}
+.card-label strong { color: #ccc; font-size: 0.72rem; display: block; }
+.card-label .set-line { color: #666; display: block; }
+
+/* ── Response text ── */
+.response-text {
+  font-style: italic;
+  color: #bbb;
+  text-align: center;
+  max-width: 580px;
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+
+/* ── See more button ── */
+.see-more-btn {
+  display: inline-block;
+  padding: 0.55rem 1.5rem;
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #c8a96e;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  transition: border-color 0.15s, background 0.15s;
+  margin-top: 8px;
+}
+.see-more-btn:hover {
+  border-color: #c9a84c;
+  background: rgba(201,168,76,0.07);
+}
+
+/* ── Empty state ── */
+.empty { color: #666; font-style: italic; margin-top: 40px; }
+
+/* ── DFC hover preview ── */
+#dfc-preview {
+  display: none; position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); gap: 12px;
+  background: rgba(0,0,0,0.92); padding: 16px; border-radius: 14px;
+  z-index: 300; pointer-events: none;
+}
+#dfc-preview.visible { display: flex; }
+#dfc-preview img { width: 280px; border-radius: 10px; }
+
+#dfc-backdrop {
+  display: none; position: fixed; inset: 0;
+  z-index: 299; background: transparent;
+}
+#dfc-backdrop.visible { display: block; }
+
+/* ── Desktop ── */
+@media (min-width: 600px) {
+  .card-wrap { width: 230px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/">Home</a>
+  <a href="/bracket">Full Bracket</a>
+  <a href="/honorable-mentions">Honorable Mentions</a>
+  <a href="/community-favorites">Community Favorites</a>
+  <a href="/universe">Card Browser</a>
+  <a href="/vote-counts">Vote Counts</a>
+  <a href="/faq">FAQ</a>
+  <a href="/share">Share</a>
+</nav>
+
+<div class="page-header">
+  <h1>Community Favorites</h1>
+  <p>The cards that meant something more than winning a bracket</p>
+</div>
+
+<div class="content">
+{% if entry %}
+
+  {% if entry.cards %}
+  <div class="cards-row">
+    {% for card in entry.cards %}
+    <div class="card-wrap">
+      <img
+        src="{{ card.img_front }}"
+        alt="{{ card.name }}"
+        title="{{ card.name }}"
+        loading="lazy"
+        {% if card.img_back %}
+          class="dfc"
+          data-front="{{ card.img_front }}"
+          data-back="{{ card.img_back }}"
+        {% endif %}
+      >
+      <div class="card-label">
+        <strong>{{ card.name }}</strong>
+        <span class="set-line">{{ card.set_name }}{% if card.year %} &middot; {{ card.year }}{% endif %}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if entry.response_text %}
+  <p class="response-text">{{ entry.response_text }}</p>
+  {% endif %}
+
+  <a href="/community-favorites?next=1" class="see-more-btn">See more favorites &rarr;</a>
+
+{% else %}
+  <p class="empty">No favorites have been submitted yet.</p>
+{% endif %}
+</div>
+
+<!-- DFC popup -->
+<div id="dfc-backdrop"></div>
+<div id="dfc-preview">
+  <img id="dfc-front" src="" alt="Front">
+  <img id="dfc-back"  src="" alt="Back">
+</div>
+
+<script>
+const isDesktop = () => window.innerWidth >= 600;
+
+const preview  = document.getElementById('dfc-preview');
+const backdrop = document.getElementById('dfc-backdrop');
+const prevF    = document.getElementById('dfc-front');
+const prevB    = document.getElementById('dfc-back');
+
+document.querySelectorAll('img.dfc').forEach(img => {
+  const front = img.dataset.front;
+  const back  = img.dataset.back;
+
+  img.addEventListener('mouseenter', () => {
+    if (isDesktop()) { prevF.src = front; prevB.src = back; preview.classList.add('visible'); }
+  });
+  img.addEventListener('mouseleave', () => {
+    if (isDesktop()) preview.classList.remove('visible');
+  });
+
+  img.addEventListener('click', e => {
+    if (!isDesktop()) {
+      e.stopPropagation();
+      prevF.src = front; prevB.src = back;
+      preview.classList.add('visible');
+      backdrop.classList.add('visible');
+    }
+  });
+});
+
+backdrop.addEventListener('click', () => {
+  preview.classList.remove('visible');
+  backdrop.classList.remove('visible');
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { preview.classList.remove('visible'); backdrop.classList.remove('visible'); }
+});
+</script>
+</body>
+</html>

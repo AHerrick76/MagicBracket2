@@ -7,6 +7,16 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        nav {
+            display: flex; justify-content: center; gap: 2rem;
+            padding: 0.75rem 1rem;
+            background: #13132a; border-bottom: 1px solid #2a2a4a;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        nav a { color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }
+        nav a:hover { text-decoration: underline; }
+
         body {
             background: #1a1a2e;
             color: #e0e0e0;
@@ -15,9 +25,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
+            padding: 0;
+            gap: 0;
+        }
+
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
+            flex: 1;
             padding: 4rem 1.5rem;
             gap: 2rem;
+            width: 100%;
         }
 
         header {
@@ -119,6 +140,7 @@
         /* ── Print styles ─────────────────────────────────────────────────── */
 
         @media print {
+            nav { display: none; }
             body {
                 background: #fff;
                 color: #111;
@@ -135,6 +157,18 @@
 </head>
 <body>
 
+<nav>
+  <a href="/">Home</a>
+  <a href="/bracket">Full Bracket</a>
+  <a href="/honorable-mentions">Honorable Mentions</a>
+  <a href="/community-favorites">Community Favorites</a>
+  <a href="/universe">Card Browser</a>
+  <a href="/vote-counts">Vote Counts</a>
+  <a href="/faq">FAQ</a>
+  <a href="/share">Share</a>
+</nav>
+
+<div class="page-content">
     <header>
         <h1>Magic Ranking v2</h1>
         <p class="subtitle">Community voting for the best cards of the past decade</p>
@@ -148,7 +182,8 @@
         <p id="share-hint">Scan the QR code or visit the URL above to vote.</p>
     </div>
 
-    <a href="/" class="back-btn">← Back to Voting</a>
+    <a href="/" class="back-btn">← Back to Home</a>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script>

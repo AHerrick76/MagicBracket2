@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Bracket — The Final Round</title>
+    <title>Magic Ranking v2 — Results</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,800 +14,232 @@
             min-height: 100vh;
         }
 
-        /* ── Nav ──────────────────────────────────────────────────────────── */
+        /* ── Nav (desktop) ───────────────────────────────────────────────────── */
 
         nav {
+            position: relative;
+            background: #13132a;
+            border-bottom: 1px solid #2a2a4a;
+        }
+
+        .nav-inner {
             display: flex;
             justify-content: center;
             gap: 2rem;
             padding: 0.75rem 1rem;
-            background: #13132a;
-            border-bottom: 1px solid #2a2a4a;
             flex-wrap: wrap;
         }
+
         nav a { color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }
         nav a:hover { text-decoration: underline; }
 
-        /* ── Page header ─────────────────────────────────────────────────── */
+        /* ── Hamburger (mobile only) ─────────────────────────────────────────── */
 
-        .page-header {
-            text-align: center;
-            padding: 2rem 1rem 1rem;
-        }
-        .page-header h1 { font-size: 1.6rem; letter-spacing: 0.06em; color: #c8a96e; margin-bottom: 0.4rem; }
-        .page-header p  { font-size: 0.85rem; color: #888; }
-
-        /* ── Matchup list ────────────────────────────────────────────────── */
-
-        .matchup-list {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 1rem 1rem 0.5rem;
-        }
-
-        .matchup-block {
-            margin-bottom: 3rem;
-        }
-
-        .card-pair {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .vs-divider {
-            align-self: center;
-            font-size: 0.85rem;
-            color: #444;
-            flex-shrink: 0;
-            padding-top: 0.5rem;
-        }
-
-        /* ── Card slot ───────────────────────────────────────────────────── */
-
-        .card-slot {
-            cursor: pointer;
-            border: 5px solid transparent;
-            border-radius: 12px;
-            padding: 5px;
-            transition: border-color 0.12s ease, filter 0.12s ease;
-            text-align: center;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .card-slot:hover { border-color: #3a3a5a; }
-
-        .card-slot.selected { border-color: #27a85a; }
-        .card-slot.selected .card-frame { filter: brightness(1.05) saturate(1.1); }
-        .card-slot.selected .card-tint  { background: rgba(39, 168, 90, 0.38); }
-
-        .card-slot.rejected { border-color: #a83227; }
-        .card-slot.rejected .card-frame { filter: brightness(0.65) saturate(0.50); }
-        .card-slot.rejected .card-tint  { background: rgba(168, 50, 39, 0.42); }
-
-        /* ── Card frame ─────────────────────────────────────────────────── */
-
-        .card-frame {
-            position: relative;
-            width: 300px;
-            transition: filter 0.12s ease;
-        }
-
-        .card-tint {
-            position: absolute;
-            inset: 0;
-            border-radius: 10px;
-            pointer-events: none;
-            transition: background 0.12s ease;
-        }
-
-        .card-frame img {
-            width: 300px;
-            border-radius: 10px;
-            display: block;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.55);
-        }
-
-        /* Sideways (Battle / Room / split) */
-        .card-frame.sideways {
-            width: 215px;    /* 300 × (63/88) ≈ rotated width */
-            height: 300px;
-            overflow: hidden;
-        }
-        .card-frame.sideways img {
-            width: 300px;
-            transform: rotate(90deg) translateX(-50%);
-            transform-origin: top left;
-            position: absolute;
-            top: 0;
-            left: 100%;
-        }
-
-        /* ── Card info ───────────────────────────────────────────────────── */
-
-        .card-info {
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-            line-height: 1.45;
-            max-width: 300px;
-        }
-        .card-name { color: #ddd; font-weight: bold; }
-        .card-set  { color: #777; font-style: italic; }
-        .dfc-hint  { font-size: 0.68rem; color: #555; margin-top: 2px; }
-
-        /* ── Submit section ──────────────────────────────────────────────── */
-
-        .submit-section {
-            text-align: center;
-            padding: 1.5rem 1rem 4rem;
-        }
-
-        .submit-btn {
-            background: #c8a96e;
-            color: #111;
-            border: none;
-            padding: 0.85rem 3.5rem;
-            font-size: 1rem;
-            font-family: Georgia, serif;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            letter-spacing: 0.04em;
-            transition: background 0.15s;
-        }
-        .submit-btn:hover    { background: #dfc07f; }
-        .submit-btn:disabled { background: #444; color: #666; cursor: not-allowed; }
-
-        /* ── Warning modal ───────────────────────────────────────────────── */
-
-        .modal-backdrop {
+        .hamburger {
             display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.75);
-            z-index: 300;
+            width: 100%;
+            padding: 0.7rem 1rem;
             align-items: center;
-            justify-content: center;
-        }
-        .modal-backdrop.open { display: flex; }
-
-        .modal-box {
-            background: #22223a;
-            border: 1px solid #44446a;
-            border-radius: 12px;
-            padding: 2rem 2.2rem;
-            max-width: 380px;
-            width: calc(100% - 2rem);
-            text-align: center;
-        }
-        .modal-box h3 { color: #c8a96e; font-size: 1.1rem; margin-bottom: 0.75rem; }
-        .modal-box p  { color: #aaa; font-size: 0.88rem; line-height: 1.55; margin-bottom: 1.4rem; }
-
-        .modal-btns { display: flex; gap: 0.75rem; justify-content: center; }
-        .btn-back   { background: #333; color: #ccc; border: 1px solid #555; padding: 0.6rem 1.4rem; border-radius: 5px; cursor: pointer; font-family: Georgia, serif; }
-        .btn-anyway { background: #c8a96e; color: #111; border: none; padding: 0.6rem 1.4rem; border-radius: 5px; cursor: pointer; font-family: Georgia, serif; font-weight: bold; }
-
-        /* ── Submitted message ───────────────────────────────────────────── */
-
-        .submitted-msg {
-            display: none;
-            text-align: center;
-            padding: 3rem 1rem 1.5rem;
-        }
-        .submitted-msg h2 { color: #27a85a; font-size: 1.5rem; margin-bottom: 0.75rem; }
-        .submitted-msg p  { color: #888; margin-bottom: 1.2rem; font-size: 0.9rem; }
-        .submitted-msg a  { color: #c8a96e; }
-
-        /* ── Already-voted state ─────────────────────────────────────────── */
-
-        .voted-state {
-            text-align: center;
-            padding: 3rem 1.5rem 1.5rem;
-        }
-        .voted-state h2 { color: #c8a96e; font-size: 1.4rem; margin-bottom: 0.75rem; }
-        .voted-state p  { color: #888; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.6; }
-        .voted-state a  { color: #c8a96e; }
-
-        /* ── Ballot summary ──────────────────────────────────────────────── */
-
-        .ballot-summary {
-            max-width: 560px;
-            margin: 1.5rem auto 3rem;
-            text-align: left;
-            border: 1px solid #2a2a4a;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .ballot-summary-header {
-            background: #13132a;
-            padding: 0.6rem 1rem;
-            font-size: 0.75rem;
-            color: #666;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        .ballot-row {
-            padding: 0.55rem 1rem;
-            font-size: 0.88rem;
-            color: #aaa;
-            border-top: 1px solid #1e1e38;
-        }
-        .ballot-row:first-of-type { border-top: none; }
-        .ballot-row strong { color: #e8e8e8; }
-        .ballot-row .skipped { color: #555; font-style: italic; }
-
-        /* ── Personal picks ─────────────────────────────────────────────────── */
-
-        .picks-section {
-            max-width: 520px;
-            margin: 0 auto 4rem;
-            padding: 2.5rem 1rem 0;
-            border-top: 1px solid #2a2a4a;
-        }
-        .picks-heading {
-            color: #c8a96e;
-            font-size: 1.1rem;
-            margin-bottom: 0.4rem;
-        }
-        .picks-optional {
-            color: #555;
-            font-size: 0.82rem;
-            font-style: italic;
-            font-weight: normal;
-        }
-        .picks-desc {
-            color: #777;
-            font-size: 0.83rem;
-            line-height: 1.6;
-            margin-bottom: 1.4rem;
-        }
-        .picks-slots {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.2rem;
-        }
-        .pick-slot { position: relative; }
-        .pick-input-wrap {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        .pick-input {
-            flex: 1;
-            background: #16162c;
-            border: 1px solid #3a3a5a;
-            color: #e0e0e0;
-            padding: 0.52rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.88rem;
-            font-family: Georgia, serif;
-            outline: none;
-            transition: border-color 0.15s;
-        }
-        .pick-input:focus  { border-color: #c8a96e; }
-        .pick-input.locked { border-color: #27a85a; color: #b8f0d0; }
-        .pick-lock-icon {
-            color: #27a85a;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-            display: none;
-        }
-        .pick-clear {
+            justify-content: space-between;
+            cursor: pointer;
             background: none;
             border: none;
-            color: #555;
-            cursor: pointer;
-            font-size: 0.85rem;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            flex-shrink: 0;
-            display: none;
-            transition: color 0.12s;
-        }
-        .pick-clear:hover { color: #aaa; }
-        .pick-dropdown {
-            display: none;
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: calc(100% + 3px);
-            background: #1e1e38;
-            border: 1px solid #3a3a5a;
-            border-radius: 6px;
-            z-index: 100;
-            max-height: 224px;
-            overflow-y: auto;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.55);
-        }
-        .pick-option {
-            padding: 0.48rem 0.75rem;
-            cursor: pointer;
-            font-size: 0.86rem;
-            color: #ccc;
-            border-bottom: 1px solid #252540;
-        }
-        .pick-option:last-child { border-bottom: none; }
-        .pick-option:hover { background: #2a2a4a; color: #eee; }
-        .pick-option-more {
-            padding: 0.35rem 0.75rem;
-            font-size: 0.76rem;
-            color: #555;
-            font-style: italic;
-        }
-        .picks-comment-wrap { margin-top: 0.75rem; }
-        .picks-comment {
-            width: 100%;
-            background: #16162c;
-            border: 1px solid #3a3a5a;
-            color: #e0e0e0;
-            padding: 0.55rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.86rem;
+            color: #c8a96e;
             font-family: Georgia, serif;
-            resize: vertical;
-            min-height: 72px;
-            outline: none;
-            transition: border-color 0.15s;
-        }
-        .picks-comment:focus { border-color: #c8a96e; }
-        .picks-char-count {
-            text-align: right;
-            font-size: 0.75rem;
-            color: #555;
-            margin-top: 0.25rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
         }
 
-        /* ── DFC popup ───────────────────────────────────────────────────── */
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .hamburger-icon span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #c8a96e;
+            border-radius: 2px;
+            transition: transform 0.2s, opacity 0.2s;
+        }
 
-        .dfc-popup {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.80);
-            z-index: 200;
-            align-items: center;
+        .nav-links {
+            display: flex;
             justify-content: center;
-            gap: 1rem;
-            cursor: pointer;
+            gap: 2rem;
+            padding: 0.75rem 1rem;
+            flex-wrap: wrap;
         }
-        .dfc-popup.open { display: flex; }
-        .dfc-popup img  { width: 280px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.8); }
 
-        /* ── Mobile ──────────────────────────────────────────────────────── */
+        @media (max-width: 640px) {
+            .hamburger { display: flex; }
 
-        @media (max-width: 540px) {
-            .card-pair { gap: 0.5rem; }
-            .card-frame         { width: 145px; }
-            .card-frame img     { width: 145px; }
-            .card-info          { max-width: 145px; font-size: 0.72rem; }
-            .card-frame.sideways {
-                width: 104px;
-                height: 145px;
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+                padding: 0;
             }
-            .card-frame.sideways img { width: 145px; }
+            .nav-links.open { display: flex; }
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 0.65rem 1.2rem;
+                border-top: 1px solid #2a2a4a;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* ── Page ────────────────────────────────────────────────────────────── */
+
+        .page-content {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+            text-align: center;
+        }
+
+        /* ── Winner header ───────────────────────────────────────────────────── */
+
+        .winner-title {
+            font-size: 1.65rem;
+            letter-spacing: 0.06em;
+            color: #c8a96e;
+            margin-bottom: 0.65rem;
+            line-height: 1.3;
+        }
+
+        .winner-subtitle {
+            font-size: 0.92rem;
+            color: #999;
+            line-height: 1.65;
+            max-width: 540px;
+            margin: 0 auto 2.2rem;
+        }
+
+        /* ── Card image ──────────────────────────────────────────────────────── */
+
+        .winner-card-wrap {
+            display: inline-block;
+            margin-bottom: 2.4rem;
+        }
+
+        .winner-card-wrap img {
+            width: 280px;
+            border-radius: 12px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.65);
+            display: block;
+        }
+
+        @media (max-width: 420px) {
+            .winner-card-wrap img { width: 230px; }
+        }
+
+        /* ── Thank you text ──────────────────────────────────────────────────── */
+
+        .divider {
+            border: none;
+            border-top: 1px solid #2a2a40;
+            margin: 0 auto 2.2rem;
+            max-width: 480px;
+        }
+
+        .thank-you {
+            font-size: 0.92rem;
+            color: #aaa;
+            line-height: 1.8;
+            max-width: 560px;
+            margin: 0 auto 2.8rem;
+        }
+
+        /* ── Explore links ───────────────────────────────────────────────────── */
+
+        .explore-heading {
+            font-size: 0.72rem;
+            color: #555;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .explore-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .explore-link {
+            display: inline-block;
+            padding: 0.6rem 1.3rem;
+            border: 1px solid #3a3a5a;
+            border-radius: 8px;
+            color: #c8a96e;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.03em;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .explore-link:hover {
+            border-color: #c8a96e;
+            background: rgba(200, 169, 110, 0.07);
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="/bracket">Full Bracket</a>
-    <a href="/honorable-mentions">Honorable Mentions</a>
-    <a href="/universe">Top 10% Cards</a>
-    <a href="/faq">FAQ</a>
-    <a href="/share">Share</a>
+    <button class="hamburger" id="hamburger-btn" onclick="toggleNav()" aria-label="Open navigation">
+        <span>Navigation</span>
+        <div class="hamburger-icon">
+            <span></span><span></span><span></span>
+        </div>
+    </button>
+    <div class="nav-links" id="nav-links">
+        <a href="/">Home</a>
+        <a href="/bracket">Full Bracket</a>
+        <a href="/honorable-mentions">Honorable Mentions</a>
+        <a href="/community-favorites">Community Favorites</a>
+        <a href="/universe">Card Browser</a>
+        <a href="/vote-counts">Vote Counts</a>
+        <a href="/faq">FAQ</a>
+        <a href="/share">Share</a>
+    </div>
 </nav>
 
-{% if voted %}
-<!-- ── Already voted ──────────────────────────────────────────────────────── -->
-<div class="voted-state">
-    <h2>You've already voted this round.</h2>
-    <p>Results will be announced on social media and on the bracket page once voting closes.
-       Check back when the next round opens. &nbsp;<a href="/bracket">View the bracket →</a></p>
-</div>
+<div class="page-content">
 
-{% if ballot %}
-<div class="ballot-summary">
-    <div class="ballot-summary-header">Your ballot</div>
-    {% for item in ballot %}
-    <div class="ballot-row">
-        {% if item.chosen == item.card_a %}
-        <strong>{{ item.card_a }}</strong> vs {{ item.card_b }}
-        {% elif item.chosen == item.card_b %}
-        {{ item.card_a }} vs <strong>{{ item.card_b }}</strong>
-        {% else %}
-        {{ item.card_a }} vs {{ item.card_b }} <span class="skipped">(skipped)</span>
-        {% endif %}
+    <h1 class="winner-title">Congratulations to the Bracket Winner!</h1>
+    <p class="winner-subtitle">After nearly 1.5 million votes, Urza's Saga has been crowned as the greatest Magic card from the second half of Magic.</p>
+    <p class="winner-subtitle" style="margin-top: -1.4rem;">Urza's Saga narrowly defeated Lurrus of the Dream-Den by less than a 1% margin.</p>
+
+    {% if winner_img %}
+    <div class="winner-card-wrap">
+        <img src="{{ winner_img }}" alt="Urza's Saga">
     </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-{% if favorites and (favorites.card_a or favorites.card_b or favorites.card_c or favorites.response_text) %}
-<div class="ballot-summary" style="margin-top: 1rem;">
-    <div class="ballot-summary-header">Your personal favorites</div>
-    {% for card in [favorites.card_a, favorites.card_b, favorites.card_c] %}
-    {% if card %}
-    <div class="ballot-row"><strong>{{ card }}</strong></div>
     {% endif %}
-    {% endfor %}
-    {% if favorites.response_text %}
-    <div class="ballot-row" style="color: #999; font-style: italic; white-space: pre-wrap;">{{ favorites.response_text }}</div>
-    {% endif %}
-</div>
-{% endif %}
 
-{% elif no_matchups %}
-<!-- ── No matchups scheduled ─────────────────────────────────────────────── -->
-<div class="voted-state">
-    <h2>No matchups scheduled today.</h2>
-    <p>Check back soon.</p>
-    <p><a href="/bracket">View the bracket →</a></p>
-</div>
+    <hr class="divider">
 
-{% else %}
-<!-- ── Voting form ────────────────────────────────────────────────────────── -->
+    <p class="thank-you">A sincere thank you to everyone in the community who participated. This tournament would be nothing without all of you. In the next few days, I'll be releasing all of the voting data, and an analysis of interesting patterns in the data. In the meantime, you can see the final bracket, explore the Elo placement of every card, or check out some of the community favorite cards.</p>
 
-<div id="vote-form">
-    <div class="page-header">
-        <h1>Magic Bracket &mdash; The Final Round</h1>
-        <p>We've reached the final two cards. Which card should represent the greatest Magic card of the past half of Magic?</p>
+    <p class="explore-heading">Explore the results</p>
+    <div class="explore-links">
+        <a class="explore-link" href="/bracket">Final Bracket</a>
+        <a class="explore-link" href="/universe">Card Browser</a>
+        <a class="explore-link" href="/community-favorites">Community Favorites</a>
+        <a class="explore-link" href="/honorable-mentions">Honorable Mentions</a>
     </div>
 
-    <div class="matchup-list">
-        {% for m in matchups %}
-        <div class="matchup-block" data-matchup-id="{{ m.id }}">
-            <div class="card-pair">
-
-                {# ── Left card ── #}
-                <div class="card-slot"
-                     data-matchup-id="{{ m.id }}"
-                     data-card-name="{{ m.left_name | e }}"
-                     onclick="selectCard(this)">
-                    {% if m.left_img_front %}
-                    <div class="card-frame{% if m.left_sideways %} sideways{% endif %}"
-                         {% if m.left_img_back %}
-                         onmouseenter="showDfc({{ m.left_img_front|tojson }}, {{ m.left_img_back|tojson }})"
-                         onmouseleave="hideDfc()"
-                         {% endif %}>
-                        <img src="{{ m.left_img_front }}" alt="{{ m.left_name }}">
-                        <div class="card-tint"></div>
-                    </div>
-                    {% endif %}
-                    <div class="card-info">
-                        <div class="card-name">{{ m.left_name }}</div>
-                        <div class="card-set">{{ m.left_set }}{% if m.left_year %} · {{ m.left_year }}{% endif %}</div>
-                        {% if m.left_img_back %}<div class="dfc-hint">hover to see back</div>{% endif %}
-                    </div>
-                </div>
-
-                <div class="vs-divider">vs</div>
-
-                {# ── Right card ── #}
-                <div class="card-slot"
-                     data-matchup-id="{{ m.id }}"
-                     data-card-name="{{ m.right_name | e }}"
-                     onclick="selectCard(this)">
-                    {% if m.right_img_front %}
-                    <div class="card-frame{% if m.right_sideways %} sideways{% endif %}"
-                         {% if m.right_img_back %}
-                         onmouseenter="showDfc({{ m.right_img_front|tojson }}, {{ m.right_img_back|tojson }})"
-                         onmouseleave="hideDfc()"
-                         {% endif %}>
-                        <img src="{{ m.right_img_front }}" alt="{{ m.right_name }}">
-                        <div class="card-tint"></div>
-                    </div>
-                    {% endif %}
-                    <div class="card-info">
-                        <div class="card-name">{{ m.right_name }}</div>
-                        <div class="card-set">{{ m.right_set }}{% if m.right_year %} · {{ m.right_year }}{% endif %}</div>
-                        {% if m.right_img_back %}<div class="dfc-hint">hover to see back</div>{% endif %}
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-
-    <!-- ── Personal picks ───────────────────────────────────────────────── -->
-    <div class="picks-section" id="picks-section">
-        <h2 class="picks-heading">Personal Favorites <span class="picks-optional">— Optional</span></h2>
-        <p class="picks-desc">Which cards from the past ten years are the greatest to you specifically? Cards which wouldn't win any bracket, but that you have fond memories of, or just really appreciate the design of. Vote for up to 3 below.</p>
-        <p class="picks-desc">Make sure you select your card from the dropdown menu before submitting, or your card submission may be lost!</p>
-
-        <div class="picks-slots">
-            {% for idx in [0, 1, 2] %}
-            <div class="pick-slot">
-                <div class="pick-input-wrap">
-                    <input type="text" class="pick-input" id="pick-input-{{ idx }}"
-                           placeholder="Search for a card…"
-                           oninput="updatePickDropdown({{ idx }})"
-                           onblur="schedulePickHide({{ idx }})"
-                           autocomplete="off" spellcheck="false">
-                    <span class="pick-lock-icon" id="pick-lock-{{ idx }}">&#10003;</span>
-                    <button class="pick-clear" id="pick-clear-{{ idx }}" onclick="clearPick({{ idx }})">&#10005;</button>
-                </div>
-                <div class="pick-dropdown" id="pick-dropdown-{{ idx }}"></div>
-            </div>
-            {% endfor %}
-        </div>
-
-        <div class="picks-comment-wrap">
-            <textarea class="picks-comment" id="picks-comment" maxlength="500"
-                      placeholder="If you'd like, explain why these cards"
-                      oninput="updatePickCharCount()"></textarea>
-            <div class="picks-char-count"><span id="picks-chars-left">500</span> characters remaining</div>
-        </div>
-    </div>
-
-    <div class="submit-section">
-        <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Submit Votes</button>
-    </div>
-</div>
-
-<!-- ── Submitted state ──────────────────────────────────────────────────────── -->
-<div class="submitted-msg" id="submitted-msg">
-    <h2>Votes submitted!</h2>
-    <p>Results will be announced after voting closes. &nbsp;<a href="/bracket">View the bracket →</a></p>
-    <div id="submitted-ballot"></div>
-</div>
-
-<!-- ── Warning modal ────────────────────────────────────────────────────────── -->
-<div class="modal-backdrop" id="warning-modal">
-    <div class="modal-box">
-        <h3>Incomplete ballot</h3>
-        <p id="warning-text"></p>
-        <div class="modal-btns">
-            <button class="btn-back"   onclick="closeModal()">Go back</button>
-            <button class="btn-anyway" onclick="doSubmit()">Submit anyway</button>
-        </div>
-    </div>
-</div>
-
-{% endif %}
-
-<!-- ── DFC popup (shared) ───────────────────────────────────────────────────── -->
-<div class="dfc-popup" id="dfc-popup" onclick="hideDfc()">
-    <img id="dfc-front" src="" alt="Front face">
-    <img id="dfc-back"  src="" alt="Back face">
 </div>
 
 <script>
-const TOTAL_MATCHUPS = {{ matchups|length if matchups is defined else 0 }};
-const selections = {};   // matchup_id (int) → card_name (str)
-
-function selectCard(clickedSlot) {
-    const matchupId = parseInt(clickedSlot.dataset.matchupId, 10);
-    const cardName  = clickedSlot.dataset.cardName;
-    const pair  = clickedSlot.closest('.card-pair');
-    const slots = pair.querySelectorAll('.card-slot');
-    slots.forEach(s => {
-        s.classList.remove('selected', 'rejected');
-        s.classList.add(s === clickedSlot ? 'selected' : 'rejected');
-    });
-    selections[matchupId] = cardName;
-}
-
-function handleSubmit() {
-    const voted   = Object.keys(selections).length;
-    const missing = TOTAL_MATCHUPS - voted;
-    if (missing > 0) {
-        document.getElementById('warning-text').textContent =
-            `You haven't voted in ${missing} matchup${missing !== 1 ? 's' : ''}. ` +
-            `You can go back and finish, or submit your partial ballot now.`;
-        document.getElementById('warning-modal').classList.add('open');
-    } else {
-        doSubmit();
-    }
-}
-
-function closeModal() {
-    document.getElementById('warning-modal').classList.remove('open');
-}
-
-async function doSubmit() {
-    closeModal();
-    const btn = document.getElementById('submit-btn');
-    if (btn) btn.disabled = true;
-
-    const votes = Object.entries(selections).map(([mid, chosen]) => ({
-        matchup_id: parseInt(mid, 10),
-        chosen,
-    }));
-
-    // Resolve any pick slots where the user typed a name but didn't select from the dropdown.
-    // Try exact case-insensitive match first, then unique substring match.
-    for (let i = 0; i < 3; i++) {
-        if (pickedCards[i] === null) {
-            const input = document.getElementById(`pick-input-${i}`);
-            const val   = (input ? input.value : '').trim().toLowerCase();
-            if (!val) continue;
-            const exactIdx = PICK_NAMES_LOWER.indexOf(val);
-            if (exactIdx >= 0) {
-                pickedCards[i] = PICK_NAMES[exactIdx];
-            } else {
-                const matches = PICK_NAMES.filter((_, idx) => PICK_NAMES_LOWER[idx].includes(val));
-                if (matches.length === 1) pickedCards[i] = matches[0];
-            }
-        }
-    }
-
-    const commentEl = document.getElementById('picks-comment');
-    const body = {
-        votes,
-        pick_1:   pickedCards[0] || null,
-        pick_2:   pickedCards[1] || null,
-        pick_3:   pickedCards[2] || null,
-        comment:  commentEl ? commentEl.value.trim().slice(0, 500) || null : null,
-    };
-
-    try {
-        const resp = await fetch('/api/bracket_submit', {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(body),
-        });
-        if (resp.status === 409) { showSubmitted(); return; }
-        if (!resp.ok) {
-            alert('Something went wrong. Please try again.');
-            if (btn) btn.disabled = false;
-            return;
-        }
-        showSubmitted();
-    } catch {
-        alert('Network error. Please try again.');
-        if (btn) btn.disabled = false;
-    }
-}
-
-function buildBallotHtml() {
-    const blocks = document.querySelectorAll('#vote-form .matchup-block');
-    let rows = '';
-    blocks.forEach(block => {
-        const mid   = parseInt(block.dataset.matchupId, 10);
-        const slots = block.querySelectorAll('.card-slot');
-        const nameA = slots[0] ? slots[0].dataset.cardName : '';
-        const nameB = slots[1] ? slots[1].dataset.cardName : '';
-        const chosen = selections[mid];
-        let row;
-        if (chosen === nameA) {
-            row = `<strong>${nameA}</strong> vs ${nameB}`;
-        } else if (chosen === nameB) {
-            row = `${nameA} vs <strong>${nameB}</strong>`;
-        } else {
-            row = `${nameA} vs ${nameB} <span class="skipped">(skipped)</span>`;
-        }
-        rows += `<div class="ballot-row">${row}</div>`;
-    });
-    return rows
-        ? `<div class="ballot-summary"><div class="ballot-summary-header">Your ballot</div>${rows}</div>`
-        : '';
-}
-
-function escapeHtml(str) {
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-function buildPicksHtml() {
-    const picks   = pickedCards.filter(p => p !== null);
-    const comment = (document.getElementById('picks-comment')?.value || '').trim();
-    if (!picks.length && !comment) return '';
-    let rows = picks.map(name => `<div class="ballot-row"><strong>${escapeHtml(name)}</strong></div>`).join('');
-    if (comment) {
-        rows += `<div class="ballot-row" style="color:#999;font-style:italic;white-space:pre-wrap;">${escapeHtml(comment)}</div>`;
-    }
-    return `<div class="ballot-summary" style="margin-top:1rem;"><div class="ballot-summary-header">Your personal favorites</div>${rows}</div>`;
-}
-
-function showSubmitted() {
-    const form = document.getElementById('vote-form');
-    const msg  = document.getElementById('submitted-msg');
-    const ballotContainer = document.getElementById('submitted-ballot');
-    if (form) form.style.display = 'none';
-    if (ballotContainer) ballotContainer.innerHTML = buildBallotHtml() + buildPicksHtml();
-    if (msg)  msg.style.display  = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function showDfc(front, back) {
-    document.getElementById('dfc-front').src = front;
-    document.getElementById('dfc-back').src  = back;
-    document.getElementById('dfc-popup').classList.add('open');
-}
-function hideDfc() {
-    document.getElementById('dfc-popup').classList.remove('open');
-}
-
-// ── Personal picks ──────────────────────────────────────────────────────── //
-const PICK_NAMES       = {{ pick_names | tojson }};
-const PICK_NAMES_LOWER = PICK_NAMES.map(n => n.toLowerCase());
-const PICK_SHOW_CHARS  = 8;   // show dropdown once user has typed this many chars…
-const PICK_AUTO_MAX    = 10;  // …or if matches are already this few
-const PICK_DISPLAY_MAX = 10;  // max results shown in dropdown
-
-const pickedCards = [null, null, null];
-const hideTimers  = [null, null, null];
-
-function filterPickNames(query) {
-    const q = query.toLowerCase().trim();
-    if (!q) return [];
-    const out = [];
-    for (let i = 0; i < PICK_NAMES.length; i++) {
-        if (PICK_NAMES_LOWER[i].includes(q)) out.push(PICK_NAMES[i]);
-    }
-    return out;
-}
-
-function updatePickDropdown(idx) {
-    if (pickedCards[idx] !== null) return;  // locked — ignore keystrokes
-    const input    = document.getElementById(`pick-input-${idx}`);
-    const dropdown = document.getElementById(`pick-dropdown-${idx}`);
-    const query    = input.value;
-    const matches  = filterPickNames(query);
-
-    const shouldShow = matches.length > 0 &&
-        (matches.length <= PICK_AUTO_MAX || query.length >= PICK_SHOW_CHARS);
-
-    if (!shouldShow) { dropdown.style.display = 'none'; return; }
-
-    dropdown.innerHTML = '';
-    matches.slice(0, PICK_DISPLAY_MAX).forEach(name => {
-        const opt = document.createElement('div');
-        opt.className   = 'pick-option';
-        opt.textContent = name;
-        opt.addEventListener('mousedown', e => {
-            e.preventDefault();   // prevent blur firing before lock-in
-            lockInPick(idx, name);
-        });
-        dropdown.appendChild(opt);
-    });
-    if (matches.length > PICK_DISPLAY_MAX) {
-        const more = document.createElement('div');
-        more.className   = 'pick-option-more';
-        more.textContent = `+${matches.length - PICK_DISPLAY_MAX} more — keep typing to narrow`;
-        dropdown.appendChild(more);
-    }
-    dropdown.style.display = 'block';
-}
-
-function lockInPick(idx, name) {
-    pickedCards[idx] = name;
-    document.getElementById(`pick-input-${idx}`).value    = name;
-    document.getElementById(`pick-input-${idx}`).readOnly = true;
-    document.getElementById(`pick-input-${idx}`).classList.add('locked');
-    document.getElementById(`pick-lock-${idx}`).style.display = 'inline';
-    document.getElementById(`pick-clear-${idx}`).style.display = 'inline';
-    document.getElementById(`pick-dropdown-${idx}`).style.display = 'none';
-}
-
-function clearPick(idx) {
-    pickedCards[idx] = null;
-    const input = document.getElementById(`pick-input-${idx}`);
-    input.value    = '';
-    input.readOnly = false;
-    input.classList.remove('locked');
-    document.getElementById(`pick-lock-${idx}`).style.display  = 'none';
-    document.getElementById(`pick-clear-${idx}`).style.display = 'none';
-    document.getElementById(`pick-dropdown-${idx}`).style.display = 'none';
-    input.focus();
-}
-
-function schedulePickHide(idx) {
-    // Delay lets mousedown on a dropdown option fire before the dropdown vanishes
-    hideTimers[idx] = setTimeout(() => {
-        const dd = document.getElementById(`pick-dropdown-${idx}`);
-        if (dd) dd.style.display = 'none';
-    }, 150);
-}
-
-function updatePickCharCount() {
-    const el   = document.getElementById('picks-comment');
-    const left = document.getElementById('picks-chars-left');
-    if (el && left) left.textContent = 500 - el.value.length;
+function toggleNav() {
+    const links = document.getElementById('nav-links');
+    links.classList.toggle('open');
 }
 </script>
 
