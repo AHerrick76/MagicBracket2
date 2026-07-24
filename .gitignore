@@ -40,3 +40,7 @@ map_*.json
 # exception for bracket
 !bracket.json
 !top_64_candidates.json
+
+# runtime CSVs needed by app_bracket.py (small, safe to commit)
+!db_backup/bracket_results.csv
+!db_backup/finals_favorite_cards.csv

@@ -1,0 +1,63 @@
+matchup_id,round,day,card_a,card_b,seed_a,seed_b,votes_a,votes_b,winner,winner_seed,closed_at,bracket_date
+1,1,1,Urza's Saga,Settle the Wreckage,1,64,4101,806,Urza's Saga,1,2026-04-15T02:49:22.941499+00:00,2026-04-15
+2,1,1,Field of the Dead,Walking Ballista,32,33,2176,2726,Walking Ballista,33,2026-04-15T02:49:22.941499+00:00,2026-04-15
+3,1,1,Ephemerate,"Tamiyo, Inquisitive Student // Tamiyo, Seasoned Scholar",16,49,3191,1704,Ephemerate,16,2026-04-15T02:49:22.941499+00:00,2026-04-15
+4,1,1,Esper Sentinel,Gilded Goose,17,48,3770,1139,Esper Sentinel,17,2026-04-15T02:49:22.941499+00:00,2026-04-15
+5,1,1,"Uro, Titan of Nature's Wrath",Fabled Passage,8,57,3032,1866,"Uro, Titan of Nature's Wrath",8,2026-04-15T02:49:22.941499+00:00,2026-04-15
+6,1,1,Hullbreaker Horror,"Atraxa, Grand Unifier",25,40,1737,3166,"Atraxa, Grand Unifier",40,2026-04-15T02:49:22.941499+00:00,2026-04-15
+7,1,1,Bolas's Citadel,Embercleave,9,56,3404,1497,Bolas's Citadel,9,2026-04-15T02:49:22.941499+00:00,2026-04-15
+8,1,1,Abhorrent Oculus,Dauthi Voidwalker,24,41,1848,3025,Dauthi Voidwalker,41,2026-04-15T02:49:22.941499+00:00,2026-04-15
+9,1,1,Underworld Breach,Academy Manufactor,4,61,3645,1249,Underworld Breach,4,2026-04-15T02:49:22.941499+00:00,2026-04-15
+10,1,1,Stock Up,"Etali, Primal Conqueror // Etali, Primal Sickness",29,36,2639,2267,Stock Up,29,2026-04-15T02:49:22.941499+00:00,2026-04-15
+11,1,1,Assassin's Trophy,"Grist, the Hunger Tide",13,52,2771,2117,Assassin's Trophy,13,2026-04-15T02:49:22.941499+00:00,2026-04-15
+12,1,1,"Emry, Lurker of the Loch",The Great Henge,20,45,2481,2417,"Emry, Lurker of the Loch",20,2026-04-15T02:49:22.941499+00:00,2026-04-15
+13,1,1,"Oko, Thief of Crowns",Dragon's Rage Channeler,5,60,3703,1198,"Oko, Thief of Crowns",5,2026-04-15T02:49:22.941499+00:00,2026-04-15
+14,1,1,Ledger Shredder,Agatha's Soul Cauldron,28,37,1920,2967,Agatha's Soul Cauldron,37,2026-04-15T02:49:22.941499+00:00,2026-04-15
+15,1,1,"Urza, Lord High Artificer",Abrade,12,53,3111,1791,"Urza, Lord High Artificer",12,2026-04-15T02:49:22.941499+00:00,2026-04-15
+16,1,1,Icetill Explorer,Bonecrusher Giant // Stomp,21,44,2749,2156,Icetill Explorer,21,2026-04-15T02:49:22.941499+00:00,2026-04-15
+17,1,2,"Sheoldred, the Apocalypse",Arclight Phoenix,2,63,3458,1638,"Sheoldred, the Apocalypse",2,2026-04-16T03:38:39.490978+00:00,2026-04-16
+18,1,2,Cori-Steel Cutter,Up the Beanstalk,31,34,2200,2874,Up the Beanstalk,34,2026-04-16T03:38:39.490978+00:00,2026-04-16
+19,1,2,The Meathook Massacre,Stitcher's Supplier,15,50,2652,2428,The Meathook Massacre,15,2026-04-16T03:38:39.490978+00:00,2026-04-16
+20,1,2,"Teferi, Time Raveler","Otawara, Soaring City",18,47,3484,1597,"Teferi, Time Raveler",18,2026-04-16T03:38:39.490978+00:00,2026-04-16
+21,1,2,Fatal Push,Once Upon a Time,7,58,3439,1639,Fatal Push,7,2026-04-16T03:38:39.490978+00:00,2026-04-16
+22,1,2,"Yawgmoth, Thran Physician",Wrenn and Six,26,39,1924,3142,Wrenn and Six,39,2026-04-16T03:38:39.490978+00:00,2026-04-16
+23,1,2,Fable of the Mirror-Breaker // Reflection of Kiki-Jiki,"Teferi, Hero of Dominaria",10,55,3476,1598,Fable of the Mirror-Breaker // Reflection of Kiki-Jiki,10,2026-04-16T03:38:39.490978+00:00,2026-04-16
+24,1,2,Expressive Iteration,Displacer Kitten,23,42,2768,2302,Expressive Iteration,23,2026-04-16T03:38:39.490978+00:00,2026-04-16
+25,1,2,"Boseiju, Who Endures",Grief,3,62,2970,2108,"Boseiju, Who Endures",3,2026-04-16T03:38:39.490978+00:00,2026-04-16
+26,1,2,Brazen Borrower // Petty Theft,Solitude,30,35,1814,3257,Solitude,35,2026-04-16T03:38:39.490978+00:00,2026-04-16
+27,1,2,Psychic Frog,"Yorion, Sky Nomad",14,51,3639,1429,Psychic Frog,14,2026-04-16T03:38:39.490978+00:00,2026-04-16
+28,1,2,Force of Negation,"Hogaak, Arisen Necropolis",19,46,2685,2390,Force of Negation,19,2026-04-16T03:38:39.490978+00:00,2026-04-16
+29,1,2,Lurrus of the Dream-Den,Shark Typhoon,6,59,4100,977,Lurrus of the Dream-Den,6,2026-04-16T03:38:39.490978+00:00,2026-04-16
+30,1,2,Questing Beast,The One Ring,27,38,1147,3939,The One Ring,38,2026-04-16T03:38:39.490978+00:00,2026-04-16
+31,1,2,"Ragavan, Nimble Pilferer",Archon of Cruelty,11,54,4116,962,"Ragavan, Nimble Pilferer",11,2026-04-16T03:38:39.490978+00:00,2026-04-16
+32,1,2,Shadowspear,"Narset, Parter of Veils",22,43,1963,3110,"Narset, Parter of Veils",43,2026-04-16T03:38:39.490978+00:00,2026-04-16
+33,2,3,Urza's Saga,Walking Ballista,1,33,5956,1842,Urza's Saga,1,2026-04-17T02:08:27.076671+00:00,2026-04-17
+34,2,3,Ephemerate,Esper Sentinel,16,17,3865,3928,Esper Sentinel,17,2026-04-17T02:08:27.076671+00:00,2026-04-17
+35,2,3,"Uro, Titan of Nature's Wrath","Atraxa, Grand Unifier",8,40,4181,3607,"Uro, Titan of Nature's Wrath",8,2026-04-17T02:08:27.076671+00:00,2026-04-17
+36,2,3,Bolas's Citadel,Dauthi Voidwalker,9,41,5260,2521,Bolas's Citadel,9,2026-04-17T02:08:27.076671+00:00,2026-04-17
+37,2,3,Underworld Breach,Stock Up,4,29,6208,1582,Underworld Breach,4,2026-04-17T02:08:27.076671+00:00,2026-04-17
+38,2,3,Assassin's Trophy,"Emry, Lurker of the Loch",13,20,3326,4452,"Emry, Lurker of the Loch",20,2026-04-17T02:08:27.076671+00:00,2026-04-17
+39,2,3,"Oko, Thief of Crowns",Agatha's Soul Cauldron,5,37,5845,1943,"Oko, Thief of Crowns",5,2026-04-17T02:08:27.076671+00:00,2026-04-17
+40,2,3,"Urza, Lord High Artificer",Icetill Explorer,12,21,5902,1879,"Urza, Lord High Artificer",12,2026-04-17T02:08:27.076671+00:00,2026-04-17
+41,2,3,"Sheoldred, the Apocalypse",Up the Beanstalk,2,34,5079,2712,"Sheoldred, the Apocalypse",2,2026-04-17T02:08:27.076671+00:00,2026-04-17
+42,2,3,The Meathook Massacre,"Teferi, Time Raveler",15,18,2289,5502,"Teferi, Time Raveler",18,2026-04-17T02:08:27.076671+00:00,2026-04-17
+43,2,3,Fatal Push,Wrenn and Six,7,39,4575,3210,Fatal Push,7,2026-04-17T02:08:27.076671+00:00,2026-04-17
+44,2,3,Fable of the Mirror-Breaker // Reflection of Kiki-Jiki,Expressive Iteration,10,23,4674,3097,Fable of the Mirror-Breaker // Reflection of Kiki-Jiki,10,2026-04-17T02:08:27.076671+00:00,2026-04-17
+45,2,3,"Boseiju, Who Endures",Solitude,3,35,4867,2918,"Boseiju, Who Endures",3,2026-04-17T02:08:27.076671+00:00,2026-04-17
+46,2,3,Psychic Frog,Force of Negation,14,19,3827,3958,Force of Negation,19,2026-04-17T02:08:27.076671+00:00,2026-04-17
+47,2,3,Lurrus of the Dream-Den,The One Ring,6,38,4244,3551,Lurrus of the Dream-Den,6,2026-04-17T02:08:27.076671+00:00,2026-04-17
+48,2,3,"Ragavan, Nimble Pilferer","Narset, Parter of Veils",11,43,6249,1544,"Ragavan, Nimble Pilferer",11,2026-04-17T02:08:27.076671+00:00,2026-04-17
+49,3,4,Urza's Saga,Esper Sentinel,1,17,5822,1509,Urza's Saga,1,2026-04-18T02:39:23.336508+00:00,2026-04-18
+50,3,4,"Uro, Titan of Nature's Wrath",Bolas's Citadel,8,9,4121,3206,"Uro, Titan of Nature's Wrath",8,2026-04-18T02:39:23.336508+00:00,2026-04-18
+51,3,4,Underworld Breach,"Emry, Lurker of the Loch",4,20,5828,1497,Underworld Breach,4,2026-04-18T02:39:23.336508+00:00,2026-04-18
+52,3,4,"Oko, Thief of Crowns","Urza, Lord High Artificer",5,12,4955,2367,"Oko, Thief of Crowns",5,2026-04-18T02:39:23.336508+00:00,2026-04-18
+53,3,4,"Sheoldred, the Apocalypse","Teferi, Time Raveler",2,18,3569,3762,"Teferi, Time Raveler",18,2026-04-18T02:39:23.336508+00:00,2026-04-18
+54,3,4,Fatal Push,Fable of the Mirror-Breaker // Reflection of Kiki-Jiki,7,10,3871,3459,Fatal Push,7,2026-04-18T02:39:23.336508+00:00,2026-04-18
+55,3,4,"Boseiju, Who Endures",Force of Negation,3,19,3767,3563,"Boseiju, Who Endures",3,2026-04-18T02:39:23.336508+00:00,2026-04-18
+56,3,4,Lurrus of the Dream-Den,"Ragavan, Nimble Pilferer",6,11,4643,2696,Lurrus of the Dream-Den,6,2026-04-18T02:39:23.336508+00:00,2026-04-18
+57,4,5,Urza's Saga,"Uro, Titan of Nature's Wrath",1,8,6394,2132,Urza's Saga,1,2026-04-19T03:08:32.787722+00:00,2026-04-19
+58,4,5,Underworld Breach,"Oko, Thief of Crowns",4,5,4152,4374,"Oko, Thief of Crowns",5,2026-04-19T03:08:32.787722+00:00,2026-04-19
+59,4,5,"Teferi, Time Raveler",Fatal Push,18,7,3898,4626,Fatal Push,7,2026-04-19T03:08:32.787722+00:00,2026-04-19
+60,4,5,"Boseiju, Who Endures",Lurrus of the Dream-Den,3,6,2922,5608,Lurrus of the Dream-Den,6,2026-04-19T03:08:32.787722+00:00,2026-04-19
+61,5,6,Urza's Saga,"Oko, Thief of Crowns",1,5,5027,4005,Urza's Saga,1,2026-04-20T03:20:03.682138+00:00,2026-04-20
+62,5,6,Fatal Push,Lurrus of the Dream-Den,7,6,3181,5855,Lurrus of the Dream-Den,6,2026-04-20T03:20:03.682138+00:00,2026-04-20
