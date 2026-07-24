@@ -815,8 +815,10 @@ print(f'  {len(_static_results)} matchup results cached.')
 print('Loading community favorites...')
 _fav_csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db_backup', 'finals_favorite_cards.csv')
 _fav_df = pd.read_csv(_fav_csv_path)[['id', 'card_a', 'card_b', 'card_c', 'response_text']]
-_fav_df = _fav_df.where(_fav_df.notna(), other=None)
-_static_fav_rows = list(_fav_df.itertuples(index=False, name=None))
+_static_fav_rows = [
+    tuple(None if (isinstance(v, float) and pd.isna(v)) else v for v in row)
+    for row in _fav_df.itertuples(index=False, name=None)
+]
 del _fav_df
 print(f'  {len(_static_fav_rows)} community favorites loaded.')
 print('Ready. Visit http://127.0.0.1:5000')
