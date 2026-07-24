@@ -1,4 +1,4 @@
-"""
+﻿"""
 app_bracket.py — Flask app for the top-64 single-elimination bracket.
 
 Run locally with:
@@ -26,7 +26,7 @@ import pandas as pd
 import psycopg2
 from psycopg2.pool import ThreadedConnectionPool
 from dotenv import load_dotenv
-from flask import Flask, jsonify, render_template, request, session
+from flask import Flask, jsonify, render_template, request, send_from_directory, session
 
 load_dotenv()
 
@@ -200,7 +200,7 @@ def _get_user_ballot(ip, day):
     voted = {mid: {'card_a': ca, 'card_b': cb, 'chosen': ch} for mid, ca, cb, ch in rows}
 
     day_matchups    = sorted([m for m in _bracket['matchups'] if m['day'] == day], key=lambda x: x['id'])
-    results_by_id   = _get_results()
+    results_by_id   = _static_results
 
     ballot = []
     for m in day_matchups:
@@ -677,7 +677,7 @@ def api_bracket_submit():
 
     # Validate: only accept matchup IDs scheduled for today
     day_matchup_ids = {m['id'] for m in _bracket['matchups'] if m['day'] == day}
-    results   = _get_results()
+    results   = _static_results
     ballot_id = str(uuid.uuid4())
     valid_votes = []
     for v in votes_raw:
@@ -725,8 +725,7 @@ def api_bracket_submit():
 def bracket_page():
     _ensure_session()
     log_page_view('bracket_page')
-    results       = _get_results()
-    rounds_display = _build_bracket_display(results)
+    rounds_display = _build_bracket_display(_static_results)
     num_rounds    = _bracket['num_rounds']
     round_labels  = [ROUND_LABELS.get(r + 1, f'Round {r + 1}') for r in range(num_rounds)]
     return render_template('bracket_page.html',
@@ -952,190 +951,22 @@ td {{ padding:4px 8px; border-bottom:1px solid #2a2a2a; }}
 
 @app.route('/vote-counts')
 def vote_counts():
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    log_page_view('vote_counts')
+    return send_from_directory(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'),
+        'vote_counts_static.html',
+    )
 
-    # Load queues.json for queue sizes (best-effort); exclude queue 1 (test queue)
-    queues_json_path = os.path.join(base_dir, 'queues.json')
-    try:
-        with open(queues_json_path, encoding='utf-8') as f:
-            _qdata = json.load(f)
-        queues_meta = {q['id']: q for q in _qdata.get('queues', [])
-                       if q['id'] != 1}
-    except Exception:
-        queues_meta = {}
 
-    # Load top_10_queue.json for top-10% queue size (best-effort)
-    top10_json_path = os.path.join(base_dir, 'top_10_queue.json')
-    try:
-        with open(top10_json_path, encoding='utf-8') as f:
-            _t10 = json.load(f)
-        top10_size = _t10.get('total_cards') or len(_t10.get('cards', []))
-    except Exception:
-        top10_size = None
-
-    with _get_db() as conn:
-        cur = conn.cursor()
-
-        # ── Bracket section ────────────────────────────────────────────────────
-        cur.execute('''
-            SELECT day, COUNT(*) AS total_votes, COUNT(DISTINCT ballot_id) AS ballots
-            FROM bracket_votes
-            GROUP BY day
-            ORDER BY day
-        ''')
-        day_rows = {d: {'votes': v, 'ballots': b} for d, v, b in cur.fetchall()}
-
-        # ── Regular queue section (exclude queue 1) ────────────────────────────
-        cur.execute('''
-            SELECT queue_id, COUNT(*) AS votes
-            FROM votes
-            WHERE queue_id IS NOT NULL AND queue_id != 1
-            GROUP BY queue_id
-            ORDER BY queue_id
-        ''')
-        queue_vote_rows = {qid: v for qid, v in cur.fetchall()}
-
-        # ── Top-10% section ────────────────────────────────────────────────────
-        cur.execute('SELECT COUNT(*) FROM votes_top10')
-        top10_votes = cur.fetchone()[0]
-
-    # ── Build bracket table ────────────────────────────────────────────────────
-    day_info = {}
-    for m in _bracket['matchups']:
-        d, r = m['day'], m['round']
-        if d not in day_info:
-            day_info[d] = {'round': r}
-
-    round_days = {}
-    for d, info in day_info.items():
-        round_days.setdefault(info['round'], []).append(d)
-    for r in round_days:
-        round_days[r].sort()
-
-    bracket_rows_html = ''
-    for d in sorted(day_info.keys()):
-        r = day_info[d]['round']
-        days_in_round = round_days[r]
-        if len(days_in_round) > 1:
-            day_within = days_in_round.index(d) + 1
-            label = f'{ROUND_LABELS.get(r, f"Round {r}")} \u2014 Day {day_within}'
-        else:
-            label = ROUND_LABELS.get(r, f'Round {r}')
-        data = day_rows.get(d, {'votes': 0, 'ballots': 0})
-        bracket_rows_html += (
-            f'<tr><td>{label}</td>'
-            f'<td class="num">{data["ballots"]:,}</td>'
-            f'<td class="num">{data["votes"]:,}</td></tr>\n'
-        )
-
-    total_ballots = sum(v['ballots'] for v in day_rows.values())
-    total_votes   = sum(v['votes']   for v in day_rows.values())
-
-    # ── Build queue table ──────────────────────────────────────────────────────
-    all_qids = sorted(set(list(queues_meta.keys()) + list(queue_vote_rows.keys())))
-    queue_rows_html = ''
-    for qid in all_qids:
-        votes  = queue_vote_rows.get(qid, 0)
-        q_meta = queues_meta.get(qid, {})
-        qsize  = len(q_meta.get('cards', [])) if q_meta else None
-        qsize_str = f'{qsize:,}' if qsize is not None else '—'
-        queue_rows_html += (
-            f'<tr><td>Queue {qid}</td>'
-            f'<td class="num">{qsize_str}</td>'
-            f'<td class="num">{votes:,}</td></tr>\n'
-        )
-
-    queue_total_votes = sum(queue_vote_rows.values())
-
-    top10_size_str = f'{top10_size:,}' if top10_size is not None else '—'
-
-    html = f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vote Counts — Magic Bracket</title>
-<style>
-* {{ box-sizing: border-box; margin: 0; padding: 0; }}
-body {{ background: #1a1a1a; color: #ddd; font-family: sans-serif; }}
-nav {{
-  display: flex; justify-content: center; gap: 2rem;
-  padding: 0.75rem 1rem;
-  background: #13132a; border-bottom: 1px solid #2a2a4a;
-  flex-wrap: wrap;
-}}
-nav a {{ color: #c8a96e; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.03em; }}
-nav a:hover {{ text-decoration: underline; }}
-.page-header {{
-  background: #111; padding: 14px 20px 12px;
-  border-bottom: 1px solid #2a2a2a;
-  text-align: center;
-}}
-.page-header h1 {{
-  font-family: Georgia, serif;
-  font-size: 1.4rem; color: #c9a84c;
-  letter-spacing: 0.12em; text-transform: uppercase; font-weight: normal;
-}}
-.content {{ padding: 24px 20px; max-width: 560px; margin: 0 auto; }}
-h2 {{ color: #c9a84c; margin: 28px 0 10px; font-size: 1.05rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: normal; }}
-h2:first-child {{ margin-top: 0; }}
-table {{ width: 100%; border-collapse: collapse; font-size: 0.88rem; }}
-th {{ text-align: left; color: #888; border-bottom: 1px solid #444; padding: 5px 10px; font-weight: normal; }}
-td {{ padding: 5px 10px; border-bottom: 1px solid #222; }}
-td.num {{ text-align: right; font-variant-numeric: tabular-nums; }}
-th.num {{ text-align: right; }}
-.total {{ color: #c9a84c; font-weight: bold; margin: 8px 0 0; font-size: 0.88rem; }}
-</style>
-</head>
-<body>
-
-<nav>
-  <a href="/">Home</a>
-  <a href="/bracket">Full Bracket</a>
-  <a href="/honorable-mentions">Honorable Mentions</a>
-  <a href="/community-favorites">Community Favorites</a>
-  <a href="/universe">Card Browser</a>
-  <a href="/vote-counts">Vote Counts</a>
-  <a href="/faq">FAQ</a>
-  <a href="/share">Share</a>
-</nav>
-
-<div class="page-header">
-  <h1>Vote Counts</h1>
-</div>
-
-<div class="content">
-
-<h2>Top 64 Bracket</h2>
-<table>
-  <tr><th>Round</th><th class="num">Ballots</th><th class="num">Total Votes</th></tr>
-  {bracket_rows_html}
-</table>
-<p class="total">Total: {total_ballots:,} ballots &nbsp;/&nbsp; {total_votes:,} individual votes</p>
-
-<h2>Top 10% Tournament</h2>
-<table>
-  <tr><th>Phase</th><th class="num">Cards</th><th class="num">Votes</th></tr>
-  <tr><td>Tournament</td><td class="num">{top10_size_str}</td><td class="num">{top10_votes:,}</td></tr>
-</table>
-
-<h2>Regular Queues</h2>
-<table>
-  <tr><th>Queue</th><th class="num">Cards</th><th class="num">Votes</th></tr>
-  {queue_rows_html}
-</table>
-<p class="total">Total: {queue_total_votes:,} votes</p>
-
-</div>
-</body>
-</html>'''
-    return html
 
 
 # ── Startup ────────────────────────────────────────────────────────────────────
 
 print('Initialising database...')
 init_db()
+print('Caching bracket results...')
+_static_results = _get_results()
+print(f'  {len(_static_results)} matchup results cached.')
 print('Ready. Visit http://127.0.0.1:5000')
 
 if __name__ == '__main__':
