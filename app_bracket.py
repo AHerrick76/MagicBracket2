@@ -147,115 +147,6 @@ def init_db():
         ''')
 
 
-def _get_current_day():
-    with _get_db() as conn:
-        cur = conn.cursor()
-        cur.execute('SELECT current_day FROM bracket_state WHERE id = 1')
-        row = cur.fetchone()
-        return row[0] if row else 1
-
-
-def _has_voted(ip, day):
-    with _get_db() as conn:
-        cur = conn.cursor()
-        cur.execute(
-            'SELECT 1 FROM bracket_votes WHERE ip_address = %s AND day = %s LIMIT 1',
-            (ip, day),
-        )
-        return cur.fetchone() is not None
-
-
-def _get_user_favorites(ip, day):
-    """Return the favorites row for this IP's ballot on the given day, or None."""
-    with _get_db() as conn:
-        cur = conn.cursor()
-        cur.execute(
-            '''SELECT f.card_a, f.card_b, f.card_c, f.response_text
-               FROM finals_favorite_cards f
-               JOIN bracket_votes bv ON bv.ballot_id = f.ballot_id
-               WHERE bv.ip_address = %s AND bv.day = %s
-               LIMIT 1''',
-            (ip, day),
-        )
-        row = cur.fetchone()
-    if not row:
-        return None
-    return {'card_a': row[0], 'card_b': row[1], 'card_c': row[2], 'response_text': row[3]}
-
-
-def _get_user_ballot(ip, day):
-    """Return the user's ballot for the given day as a list of dicts, ordered by matchup_id.
-
-    Each dict: {matchup_id, card_a, card_b, chosen}
-    chosen is None for matchups the user skipped (partial ballot).
-    """
-    with _get_db() as conn:
-        cur = conn.cursor()
-        cur.execute(
-            'SELECT matchup_id, card_a, card_b, chosen '
-            'FROM bracket_votes WHERE ip_address = %s AND day = %s',
-            (ip, day),
-        )
-        rows = cur.fetchall()
-    voted = {mid: {'card_a': ca, 'card_b': cb, 'chosen': ch} for mid, ca, cb, ch in rows}
-
-    day_matchups    = sorted([m for m in _bracket['matchups'] if m['day'] == day], key=lambda x: x['id'])
-    results_by_id   = _static_results
-
-    ballot = []
-    for m in day_matchups:
-        mid = m['id']
-        if mid in voted:
-            ballot.append({
-                'matchup_id': mid,
-                'card_a':     voted[mid]['card_a'],
-                'card_b':     voted[mid]['card_b'],
-                'chosen':     voted[mid]['chosen'],
-            })
-        else:
-            # Skipped matchup — resolve card names from bracket structure
-            name_a, _ = _resolve_card(m, 'a', results_by_id)
-            name_b, _ = _resolve_card(m, 'b', results_by_id)
-            ballot.append({
-                'matchup_id': mid,
-                'card_a':     name_a or '',
-                'card_b':     name_b or '',
-                'chosen':     None,
-            })
-
-    return ballot
-
-
-def _log_votes(ip, day, round_, vote_pairs, device, ballot_id):
-    """vote_pairs: list of (matchup_id, chosen_name, card_a, card_b)"""
-    ts = datetime.now(timezone.utc).isoformat()
-    with _get_db() as conn:
-        cur = conn.cursor()
-        for mid, chosen, card_a, card_b in vote_pairs:
-            cur.execute(
-                'INSERT INTO bracket_votes '
-                '(ballot_id, timestamp, ip_address, round, day, matchup_id, card_a, card_b, chosen, device) '
-                'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                (ballot_id, ts, ip, round_, day, mid, card_a, card_b, chosen, device),
-            )
-
-
-def _get_results():
-    with _get_db() as conn:
-        cur = conn.cursor()
-        cur.execute(
-            'SELECT matchup_id, card_a, card_b, seed_a, seed_b, '
-            '       votes_a, votes_b, winner, winner_seed '
-            'FROM bracket_results'
-        )
-        rows = cur.fetchall()
-    return {
-        mid: {
-            'card_a': ca, 'card_b': cb, 'seed_a': sa, 'seed_b': sb,
-            'votes_a': va, 'votes_b': vb, 'winner': w, 'winner_seed': ws,
-        }
-        for mid, ca, cb, sa, sb, va, vb, w, ws in rows
-    }
 
 
 def _client_ip():
@@ -664,61 +555,7 @@ def index():
 
 @app.route('/api/bracket_submit', methods=['POST'])
 def api_bracket_submit():
-    _ensure_session()
-    ip     = _client_ip()
-    device = _detect_device(request.headers.get('User-Agent', ''))
-    day    = _get_current_day()
-
-    if _has_voted(ip, day):
-        return jsonify({'error': 'already_voted'}), 409
-
-    data      = request.get_json(silent=True) or {}
-    votes_raw = data.get('votes', [])   # [{matchup_id, chosen}, ...]
-
-    # Validate: only accept matchup IDs scheduled for today
-    day_matchup_ids = {m['id'] for m in _bracket['matchups'] if m['day'] == day}
-    results   = _static_results
-    ballot_id = str(uuid.uuid4())
-    valid_votes = []
-    for v in votes_raw:
-        mid = v.get('matchup_id')
-        if not isinstance(mid, int) or mid not in day_matchup_ids:
-            continue
-        chosen = v.get('chosen') or None
-        if not chosen:
-            continue
-        m = _matchup_by_id[mid]
-        card_a, _ = _resolve_card(m, 'a', results)
-        card_b, _ = _resolve_card(m, 'b', results)
-        valid_votes.append((mid, chosen, card_a or '', card_b or ''))
-
-    if not valid_votes:
-        return jsonify({'error': 'no_valid_votes'}), 400
-
-    round_ = _matchup_by_id[valid_votes[0][0]]['round']
-    _log_votes(ip, day, round_, valid_votes, device, ballot_id)
-
-    # Personal favorites (optional — included in same submission as the ballot)
-    pick_set = set(_eligible_pick_names)
-    picks = []
-    for i in range(1, 4):
-        p = data.get(f'pick_{i}')
-        picks.append(p if (p and p in pick_set) else None)
-    # Parameterised query handles all escaping; strip + cap length server-side as well
-    response_text = (data.get('comment') or '').strip()[:500] or None
-
-    if any(picks) or response_text:
-        ts = datetime.now(timezone.utc).isoformat()
-        with _get_db() as conn:
-            cur = conn.cursor()
-            cur.execute(
-                'INSERT INTO finals_favorite_cards '
-                '(timestamp, ip_address, ballot_id, card_a, card_b, card_c, response_text, device) '
-                'VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
-                (ts, ip, ballot_id, picks[0], picks[1], picks[2], response_text, device),
-            )
-
-    return jsonify({'ok': True, 'votes_recorded': len(valid_votes)})
+    return jsonify({'error': 'voting_closed'}), 403
 
 
 @app.route('/bracket')
@@ -778,14 +615,7 @@ def community_favorites():
     pos  = session.get('fav_pos', 0)
     seed = session['fav_seed']
 
-    # Load all submitted favorites from DB
-    with _get_db() as conn:
-        cur = conn.cursor()
-        cur.execute(
-            'SELECT id, card_a, card_b, card_c, response_text '
-            'FROM finals_favorite_cards ORDER BY id'
-        )
-        all_rows = cur.fetchall()
+    all_rows = _static_fav_rows
 
     if not all_rows:
         return render_template('community_favorites.html', entry=None, pos=0, total=0)
@@ -962,11 +792,33 @@ def vote_counts():
 
 # ── Startup ────────────────────────────────────────────────────────────────────
 
-print('Initialising database...')
-init_db()
 print('Caching bracket results...')
-_static_results = _get_results()
+_br_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db_backup', 'bracket_results.csv')
+_br_df  = pd.read_csv(_br_csv)
+def _int_or_none(v):
+    return None if pd.isna(v) else int(v)
+_static_results = {}
+for _, _br_row in _br_df.iterrows():
+    _mid = int(_br_row['matchup_id'])
+    _static_results[_mid] = {
+        'card_a':      _br_row['card_a'],
+        'card_b':      _br_row['card_b'],
+        'seed_a':      _int_or_none(_br_row.get('seed_a')),
+        'seed_b':      _int_or_none(_br_row.get('seed_b')),
+        'votes_a':     int(_br_row['votes_a']),
+        'votes_b':     int(_br_row['votes_b']),
+        'winner':      _br_row['winner'],
+        'winner_seed': _int_or_none(_br_row.get('winner_seed')),
+    }
+del _br_df
 print(f'  {len(_static_results)} matchup results cached.')
+print('Loading community favorites...')
+_fav_csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db_backup', 'finals_favorite_cards.csv')
+_fav_df = pd.read_csv(_fav_csv_path)[['id', 'card_a', 'card_b', 'card_c', 'response_text']]
+_fav_df = _fav_df.where(_fav_df.notna(), other=None)
+_static_fav_rows = list(_fav_df.itertuples(index=False, name=None))
+del _fav_df
+print(f'  {len(_static_fav_rows)} community favorites loaded.')
 print('Ready. Visit http://127.0.0.1:5000')
 
 if __name__ == '__main__':
